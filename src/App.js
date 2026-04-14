@@ -529,29 +529,28 @@ export default function App() {
   }
 
   const kleuren = [
-    "#eef4ff",
-    "#eefcf5",
-    "#f5f0ff",
-    "#fff8e8",
-    "#fff0f6",
-    "#fff4ef",
-    "#ecfeff",
-    "#f0f9ff",
-    "#f3fbea",
-    "#fef2f2"
-  ];
+  "#dbeafe",
+  "#dcfce7",
+  "#ede9fe",
+  "#fef3c7",
+  "#fce7f3",
+  "#ffe4d6",
+  "#cffafe",
+  "#dbeafe",
+  "#ecfccb",
+  "#fee2e2"
+];
 
-  function getCardStyle(index) {
-    const kleur = kleuren[index % kleuren.length];
-    return {
-      background: kleur,
-      borderRadius: "24px",
-      padding: "20px",
-      boxShadow: "0 8px 24px rgba(15,23,42,0.06)",
-      border: "1px solid rgba(148,163,184,0.16)"
-    };
-  }
-
+ function getCardStyle(index) {
+  const kleur = kleuren[index % kleuren.length];
+  return {
+    background: kleur,
+    borderRadius: "24px",
+    padding: "20px",
+    boxShadow: "0 8px 24px rgba(15,23,42,0.08)",
+    border: "1px solid rgba(100,116,139,0.18)"
+  };
+}
   function getCountStyle(index) {
     const kleur = kleuren[index % kleuren.length];
     return {

@@ -572,7 +572,7 @@ function getCardStyle(index) {
       display: "inline-flex",
       alignItems: "center",
       gap: "8px",
-      background: "rgba(255,255,255,0.7)",
+     background: kleur,
       color: "#334155",
       padding: "8px 12px",
       borderRadius: "999px",
@@ -588,7 +588,7 @@ function getCardStyle(index) {
   function getPersonStyle(index) {
     const kleur = kleuren[index % kleuren.length];
     return {
-      background: "rgba(255,255,255,0.68)",
+     background: kleur,
       border: `1px solid ${kleur}`,
       borderRadius: "16px",
       padding: "12px 14px",
@@ -608,7 +608,7 @@ function getCardStyle(index) {
     return {
       border: `1px solid ${kleur}`,
       borderRadius: "14px",
-      background: "rgba(255,255,255,0.82)",
+     background: kleur,
       maxHeight: "180px",
       overflowY: "auto",
       boxShadow: "0 8px 20px rgba(15,23,42,0.06)"

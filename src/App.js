@@ -39,13 +39,20 @@ export default function App() {
     },
   ]);
 
-  // ---------------------------
-  // NAAM TOEVOEGEN (met verplaatsen)
-  // ---------------------------
+  function updateNieuweNaam(handelingNaam, value) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.naam === handelingNaam ? { ...h, nieuweNaam: value } : h
+      )
+    );
+  }
+
   function voegNaamToeDirect(handelingNaam, naam) {
+    if (!naam) return;
+
     setHandelingen((prev) =>
       prev.map((h) => {
-        const zonderDubbel = h.mensen.filter((p) => p !== naam);
+        const zonderDubbel = h.mensen.filter((persoon) => persoon !== naam);
 
         if (h.naam === handelingNaam) {
           return {
@@ -55,16 +62,11 @@ export default function App() {
           };
         }
 
-        return { ...h, mensen: zonderDubbel };
+        return {
+          ...h,
+          mensen: zonderDubbel,
+        };
       })
-    );
-  }
-
-  function updateNieuweNaam(handelingNaam, value) {
-    setHandelingen((prev) =>
-      prev.map((h) =>
-        h.naam === handelingNaam ? { ...h, nieuweNaam: value } : h
-      )
     );
   }
 
@@ -72,15 +74,12 @@ export default function App() {
     setHandelingen((prev) =>
       prev.map((h) =>
         h.naam === handelingNaam
-          ? { ...h, mensen: h.mensen.filter((p) => p !== naam) }
+          ? { ...h, mensen: h.mensen.filter((persoon) => persoon !== naam) }
           : h
       )
     );
   }
 
-  // ---------------------------
-  // HANDELING TOEVOEGEN
-  // ---------------------------
   function updateNieuweHandeling(handelingNaam, value) {
     setHandelingen((prev) =>
       prev.map((h) =>
@@ -89,295 +88,33 @@ export default function App() {
     );
   }
 
-  function voegHandelingToe(handelingNaam, nieuwe) {
-    if (!nieuwe) return;
+  function voegVervolgHandelingToe(handelingNaam, nieuweHandeling) {
+    if (!nieuweHandeling) return;
 
     setHandelingen((prev) =>
       prev.map((h) => {
         if (h.naam !== handelingNaam) return h;
-
-        if (h.vervolg.includes(nieuwe)) return h;
+        if (h.vervolg.includes(nieuweHandeling)) {
+          return { ...h, nieuweHandeling: "" };
+        }
 
         return {
           ...h,
-          vervolg: [...h.vervolg, nieuwe],
+          vervolg: [...h.vervolg, nieuweHandeling],
           nieuweHandeling: "",
         };
       })
     );
   }
 
-  function verwijderHandeling(handelingNaam, remove) {
+  function verwijderVervolgHandeling(handelingNaam, vervolgNaam) {
     setHandelingen((prev) =>
       prev.map((h) =>
         h.naam === handelingNaam
           ? {
               ...h,
-              vervolg: h.vervolg.filter((v) => v !== remove),
+              vervolg: h.vervolg.filter((v) => v !== vervolgNaam),
             }
-          : h
-      )
-    );
-  }
-
-  // ---------------------------
-  // STYLES (ongewijzigd)
-  // ---------------------------
-  const cardStyle = {
-    background: "#fff",
-    padding: "20px",
-    borderRadius: "20px",
-    marginBottom: "20px",
-    border: "1px solid #ddd",
-  };
-
-  const tagStyle = {
-    display: "inline-block",
-    background: "#e0f2fe",
-    padding: "6px 10px",
-    borderRadius: "10px",
-    marginRight: "6px",
-    marginBottom: "6px",
-  };
-
-  return React.createElement(
-    "div",
-    { style: { padding: "30px", fontFamily: "Arial" } },
-    handelingen.map((handeling, index) => {
-      const zoekNaam = handeling.nieuweNaam || "";
-      const gefilterdeNamen = beschikbareNamen.filter((n) =>
-        n.toLowerCase().includes(zoekNaam.toLowerCase())
-      );
-
-      const zoekHandeling = handeling.nieuweHandeling || "";
-      const gefilterdeHandelingen = beschikbareHandelingen.filter((h) =>
-        h.toLowerCase().includes(zoekHandeling.toLowerCase())
-      );
-
-      return React.createElement(
-        "div",
-        { key: index, style: cardStyle },
-        [
-          // TITEL
-          React.createElement("h2", {}, handeling.naam),
-
-          // VERVOLG HANDELINGEN
-          React.createElement(
-            "div",
-            {},
-            [
-              React.createElement("strong", {}, "Daarna: "),
-              handeling.vervolg.map((v, i) =>
-                React.createElement(
-                  "span",
-                  { key: i, style: tagStyle },
-                  [
-                    v,
-                    " ",
-                    React.createElement(
-                      "button",
-                      {
-                        onClick: () =>
-                          verwijderHandeling(handeling.naam, v),
-                      },
-                      "x"
-                    ),
-                  ]
-                )
-              ),
-            ]
-          ),
-
-          // MENSEN
-          React.createElement(
-            "div",
-            { style: { marginTop: "10px" } },
-            handeling.mensen.map((naam, i) =>
-              React.createElement(
-                "div",
-                { key: i },
-                [
-                  naam,
-                  " ",
-                  React.createElement(
-                    "button",
-                    {
-                      onClick: () =>
-                        verwijderNaam(handeling.naam, naam),
-                    },
-                    "x"
-                  ),
-                ]
-              )
-            )
-          ),
-
-          // ---------------------------
-          // NAAM ZOEKEN
-          // ---------------------------
-          React.createElement(
-            "div",
-            { style: { marginTop: "10px" } },
-            [
-              React.createElement("input", {
-                placeholder: "Zoek medewerker...",
-                value: handeling.nieuweNaam,
-                onChange: (e) =>
-                  updateNieuweNaam(handeling.naam, e.target.value),
-              }),
-
-              zoekNaam &&
-                React.createElement(
-                  "div",
-                  {},
-                  gefilterdeNamen.map((naam, i) =>
-                    React.createElement(
-                      "div",
-                      {
-                        key: i,
-                        onClick: () =>
-                          voegNaamToeDirect(handeling.naam, naam),
-                        style: { cursor: "pointer" },
-                      },
-                      naam
-                    )
-                  )
-                ),
-            ]
-          ),
-
-          // ---------------------------
-          // HANDELING ZOEKEN
-          // ---------------------------
-          React.createElement(
-            "div",
-            { style: { marginTop: "10px" } },
-            [
-              React.createElement("input", {
-                placeholder: "Voeg vervolg handeling toe...",
-                value: handeling.nieuweHandeling,
-                onChange: (e) =>
-                  updateNieuweHandeling(
-                    handeling.naam,
-                    e.target.value
-                  ),
-              }),
-
-              zoekHandeling &&
-                React.createElement(
-                  "div",
-                  {},
-                  gefilterdeHandelingen.map((h, i) =>
-                    React.createElement(
-                      "div",
-                      {
-                        key: i,
-                        onClick: () =>
-                          voegHandelingToe(handeling.naam, h),
-                        style: { cursor: "pointer" },
-                      },
-                      h
-                    )
-                  )
-                ),
-            ]
-          ),
-        ]
-      );
-    })
-  );
-}import React, { useState } from "https://esm.sh/react@18";
-
-export default function App() {
-  const [beschikbareNamen] = useState([
-    "Antoaneta Stefanova",
-    "Nataliia Prokhorova",
-    "Yana Prokhorova",
-    "Saida Assarar",
-    "Ad Arendse",
-    "Daniela Ilieva",
-    "Plamena Ilieva",
-    "Theo Verdooren",
-    "Tomasz Surmacz",
-  ]);
-
-  const [handelingen, setHandelingen] = useState([
-    {
-      naam: "Stokken",
-      daarna: "Afleveren WP",
-      mensen: ["Antoaneta Stefanova", "Nataliia Prokhorova", "Yana Prokhorova"],
-      nieuweNaam: "",
-    },
-    {
-      naam: "Afleveren WP",
-      daarna: "Opruimen",
-      mensen: ["Saida Assarar", "Ad Arendse"],
-      nieuweNaam: "",
-    },
-    {
-      naam: "Stek steken",
-      daarna: "Tray uitlopen",
-      mensen: ["Daniela Ilieva", "Plamena Ilieva"],
-      nieuweNaam: "",
-    },
-    {
-      naam: "Tray uitlopen",
-      daarna: "Kas opruimen",
-      mensen: ["Theo Verdooren"],
-      nieuweNaam: "",
-    },
-  ]);
-
-  function updateNieuweNaam(handelingNaam, value) {
-    setHandelingen((prev) =>
-      prev.map((h) =>
-        h.naam === handelingNaam ? { ...h, nieuweNaam: value } : h
-      )
-    );
-  }
-
-  function voegNaamToeDirect(handelingNaam, naam) {
-    setHandelingen((prev) => {
-      if (!naam) return prev;
-
-      const naamBestaat = beschikbareNamen.includes(naam);
-      if (!naamBestaat) return prev;
-
-      return prev.map((h) => {
-        const zonderDubbel = h.mensen.filter((persoon) => persoon !== naam);
-
-        if (h.naam === handelingNaam) {
-          const bestaatAl = zonderDubbel.includes(naam);
-          return {
-            ...h,
-            mensen: bestaatAl ? zonderDubbel : [...zonderDubbel, naam],
-            nieuweNaam: "",
-          };
-        }
-
-        return {
-          ...h,
-          mensen: zonderDubbel,
-        };
-      });
-    });
-  }
-
-  function voegNaamToe(handelingNaam) {
-    const doelHandeling = handelingen.find((h) => h.naam === handelingNaam);
-    if (!doelHandeling) return;
-
-    const naam = (doelHandeling.nieuweNaam || "").trim();
-    if (!naam) return;
-
-    voegNaamToeDirect(handelingNaam, naam);
-  }
-
-  function verwijderNaam(handelingNaam, naam) {
-    setHandelingen((prev) =>
-      prev.map((h) =>
-        h.naam === handelingNaam
-          ? { ...h, mensen: h.mensen.filter((persoon) => persoon !== naam) }
           : h
       )
     );
@@ -451,14 +188,32 @@ export default function App() {
     marginBottom: "14px",
   };
 
-  const nextStyle = {
+  const nextBlockStyle = {
+    marginBottom: "16px",
+  };
+
+  const nextTagStyle = {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "8px",
     background: "#eff6ff",
     color: "#1d4ed8",
-    padding: "10px 12px",
+    padding: "8px 12px",
     borderRadius: "12px",
     fontSize: "14px",
-    marginBottom: "16px",
     fontWeight: "600",
+    marginRight: "8px",
+    marginBottom: "8px",
+  };
+
+  const nextRemoveStyle = {
+    border: "none",
+    background: "#dbeafe",
+    color: "#1d4ed8",
+    borderRadius: "8px",
+    padding: "2px 8px",
+    cursor: "pointer",
+    fontWeight: "700",
   };
 
   const namesWrapStyle = {
@@ -497,7 +252,6 @@ export default function App() {
     flexDirection: "column",
     gap: "10px",
     marginTop: "6px",
-    position: "relative",
   };
 
   const searchInputStyle = {
@@ -531,165 +285,247 @@ export default function App() {
     color: "#6b7280",
   };
 
-  const addButtonStyle = {
-    border: "none",
-    background: "#111827",
-    color: "#ffffff",
-    borderRadius: "12px",
-    padding: "10px 12px",
-    cursor: "pointer",
-    fontWeight: "600",
-  };
-
   return React.createElement(
     "div",
     { style: pageStyle },
     React.createElement(
       "div",
       { style: wrapStyle },
-      [
+      React.createElement(
+        React.Fragment,
+        null,
         React.createElement(
           "div",
-          { style: headerStyle, key: "header" },
-          [
-            React.createElement(
-              "h1",
-              { style: titleStyle, key: "title" },
-              "Planning App"
-            ),
+          { style: headerStyle },
+          React.createElement(
+            React.Fragment,
+            null,
+            React.createElement("h1", { style: titleStyle }, "Planning App"),
             React.createElement(
               "p",
-              { style: subStyle, key: "sub" },
-              "Planbord met namen toevoegen en automatisch verplaatsen zonder dubbelen"
-            ),
-          ]
+              { style: subStyle },
+              "Planbord met namen toevoegen en meerdere vervolg handelingen"
+            )
+          )
         ),
-
         React.createElement(
           "div",
-          { style: gridStyle, key: "grid" },
-          handelingen.map((handeling, index) => {
-            const zoekwaarde = handeling.nieuweNaam || "";
+          { style: gridStyle },
+          ...handelingen.map((handeling, index) => {
+            const zoekNaam = handeling.nieuweNaam || "";
             const gefilterdeNamen = beschikbareNamen.filter((naam) =>
-              naam.toLowerCase().includes(zoekwaarde.toLowerCase())
+              naam.toLowerCase().includes(zoekNaam.toLowerCase())
+            );
+
+            const zoekVervolg = handeling.nieuweHandeling || "";
+            const gefilterdeHandelingen = beschikbareHandelingen.filter(
+              (naam) =>
+                naam.toLowerCase().includes(zoekVervolg.toLowerCase()) &&
+                naam !== handeling.naam
             );
 
             return React.createElement(
               "div",
               { style: cardStyle, key: index },
-              [
+              React.createElement(
+                React.Fragment,
+                null,
                 React.createElement(
                   "div",
-                  { style: smallLabelStyle, key: "label-" + index },
+                  { style: smallLabelStyle },
                   "Handeling"
                 ),
                 React.createElement(
                   "h2",
-                  { style: cardTitleStyle, key: "title-" + index },
+                  { style: cardTitleStyle },
                   handeling.naam
                 ),
                 React.createElement(
                   "div",
-                  { style: countStyle, key: "count-" + index },
+                  { style: countStyle },
                   handeling.mensen.length + " mensen"
                 ),
+
                 React.createElement(
                   "div",
-                  { style: nextStyle, key: "next-" + index },
-                  "Daarna → " + handeling.daarna
+                  { style: nextBlockStyle },
+                  React.createElement(
+                    React.Fragment,
+                    null,
+                    React.createElement(
+                      "div",
+                      {
+                        style: {
+                          ...smallLabelStyle,
+                          marginBottom: "10px",
+                        },
+                      },
+                      "Daarna"
+                    ),
+                    ...handeling.vervolg.map((vervolgNaam, i) =>
+                      React.createElement(
+                        "span",
+                        { style: nextTagStyle, key: i },
+                        React.createElement(
+                          React.Fragment,
+                          null,
+                          vervolgNaam,
+                          React.createElement(
+                            "button",
+                            {
+                              style: nextRemoveStyle,
+                              onClick: () =>
+                                verwijderVervolgHandeling(
+                                  handeling.naam,
+                                  vervolgNaam
+                                ),
+                            },
+                            "✕"
+                          )
+                        )
+                      )
+                    )
+                  )
                 ),
+
                 React.createElement(
                   "div",
-                  { style: namesWrapStyle, key: "people-" + index },
-                  handeling.mensen.map((naam, i) =>
+                  { style: namesWrapStyle },
+                  ...handeling.mensen.map((naam, i) =>
                     React.createElement(
                       "div",
                       { style: personStyle, key: i },
-                      [
-                        React.createElement("span", { key: "name-" + i }, naam),
+                      React.createElement(
+                        React.Fragment,
+                        null,
+                        React.createElement("span", null, naam),
                         React.createElement(
                           "button",
                           {
-                            key: "remove-" + i,
                             style: removeButtonStyle,
                             onClick: () => verwijderNaam(handeling.naam, naam),
                           },
                           "✕"
-                        ),
-                      ]
+                        )
+                      )
                     )
                   )
                 ),
+
                 React.createElement(
                   "div",
-                  { style: formWrapStyle, key: "form-" + index },
-                  [
-                    React.createElement("input", {
-                      key: "input-" + index,
-                      type: "text",
-                      placeholder: "Zoek medewerker...",
-                      value: handeling.nieuweNaam,
-                      onChange: (e) =>
-                        updateNieuweNaam(handeling.naam, e.target.value),
-                      style: searchInputStyle,
-                    }),
-
-                    zoekwaarde
-                      ? React.createElement(
-                          "div",
-                          { style: resultsStyle, key: "results-" + index },
-                          gefilterdeNamen.length > 0
-                            ? gefilterdeNamen.slice(0, 8).map((naam, i) =>
-                                React.createElement(
-                                  "div",
-                                  {
-                                    key: "result-" + i,
-                                    style: resultItemStyle,
-                                    onClick: () =>
-                                      voegNaamToeDirect(handeling.naam, naam),
-                                  },
-                                  naam
-                                )
+                  { style: formWrapStyle },
+                  React.createElement("input", {
+                    type: "text",
+                    placeholder: "Zoek medewerker...",
+                    value: handeling.nieuweNaam,
+                    onChange: (e) =>
+                      updateNieuweNaam(handeling.naam, e.target.value),
+                    style: searchInputStyle,
+                  }),
+                  zoekNaam
+                    ? React.createElement(
+                        "div",
+                        { style: resultsStyle },
+                        ...(gefilterdeNamen.length > 0
+                          ? gefilterdeNamen.slice(0, 8).map((naam, i) =>
+                              React.createElement(
+                                "div",
+                                {
+                                  key: i,
+                                  style: resultItemStyle,
+                                  onClick: () =>
+                                    voegNaamToeDirect(handeling.naam, naam),
+                                },
+                                naam
                               )
-                            : [
-                                React.createElement(
-                                  "div",
-                                  {
-                                    key: "geen-resultaat",
-                                    style: {
-                                      padding: "10px 12px",
-                                      fontSize: "14px",
-                                      color: "#6b7280",
-                                    },
+                            )
+                          : [
+                              React.createElement(
+                                "div",
+                                {
+                                  key: "geen-medewerker",
+                                  style: {
+                                    padding: "10px 12px",
+                                    fontSize: "14px",
+                                    color: "#6b7280",
                                   },
-                                  "Geen medewerker gevonden"
-                                ),
-                              ]
-                        )
-                      : null,
-
-                    React.createElement(
-                      "div",
-                      { style: hintStyle, key: "hint-" + index },
-                      "Typ een paar letters en klik op een naam"
-                    ),
-
-                    React.createElement(
-                      "button",
-                      {
-                        key: "add-" + index,
-                        style: addButtonStyle,
-                        onClick: () => voegNaamToe(handeling.naam),
-                      },
-                      "+ Naam toevoegen"
-                    ),
-                  ]
+                                },
+                                "Geen medewerker gevonden"
+                              ),
+                            ])
+                      )
+                    : null,
+                  React.createElement(
+                    "div",
+                    { style: hintStyle },
+                    "Typ een paar letters en klik op een naam"
+                  )
                 ),
-              ]
+
+                React.createElement(
+                  "div",
+                  {
+                    style: {
+                      ...formWrapStyle,
+                      marginTop: "18px",
+                    },
+                  },
+                  React.createElement("input", {
+                    type: "text",
+                    placeholder: "Zoek vervolg handeling...",
+                    value: handeling.nieuweHandeling,
+                    onChange: (e) =>
+                      updateNieuweHandeling(handeling.naam, e.target.value),
+                    style: searchInputStyle,
+                  }),
+                  zoekVervolg
+                    ? React.createElement(
+                        "div",
+                        { style: resultsStyle },
+                        ...(gefilterdeHandelingen.length > 0
+                          ? gefilterdeHandelingen.slice(0, 8).map((naam, i) =>
+                              React.createElement(
+                                "div",
+                                {
+                                  key: i,
+                                  style: resultItemStyle,
+                                  onClick: () =>
+                                    voegVervolgHandelingToe(
+                                      handeling.naam,
+                                      naam
+                                    ),
+                                },
+                                naam
+                              )
+                            )
+                          : [
+                              React.createElement(
+                                "div",
+                                {
+                                  key: "geen-handeling",
+                                  style: {
+                                    padding: "10px 12px",
+                                    fontSize: "14px",
+                                    color: "#6b7280",
+                                  },
+                                },
+                                "Geen handeling gevonden"
+                              ),
+                            ])
+                      )
+                    : null,
+                  React.createElement(
+                    "div",
+                    { style: hintStyle },
+                    "Typ een paar letters en klik op een vervolg handeling"
+                  )
+                )
+              )
             );
           })
-        ),
-      ]
+        )
+      )
     )
   );
 }

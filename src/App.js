@@ -528,23 +528,24 @@ function normaliseerBlokken(blokken) {
 }
 
 const kleuren = [
-  "#dbeafe",
-  "#d1fae5",
-  "#ede9fe",
-  "#fef3c7",
-  "#fce7f3",
-  "#fee2e2",
-  "#cffafe",
-  "#e0f2fe"
+  "#eef4ff",
+  "#eefcf5",
+  "#f5f0ff",
+  "#fff8e8",
+  "#fff0f6",
+  "#fff1f1",
+  "#ecfeff",
+  "#f0f9ff"
 ];
 
 function getCardStyle(index) {
   return {
-    background: kleuren[index % kleuren.length],
-    borderRadius: "22px",
+    background: `linear-gradient(180deg, ${kleuren[index % kleuren.length]} 0%, #ffffff 100%)`,
+    borderRadius: "24px",
     padding: "20px",
-    boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
-    border: "2px solid rgba(255,255,255,0.9)"
+    boxShadow: "0 10px 30px rgba(15,23,42,0.08)",
+    border: "1px solid rgba(255,255,255,0.95)",
+    backdropFilter: "blur(6px)"
   };
 }
 function getCountStyle(index) {
@@ -801,14 +802,19 @@ const smallLabelStyle = {
   marginBottom: "6px"
 };
 
-const countStyle = {
-  display: "inline-block",
-  background: "#f3f4f6",
+const personStyle = {
+  background: "rgba(255,255,255,0.72)",
+  border: "1px solid rgba(255,255,255,0.95)",
+  borderRadius: "16px",
+  padding: "12px 14px",
   color: "#111827",
-  padding: "8px 12px",
-  borderRadius: "12px",
-  fontWeight: "bold",
-  marginBottom: "14px"
+  fontSize: "14px",
+  fontWeight: "500",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gap: "10px",
+  boxShadow: "0 4px 12px rgba(15,23,42,0.04)"
 };
 
 const hoofdHandelingWrapStyle = {
@@ -826,19 +832,21 @@ const nextTagStyle = {
   display: "inline-flex",
   alignItems: "center",
   gap: "8px",
-  background: "#eff6ff",
-  color: "#1d4ed8",
+  background: "rgba(255,255,255,0.78)",
+  color: "#334155",
   padding: "8px 12px",
-  borderRadius: "12px",
+  borderRadius: "999px",
   fontSize: "14px",
   fontWeight: "600",
   marginRight: "8px",
-  marginBottom: "8px"
+  marginBottom: "8px",
+  border: "1px solid rgba(255,255,255,0.95)",
+  boxShadow: "0 4px 10px rgba(15,23,42,0.04)"
 };
 
 const nextRemoveStyle = {
   border: "none",
-  background: "#dbeafe",
+  background: "#eff6ff",
   color: "#1d4ed8",
   borderRadius: "8px",
   padding: "2px 8px",
@@ -854,9 +862,9 @@ const namesWrapStyle = {
 };
 
 const personStyle = {
-  background: "#f9fafb",
-  border: "1px solid #e5e7eb",
-  borderRadius: "14px",
+  background: "rgba(255,255,255,0.72)",
+  border: "1px solid rgba(255,255,255,0.95)",
+  borderRadius: "16px",
   padding: "12px 14px",
   color: "#111827",
   fontSize: "14px",
@@ -864,17 +872,19 @@ const personStyle = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  gap: "10px"
+  gap: "10px",
+  boxShadow: "0 4px 12px rgba(15,23,42,0.04)"
 };
 
 const removeButtonStyle = {
   border: "none",
-  background: "#fee2e2",
+  background: "#fff5f5",
   color: "#b91c1c",
   borderRadius: "10px",
   padding: "6px 10px",
   cursor: "pointer",
-  fontWeight: "700"
+  fontWeight: "700",
+  boxShadow: "0 2px 8px rgba(185,28,28,0.08)"
 };
 
 const formWrapStyle = {
@@ -886,20 +896,21 @@ const formWrapStyle = {
 
 const searchInputStyle = {
   width: "100%",
-  padding: "10px 12px",
-  borderRadius: "12px",
-  border: "1px solid #d1d5db",
-  background: "#ffffff",
+  padding: "11px 13px",
+  borderRadius: "14px",
+  border: "1px solid rgba(203,213,225,0.9)",
+  background: "rgba(255,255,255,0.9)",
   fontSize: "14px",
-  boxSizing: "border-box"
+  boxSizing: "border-box",
+  outline: "none"
 };
-
 const resultsStyle = {
-  border: "1px solid #e5e7eb",
-  borderRadius: "12px",
-  background: "#ffffff",
+  border: "1px solid rgba(255,255,255,0.95)",
+  borderRadius: "14px",
+  background: "rgba(255,255,255,0.88)",
   maxHeight: "180px",
-  overflowY: "auto"
+  overflowY: "auto",
+  boxShadow: "0 8px 20px rgba(15,23,42,0.06)"
 };
 
 const resultItemStyle = {

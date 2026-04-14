@@ -1855,22 +1855,22 @@ export default function App() {
                     ? React.createElement(
                         "div",
                         { style: resultsStyle },
-                        ...(gefilterdeHandelingen.length > 0
-                          ? gefilterdeHandelingen.slice(0, 8).map((naam, i) =>
-                              React.createElement(
-                                "div",
-                                {
-                                  key: i,
-                                  style: resultItemStyle,
-                                  onClick: () =>
-                                    voegVervolgHandelingToe(
-                                      handeling.naam,
-                                      naam
-                                    )
-                                },
-                                naam
-                              )
-                            )
+                      ...gefilterdeHandelingen.length > 0
+  ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
+      React.createElement(
+        "div",
+        {
+          key: i,
+          style: resultItemStyle,
+          onClick: () =>
+            voegVervolgHandelingToe(
+              item.handeling.code,
+              handelingOptie
+            )
+        },
+        formatHandeling(handelingOptie)
+      )
+    )
                           : [
                               React.createElement(
                                 "div",

@@ -2,9 +2,21 @@ import React from "https://esm.sh/react@18";
 
 export default function App() {
   const handelingen = [
-    { naam: "Stokken", mensen: 8, daarna: "Afleveren WP" },
-    { naam: "Afleveren WP", mensen: 4, daarna: "Opruimen" },
-    { naam: "Stek steken", mensen: 6, daarna: "Tray uitlopen" },
+    {
+      naam: "Stokken",
+      daarna: "Afleveren WP",
+      mensen: ["Antoaneta Stefanova", "Nataliia Prokhorova", "Yana Prokhorova"],
+    },
+    {
+      naam: "Afleveren WP",
+      daarna: "Opruimen",
+      mensen: ["Saida Assarar", "Ad Arendse"],
+    },
+    {
+      naam: "Stek steken",
+      daarna: "Tray uitlopen",
+      mensen: ["Daniela Ilieva", "Plamena Ilieva"],
+    },
   ];
 
   const pageStyle = {
@@ -81,6 +93,22 @@ export default function App() {
     padding: "10px 12px",
     borderRadius: "12px",
     fontSize: "14px",
+    marginBottom: "14px",
+  };
+
+  const peopleWrapStyle = {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "10px",
+  };
+
+  const personStyle = {
+    background: "#f9fafb",
+    border: "1px solid #e5e7eb",
+    borderRadius: "12px",
+    padding: "10px 12px",
+    fontSize: "14px",
+    color: "#111827",
   };
 
   return React.createElement(
@@ -102,7 +130,7 @@ export default function App() {
             React.createElement(
               "p",
               { style: subStyle, key: "sub" },
-              "Eerste planning scherm met handelingen"
+              "Handelingen met namen per blok"
             ),
           ]
         ),
@@ -128,12 +156,23 @@ export default function App() {
                 React.createElement(
                   "div",
                   { style: countStyle, key: "count-" + index },
-                  handeling.mensen + " mensen"
+                  handeling.mensen.length + " mensen"
                 ),
                 React.createElement(
                   "div",
                   { style: nextStyle, key: "next-" + index },
                   "Daarna → " + handeling.daarna
+                ),
+                React.createElement(
+                  "div",
+                  { style: peopleWrapStyle, key: "people-" + index },
+                  handeling.mensen.map((naam, i) =>
+                    React.createElement(
+                      "div",
+                      { style: personStyle, key: i },
+                      naam
+                    )
+                  )
                 ),
               ]
             )

@@ -17,6 +17,11 @@ export default function App() {
       daarna: "Tray uitlopen",
       mensen: ["Daniela Ilieva", "Plamena Ilieva"],
     },
+    {
+      naam: "Tray uitlopen",
+      daarna: "Kas opruimen",
+      mensen: ["Theo Verdooren"],
+    },
   ];
 
   const pageStyle = {
@@ -27,13 +32,13 @@ export default function App() {
   };
 
   const wrapStyle = {
-    maxWidth: "1200px",
+    maxWidth: "1300px",
     margin: "0 auto",
   };
 
   const headerStyle = {
     background: "#ffffff",
-    borderRadius: "20px",
+    borderRadius: "24px",
     padding: "24px",
     boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
     marginBottom: "24px",
@@ -53,13 +58,13 @@ export default function App() {
 
   const gridStyle = {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
     gap: "20px",
   };
 
   const cardStyle = {
     background: "#ffffff",
-    borderRadius: "20px",
+    borderRadius: "22px",
     padding: "20px",
     boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
     border: "1px solid #e5e7eb",
@@ -71,7 +76,7 @@ export default function App() {
     color: "#111827",
   };
 
-  const labelStyle = {
+  const smallLabelStyle = {
     fontSize: "13px",
     color: "#6b7280",
     marginBottom: "6px",
@@ -93,22 +98,24 @@ export default function App() {
     padding: "10px 12px",
     borderRadius: "12px",
     fontSize: "14px",
-    marginBottom: "14px",
+    marginBottom: "16px",
+    fontWeight: "600",
   };
 
-  const peopleWrapStyle = {
+  const namesWrapStyle = {
     display: "flex",
-    flexWrap: "wrap",
+    flexDirection: "column",
     gap: "10px",
   };
 
   const personStyle = {
     background: "#f9fafb",
     border: "1px solid #e5e7eb",
-    borderRadius: "12px",
-    padding: "10px 12px",
-    fontSize: "14px",
+    borderRadius: "14px",
+    padding: "12px 14px",
     color: "#111827",
+    fontSize: "14px",
+    fontWeight: "500",
   };
 
   return React.createElement(
@@ -130,7 +137,7 @@ export default function App() {
             React.createElement(
               "p",
               { style: subStyle, key: "sub" },
-              "Handelingen met namen per blok"
+              "Planbord versie — mensen zien per handeling direct wat de volgende stap is"
             ),
           ]
         ),
@@ -145,7 +152,7 @@ export default function App() {
               [
                 React.createElement(
                   "div",
-                  { style: labelStyle, key: "label-" + index },
+                  { style: smallLabelStyle, key: "label-" + index },
                   "Handeling"
                 ),
                 React.createElement(
@@ -165,7 +172,7 @@ export default function App() {
                 ),
                 React.createElement(
                   "div",
-                  { style: peopleWrapStyle, key: "people-" + index },
+                  { style: namesWrapStyle, key: "people-" + index },
                   handeling.mensen.map((naam, i) =>
                     React.createElement(
                       "div",

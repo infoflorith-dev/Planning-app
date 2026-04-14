@@ -443,33 +443,7 @@ export default function App() {
     { code: "165", naam: "Directie" }
   ]);
 
-
-  const [handelingen, setHandelingen] = useState([
-    {
-      handeling: { code: "56", naam: "Stokken" },
-      vervolg: [{ code: "69", naam: "Afleveren WP" }],
-      mensen: ["Antoaneta Stefanova", "Nataliia Prokhorova"],
-      nieuweNaam: "",
-      nieuweHandeling: "",
-      zoekHoofdHandeling: ""
-    },
-    {
-      handeling: { code: "69", naam: "Afleveren WP" },
-      vervolg: [{ code: "70", naam: "Overig WP" }],
-      mensen: ["Saida Assarar"],
-      nieuweNaam: "",
-      nieuweHandeling: "",
-      zoekHoofdHandeling: ""
-    },
-    {
-      handeling: { code: "100", naam: "Stek steken" },
-      vervolg: [],
-      mensen: [],
-      nieuweNaam: "",
-      nieuweHandeling: "",
-      zoekHoofdHandeling: ""
-    }
-  ]);
+const [handelingen, setHandelingen] = useState([]);
 
   function formatHandeling(handeling) {
     if (!handeling || !handeling.code) return "Kies handeling";

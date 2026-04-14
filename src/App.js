@@ -2,7 +2,7 @@ import React, { useState } from "https://esm.sh/react@18";
 
 export default function App() {
   const [beschikbareNamen] = useState([
-    "Su Tran",
+   "Su Tran",
     "Richard de Jong",
     "Arnold Dellaert",
     "Johan van Es",
@@ -443,25 +443,90 @@ export default function App() {
     { code: "165", naam: "Directie" }
   ]);
 
+
   const [handelingen, setHandelingen] = useState([
     {
       handeling: { code: "56", naam: "Stokken" },
       vervolg: [{ code: "69", naam: "Afleveren WP" }],
       mensen: ["Antoaneta Stefanova", "Nataliia Prokhorova"],
       nieuweNaam: "",
-      nieuweHandeling: ""
+      nieuweHandeling: "",
+      zoekHoofdHandeling: ""
     },
     {
       handeling: { code: "69", naam: "Afleveren WP" },
       vervolg: [{ code: "70", naam: "Overig WP" }],
       mensen: ["Saida Assarar"],
       nieuweNaam: "",
-      nieuweHandeling: ""
+      nieuweHandeling: "",
+      zoekHoofdHandeling: ""
+    },
+    {
+      handeling: { code: "100", naam: "Stek steken" },
+      vervolg: [],
+      mensen: [],
+      nieuweNaam: "",
+      nieuweHandeling: "",
+      zoekHoofdHandeling: ""
     }
   ]);
 
   function formatHandeling(handeling) {
+    if (!handeling || !handeling.code) return "Kies handeling";
     return `[${handeling.code}] ${handeling.naam}`;
+  }
+
+  const kleuren = [
+    "#eff6ff",
+    "#ecfdf5",
+    "#f5f3ff",
+    "#fffbeb"
+  ];
+
+  function getCardStyle(index) {
+    return {
+      background: kleuren[index % kleuren.length],
+      borderRadius: "22px",
+      padding: "20px",
+      boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+      border: "1px solid #e5e7eb"
+    };
+  }
+
+  function voegHandelingBlokToe() {
+    setHandelingen((prev) => [
+      ...prev,
+      {
+        handeling: { code: "", naam: "" },
+        vervolg: [],
+        mensen: [],
+        nieuweNaam: "",
+        nieuweHandeling: "",
+        zoekHoofdHandeling: ""
+      }
+    ]);
+  }
+
+  function updateZoekHoofdHandeling(index, value) {
+    setHandelingen((prev) =>
+      prev.map((h, i) =>
+        i === index ? { ...h, zoekHoofdHandeling: value } : h
+      )
+    );
+  }
+
+  function kiesHoofdHandeling(index, handelingOptie) {
+    setHandelingen((prev) =>
+      prev.map((h, i) =>
+        i === index
+          ? {
+              ...h,
+              handeling: handelingOptie,
+              zoekHoofdHandeling: ""
+            }
+          : h
+      )
+    );
   }
 
   function updateNieuweNaam(handelingCode, value) {
@@ -482,7 +547,7 @@ export default function App() {
         if (h.handeling.code === handelingCode) {
           return {
             ...h,
-            mensen: [...zonderDubbel, naam],
+            mensen: zonderDubbel.includes(naam) ? zonderDubbel : [...zonderDubbel, naam],
             nieuweNaam: ""
           };
         }
@@ -577,18 +642,20 @@ export default function App() {
     fontSize: "15px"
   };
 
+  const topButtonStyle = {
+    border: "none",
+    background: "#111827",
+    color: "#ffffff",
+    borderRadius: "12px",
+    padding: "12px 16px",
+    cursor: "pointer",
+    fontWeight: "600"
+  };
+
   const gridStyle = {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
     gap: "20px"
-  };
-
-  const cardStyle = {
-    background: "#ffffff",
-    borderRadius: "22px",
-    padding: "20px",
-    boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-    border: "1px solid #e5e7eb"
   };
 
   const cardTitleStyle = {
@@ -611,6 +678,13 @@ export default function App() {
     borderRadius: "12px",
     fontWeight: "bold",
     marginBottom: "14px"
+  };
+
+  const hoofdHandelingWrapStyle = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    marginBottom: "16px"
   };
 
   const nextBlockStyle = {
@@ -716,26 +790,35 @@ export default function App() {
     React.createElement(
       "div",
       { style: wrapStyle },
-      React.createElement(
-        React.Fragment,
-        null,
+      [
         React.createElement(
           "div",
-          { style: headerStyle },
-          React.createElement(
-            React.Fragment,
-            null,
-            React.createElement("h1", { style: titleStyle }, "Planning App"),
+          { style: headerStyle, key: "header" },
+          [
+            React.createElement("h1", { style: titleStyle, key: "title" }, "Planning App"),
             React.createElement(
               "p",
-              { style: subStyle },
+              { style: subStyle, key: "sub" },
               "Planbord met namen toevoegen en meerdere vervolg handelingen"
+            ),
+            React.createElement(
+              "div",
+              { style: { marginTop: "16px" }, key: "header-actions" },
+              React.createElement(
+                "button",
+                {
+                  style: topButtonStyle,
+                  onClick: voegHandelingBlokToe
+                },
+                "+ Handeling blok toevoegen"
+              )
             )
-          )
+          ]
         ),
+
         React.createElement(
           "div",
-          { style: gridStyle },
+          { style: gridStyle, key: "grid" },
           ...handelingen.map((item, index) => {
             const zoekNaam = item.nieuweNaam || "";
             const gefilterdeNamen = beschikbareNamen.filter((naam) =>
@@ -751,50 +834,98 @@ export default function App() {
                 handelingOptie.code !== item.handeling.code
             );
 
+            const zoekHoofd = item.zoekHoofdHandeling || "";
+            const gefilterdeHoofdHandelingen = beschikbareHandelingen.filter(
+              (handelingOptie) =>
+                `${handelingOptie.code} ${handelingOptie.naam}`
+                  .toLowerCase()
+                  .includes(zoekHoofd.toLowerCase())
+            );
+
             return React.createElement(
               "div",
-              { style: cardStyle, key: index },
-              React.createElement(
-                React.Fragment,
-                null,
+              { style: getCardStyle(index), key: index },
+              [
                 React.createElement(
                   "div",
-                  { style: smallLabelStyle },
+                  { style: smallLabelStyle, key: "label-" + index },
                   "Handeling"
                 ),
                 React.createElement(
-                  "h2",
-                  { style: cardTitleStyle },
-                  formatHandeling(item.handeling)
+                  "div",
+                  { style: hoofdHandelingWrapStyle, key: "hoofdhandeling-" + index },
+                  [
+                    React.createElement(
+                      "h2",
+                      { style: cardTitleStyle, key: "title-" + index },
+                      formatHandeling(item.handeling)
+                    ),
+                    React.createElement("input", {
+                      type: "text",
+                      placeholder: "Zoek hoofdhandeling of code...",
+                      value: item.zoekHoofdHandeling || "",
+                      onChange: (e) =>
+                        updateZoekHoofdHandeling(index, e.target.value),
+                      style: searchInputStyle,
+                      key: "main-input-" + index
+                    }),
+                    zoekHoofd
+                      ? React.createElement(
+                          "div",
+                          { style: resultsStyle, key: "main-results-" + index },
+                          ...(gefilterdeHoofdHandelingen.length > 0
+                            ? gefilterdeHoofdHandelingen.slice(0, 8).map((handelingOptie, i) =>
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "main-result-" + i,
+                                    style: resultItemStyle,
+                                    onClick: () =>
+                                      kiesHoofdHandeling(index, handelingOptie)
+                                  },
+                                  formatHandeling(handelingOptie)
+                                )
+                              )
+                            : [
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "geen-hoofdhandeling",
+                                    style: {
+                                      padding: "10px 12px",
+                                      fontSize: "14px",
+                                      color: "#6b7280"
+                                    }
+                                  },
+                                  "Geen handeling gevonden"
+                                )
+                              ])
+                        )
+                      : null
+                  ]
                 ),
                 React.createElement(
                   "div",
-                  { style: countStyle },
+                  { style: countStyle, key: "count-" + index },
                   item.mensen.length + " mensen"
                 ),
                 React.createElement(
                   "div",
-                  { style: nextBlockStyle },
-                  React.createElement(
-                    React.Fragment,
-                    null,
+                  { style: nextBlockStyle, key: "nextblock-" + index },
+                  [
                     React.createElement(
                       "div",
                       {
-                        style: {
-                          ...smallLabelStyle,
-                          marginBottom: "10px"
-                        }
+                        style: { ...smallLabelStyle, marginBottom: "10px" },
+                        key: "nextlabel-" + index
                       },
                       "Daarna"
                     ),
                     ...item.vervolg.map((vervolgItem, i) =>
                       React.createElement(
                         "span",
-                        { style: nextTagStyle, key: i },
-                        React.createElement(
-                          React.Fragment,
-                          null,
+                        { style: nextTagStyle, key: "tag-" + i },
+                        [
                           formatHandeling(vervolgItem),
                           React.createElement(
                             "button",
@@ -804,152 +935,155 @@ export default function App() {
                                 verwijderVervolgHandeling(
                                   item.handeling.code,
                                   vervolgItem.code
-                                )
+                                ),
+                              key: "remove-tag-" + i
                             },
                             "✕"
                           )
-                        )
+                        ]
                       )
                     )
-                  )
+                  ]
                 ),
                 React.createElement(
                   "div",
-                  { style: namesWrapStyle },
+                  { style: namesWrapStyle, key: "names-" + index },
                   ...item.mensen.map((naam, i) =>
                     React.createElement(
                       "div",
-                      { style: personStyle, key: i },
-                      React.createElement(
-                        React.Fragment,
-                        null,
-                        React.createElement("span", null, naam),
+                      { style: personStyle, key: "person-" + i },
+                      [
+                        React.createElement("span", { key: "person-name-" + i }, naam),
                         React.createElement(
                           "button",
                           {
                             style: removeButtonStyle,
-                            onClick: () =>
-                              verwijderNaam(item.handeling.code, naam)
+                            onClick: () => verwijderNaam(item.handeling.code, naam),
+                            key: "person-remove-" + i
                           },
                           "✕"
                         )
-                      )
+                      ]
                     )
                   )
                 ),
                 React.createElement(
                   "div",
-                  { style: formWrapStyle },
-                  React.createElement("input", {
-                    type: "text",
-                    placeholder: "Zoek medewerker...",
-                    value: item.nieuweNaam,
-                    onChange: (e) =>
-                      updateNieuweNaam(item.handeling.code, e.target.value),
-                    style: searchInputStyle
-                  }),
-                  zoekNaam
-                    ? React.createElement(
-                        "div",
-                        { style: resultsStyle },
-                        ...(gefilterdeNamen.length > 0
-                          ? gefilterdeNamen.slice(0, 20).map((naam, i) =>
-                              React.createElement(
-                                "div",
-                                {
-                                  key: i,
-                                  style: resultItemStyle,
-                                  onClick: () =>
-                                    voegNaamToeDirect(item.handeling.code, naam)
-                                },
-                                naam
+                  { style: formWrapStyle, key: "nameform-" + index },
+                  [
+                    React.createElement("input", {
+                      type: "text",
+                      placeholder: "Zoek medewerker...",
+                      value: item.nieuweNaam,
+                      onChange: (e) =>
+                        updateNieuweNaam(item.handeling.code, e.target.value),
+                      style: searchInputStyle,
+                      key: "name-input-" + index
+                    }),
+                    zoekNaam
+                      ? React.createElement(
+                          "div",
+                          { style: resultsStyle, key: "name-results-" + index },
+                          ...(gefilterdeNamen.length > 0
+                            ? gefilterdeNamen.slice(0, 20).map((naam, i) =>
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "name-result-" + i,
+                                    style: resultItemStyle,
+                                    onClick: () =>
+                                      voegNaamToeDirect(item.handeling.code, naam)
+                                  },
+                                  naam
+                                )
                               )
-                            )
-                          : [
-                              React.createElement(
-                                "div",
-                                {
-                                  key: "geen-medewerker",
-                                  style: {
-                                    padding: "10px 12px",
-                                    fontSize: "14px",
-                                    color: "#6b7280"
-                                  }
-                                },
-                                "Geen medewerker gevonden"
-                              )
-                            ])
-                      )
-                    : null,
-                  React.createElement(
-                    "div",
-                    { style: hintStyle },
-                    "Typ een paar letters en klik op een naam"
-                  )
+                            : [
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "geen-medewerker",
+                                    style: {
+                                      padding: "10px 12px",
+                                      fontSize: "14px",
+                                      color: "#6b7280"
+                                    }
+                                  },
+                                  "Geen medewerker gevonden"
+                                )
+                              ])
+                        )
+                      : null,
+                    React.createElement(
+                      "div",
+                      { style: hintStyle, key: "name-hint-" + index },
+                      "Typ een paar letters en klik op een naam"
+                    )
+                  ]
                 ),
                 React.createElement(
                   "div",
                   {
-                    style: {
-                      ...formWrapStyle,
-                      marginTop: "18px"
-                    }
+                    style: { ...formWrapStyle, marginTop: "18px" },
+                    key: "nextform-" + index
                   },
-                  React.createElement("input", {
-                    type: "text",
-                    placeholder: "Zoek vervolg handeling of code...",
-                    value: item.nieuweHandeling,
-                    onChange: (e) =>
-                      updateNieuweHandeling(item.handeling.code, e.target.value),
-                    style: searchInputStyle
-                  }),
-                  zoekVervolg
-                    ? React.createElement(
-                        "div",
-                        { style: resultsStyle },
-                        ...(gefilterdeHandelingen.length > 0
-                          ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
-                              React.createElement(
-                                "div",
-                                {
-                                  key: i,
-                                  style: resultItemStyle,
-                                  onClick: () =>
-                                    voegVervolgHandelingToe(
-                                      item.handeling.code,
-                                      handelingOptie
-                                    )
-                                },
-                                formatHandeling(handelingOptie)
+                  [
+                    React.createElement("input", {
+                      type: "text",
+                      placeholder: "Zoek vervolg handeling of code...",
+                      value: item.nieuweHandeling,
+                      onChange: (e) =>
+                        updateNieuweHandeling(item.handeling.code, e.target.value),
+                      style: searchInputStyle,
+                      key: "next-input-" + index
+                    }),
+                    zoekVervolg
+                      ? React.createElement(
+                          "div",
+                          { style: resultsStyle, key: "next-results-" + index },
+                          ...(gefilterdeHandelingen.length > 0
+                            ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "next-result-" + i,
+                                    style: resultItemStyle,
+                                    onClick: () =>
+                                      voegVervolgHandelingToe(
+                                        item.handeling.code,
+                                        handelingOptie
+                                      )
+                                  },
+                                  formatHandeling(handelingOptie)
+                                )
                               )
-                            )
-                          : [
-                              React.createElement(
-                                "div",
-                                {
-                                  key: "geen-handeling",
-                                  style: {
-                                    padding: "10px 12px",
-                                    fontSize: "14px",
-                                    color: "#6b7280"
-                                  }
-                                },
-                                "Geen handeling gevonden"
-                              )
-                            ])
-                      )
-                    : null,
-                  React.createElement(
-                    "div",
-                    { style: hintStyle },
-                    "Typ code of naam en klik op een vervolg handeling"
-                  )
+                            : [
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "geen-handeling",
+                                    style: {
+                                      padding: "10px 12px",
+                                      fontSize: "14px",
+                                      color: "#6b7280"
+                                    }
+                                  },
+                                  "Geen handeling gevonden"
+                                )
+                              ])
+                        )
+                      : null,
+                    React.createElement(
+                      "div",
+                      { style: hintStyle, key: "next-hint-" + index },
+                      "Typ code of naam en klik op een vervolg handeling"
+                    )
+                  ]
                 )
-              )
+              ]
             );
           })
         )
-      )
+      ]
     )
   );
 }

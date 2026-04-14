@@ -886,39 +886,44 @@ function getCardStyle(index) {
   };
 
   const printAreaStyle = {
-    background: "#ffffff",
-    borderRadius: "24px",
-    padding: "24px",
-    boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-    marginTop: "24px"
-  };
+  background: "#ffffff",
+  borderRadius: "18px",
+  padding: "16px",
+  boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+  marginTop: "24px"
+};
 
   const printTitleStyle = {
-    margin: "0 0 16px 0",
-    fontSize: "24px",
-    color: "#111827"
-  };
+  margin: "0 0 10px 0",
+  fontSize: "20px",
+  color: "#111827"
+};
 
-  const printTableStyle = {
-    width: "100%",
-    borderCollapse: "collapse",
-    fontSize: "13px"
-  };
+const printTableStyle = {
+  width: "100%",
+  borderCollapse: "collapse",
+  fontSize: "11px",
+  tableLayout: "fixed"
+};
 
-  const thStyle = {
-    textAlign: "left",
-    borderBottom: "2px solid #d1d5db",
-    padding: "8px 6px",
-    color: "#374151"
-  };
+const thStyle = {
+  textAlign: "left",
+  borderBottom: "2px solid #d1d5db",
+  padding: "6px 5px",
+  color: "#374151",
+  fontSize: "11px",
+  lineHeight: "1.2"
+};
 
-  const tdStyle = {
-    borderBottom: "1px solid #e5e7eb",
-    padding: "8px 6px",
-    verticalAlign: "top",
-    color: "#111827"
-  };
-
+const tdStyle = {
+  borderBottom: "1px solid #e5e7eb",
+  padding: "5px 5px",
+  verticalAlign: "top",
+  color: "#111827",
+  fontSize: "10px",
+  lineHeight: "1.2",
+  wordBreak: "break-word"
+};
 return React.createElement(
   "div",
   { style: pageStyle },
@@ -1256,73 +1261,84 @@ return React.createElement(
         ),
 
         React.createElement(
-          "div",
-          { style: printAreaStyle, key: "print-area" },
+  "div",
+  { style: printAreaStyle, key: "print-area" },
+  [
+    React.createElement(
+      "h2",
+      { style: printTitleStyle, key: "print-title" },
+      "Dagprogramma overzicht"
+    ),
+    React.createElement(
+      "table",
+      { style: printTableStyle, key: "print-table" },
+      [
+        React.createElement(
+          "colgroup",
+          { key: "colgroup" },
           [
-            React.createElement(
-              "h2",
-              { style: printTitleStyle, key: "print-title" },
-              "Dagprogramma overzicht"
-            ),
-            React.createElement(
-              "table",
-              { style: printTableStyle, key: "print-table" },
-              [
-                React.createElement(
-                  "thead",
-                  { key: "thead" },
-                  React.createElement(
-                    "tr",
-                    {},
-                    [
-                      React.createElement("th", { style: thStyle, key: "h1" }, "Handeling"),
-                      React.createElement("th", { style: thStyle, key: "h2" }, "Aantal"),
-                      React.createElement("th", { style: thStyle, key: "h3" }, "Namen"),
-                      React.createElement("th", { style: thStyle, key: "h4" }, "Daarna")
-                    ]
-                  )
-                ),
-                React.createElement(
-                  "tbody",
-                  { key: "tbody" },
-                  ...handelingen
-                    .filter((item) => item.handeling && item.handeling.code)
-                    .map((item, index) =>
-                      React.createElement(
-                        "tr",
-                        { key: "row-" + index },
-                        [
-                          React.createElement(
-                            "td",
-                            { style: tdStyle, key: "c1-" + index },
-                            formatHandeling(item.handeling)
-                          ),
-                          React.createElement(
-                            "td",
-                            { style: tdStyle, key: "c2-" + index },
-                            String(item.mensen.length)
-                          ),
-                          React.createElement(
-                            "td",
-                            { style: tdStyle, key: "c3-" + index },
-                            item.mensen.join(", ")
-                          ),
-                          React.createElement(
-                            "td",
-                            { style: tdStyle, key: "c4-" + index },
-                            item.vervolg.length > 0
-                              ? item.vervolg.map((v) => formatHandeling(v)).join(", ")
-                              : "-"
-                          )
-                        ]
-                      )
-                    )
-                )
-              ]
-            )
+            React.createElement("col", { key: "col1", style: { width: "24%" } }),
+            React.createElement("col", { key: "col2", style: { width: "8%" } }),
+            React.createElement("col", { key: "col3", style: { width: "44%" } }),
+            React.createElement("col", { key: "col4", style: { width: "24%" } })
           ]
+        ),
+        React.createElement(
+          "thead",
+          { key: "thead" },
+          React.createElement(
+            "tr",
+            {},
+            [
+              React.createElement("th", { style: thStyle, key: "h1" }, "Handeling"),
+              React.createElement("th", { style: thStyle, key: "h2" }, "Aantal"),
+              React.createElement("th", { style: thStyle, key: "h3" }, "Namen"),
+              React.createElement("th", { style: thStyle, key: "h4" }, "Daarna")
+            ]
+          )
+        ),
+        React.createElement(
+          "tbody",
+          { key: "tbody" },
+          ...handelingen
+            .filter(
+              (item) =>
+                item.handeling &&
+                item.handeling.code &&
+                (item.mensen.length > 0 || item.vervolg.length > 0)
+            )
+            .map((item, index) =>
+              React.createElement(
+                "tr",
+                { key: "row-" + index },
+                [
+                  React.createElement(
+                    "td",
+                    { style: tdStyle, key: "c1-" + index },
+                    formatHandeling(item.handeling)
+                  ),
+                  React.createElement(
+                    "td",
+                    { style: tdStyle, key: "c2-" + index },
+                    String(item.mensen.length)
+                  ),
+                  React.createElement(
+                    "td",
+                    { style: tdStyle, key: "c3-" + index },
+                    item.mensen.length > 0 ? item.mensen.join(", ") : "-"
+                  ),
+                  React.createElement(
+                    "td",
+                    { style: tdStyle, key: "c4-" + index },
+                    item.vervolg.length > 0
+                      ? item.vervolg.map((v) => formatHandeling(v)).join(", ")
+                      : "-"
+                  )
+                ]
+              )
+            )
         )
       ]
     )
-  );
-}
+  ]
+)

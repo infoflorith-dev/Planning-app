@@ -1214,7 +1214,7 @@ return React.createElement(
                               )
                             ])
                       )
-                    : null,
+                                       : null,
                   React.createElement(
                     "div",
                     { style: hintStyle, key: "next-hint-" + index },

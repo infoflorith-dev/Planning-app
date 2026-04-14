@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "https://esm.sh/react@18";
 
 export default function App() {
   const [beschikbareNamen] = useState([
-   "Su Tran",
+    "Su Tran",
     "Richard de Jong",
     "Arnold Dellaert",
     "Johan van Es",
@@ -442,8 +442,61 @@ export default function App() {
     { code: "164", naam: "Led lampen" },
     { code: "165", naam: "Directie" }
   ]);
-const [handelingen, setHandelingen] = useState(() => {
-  function maakLeegBlokInit() {
+
+  const [handelingen, setHandelingen] = useState(() => {
+    function maakLeegBlokInit() {
+      return {
+        id: crypto.randomUUID(),
+        handeling: { code: "", naam: "" },
+        vervolg: [],
+        mensen: [],
+        nieuweNaam: "",
+        nieuweHandeling: "",
+        zoekHoofdHandeling: ""
+      };
+    }
+
+    function vulAanTotMinimaal12Init(blokken) {
+      const resultaat = [...blokken];
+      while (resultaat.length < 12) {
+        resultaat.push(maakLeegBlokInit());
+      }
+      return resultaat;
+    }
+
+    function normaliseerBlokkenInit(blokken) {
+      return blokken.map((blok) => ({
+        id: blok.id || crypto.randomUUID(),
+        handeling: blok.handeling || { code: "", naam: "" },
+        vervolg: Array.isArray(blok.vervolg) ? blok.vervolg : [],
+        mensen: Array.isArray(blok.mensen) ? blok.mensen : [],
+        nieuweNaam: blok.nieuweNaam || "",
+        nieuweHandeling: blok.nieuweHandeling || "",
+        zoekHoofdHandeling: blok.zoekHoofdHandeling || ""
+      }));
+    }
+
+    try {
+      const opgeslagen = localStorage.getItem("planning-handelingen");
+      if (opgeslagen) {
+        const parsed = JSON.parse(opgeslagen);
+        if (Array.isArray(parsed)) {
+          return vulAanTotMinimaal12Init(normaliseerBlokkenInit(parsed));
+        }
+      }
+    } catch (e) {
+      console.log("Kon planning niet laden");
+    }
+
+    return vulAanTotMinimaal12Init([]);
+  });
+
+  function formatHandeling(handeling) {
+    if (!handeling || !handeling.code) return "Kies handeling";
+    return `[${handeling.code}] ${handeling.naam}`;
+  }
+
+  function maakLeegBlok() {
     return {
       id: crypto.randomUUID(),
       handeling: { code: "", naam: "" },
@@ -455,15 +508,15 @@ const [handelingen, setHandelingen] = useState(() => {
     };
   }
 
-  function vulAanTotMinimaal12Init(blokken) {
+  function vulAanTotMinimaal12(blokken) {
     const resultaat = [...blokken];
     while (resultaat.length < 12) {
-      resultaat.push(maakLeegBlokInit());
+      resultaat.push(maakLeegBlok());
     }
     return resultaat;
   }
 
-  function normaliseerBlokkenInit(blokken) {
+  function normaliseerBlokken(blokken) {
     return blokken.map((blok) => ({
       id: blok.id || crypto.randomUUID(),
       handeling: blok.handeling || { code: "", naam: "" },
@@ -475,896 +528,802 @@ const [handelingen, setHandelingen] = useState(() => {
     }));
   }
 
-  try {
-    const opgeslagen = localStorage.getItem("planning-handelingen");
-    if (opgeslagen) {
-      const parsed = JSON.parse(opgeslagen);
-      if (Array.isArray(parsed)) {
-        return vulAanTotMinimaal12Init(normaliseerBlokkenInit(parsed));
-      }
-    }
-  } catch (e) {
-    console.log("Kon planning niet laden");
+  const kleuren = [
+    "#eef4ff",
+    "#eefcf5",
+    "#f5f0ff",
+    "#fff8e8",
+    "#fff0f6",
+    "#fff4ef",
+    "#ecfeff",
+    "#f0f9ff",
+    "#f3fbea",
+    "#fef2f2"
+  ];
+
+  function getCardStyle(index) {
+    const kleur = kleuren[index % kleuren.length];
+    return {
+      background: kleur,
+      borderRadius: "24px",
+      padding: "20px",
+      boxShadow: "0 8px 24px rgba(15,23,42,0.06)",
+      border: "1px solid rgba(148,163,184,0.16)"
+    };
   }
 
-  return vulAanTotMinimaal12Init([]);
-});
-
-function formatHandeling(handeling) {
-  if (!handeling || !handeling.code) return "Kies handeling";
-  return `[${handeling.code}] ${handeling.naam}`;
-}
-
-function maakLeegBlok() {
-  return {
-    id: crypto.randomUUID(),
-    handeling: { code: "", naam: "" },
-    vervolg: [],
-    mensen: [],
-    nieuweNaam: "",
-    nieuweHandeling: "",
-    zoekHoofdHandeling: ""
-  };
-}
-
-function vulAanTotMinimaal12(blokken) {
-  const resultaat = [...blokken];
-  while (resultaat.length < 12) {
-    resultaat.push(maakLeegBlok());
+  function getCountStyle(index) {
+    const kleur = kleuren[index % kleuren.length];
+    return {
+      display: "inline-block",
+      background: "rgba(255,255,255,0.72)",
+      color: "#111827",
+      padding: "8px 12px",
+      borderRadius: "999px",
+      fontWeight: "700",
+      marginBottom: "14px",
+      border: `1px solid ${kleur}`,
+      boxShadow: "0 2px 8px rgba(15,23,42,0.04)"
+    };
   }
-  return resultaat;
-}
 
-function normaliseerBlokken(blokken) {
-  return blokken.map((blok) => ({
-    id: blok.id || crypto.randomUUID(),
-    handeling: blok.handeling || { code: "", naam: "" },
-    vervolg: Array.isArray(blok.vervolg) ? blok.vervolg : [],
-    mensen: Array.isArray(blok.mensen) ? blok.mensen : [],
-    nieuweNaam: blok.nieuweNaam || "",
-    nieuweHandeling: blok.nieuweHandeling || "",
-    zoekHoofdHandeling: blok.zoekHoofdHandeling || ""
-  }));
-}
+  function getNextTagStyle(index) {
+    const kleur = kleuren[index % kleuren.length];
+    return {
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "8px",
+      background: "rgba(255,255,255,0.7)",
+      color: "#334155",
+      padding: "8px 12px",
+      borderRadius: "999px",
+      fontSize: "14px",
+      fontWeight: "600",
+      marginRight: "8px",
+      marginBottom: "8px",
+      border: `1px solid ${kleur}`,
+      boxShadow: "0 2px 8px rgba(15,23,42,0.04)"
+    };
+  }
 
-const kleuren = [
-  "#eef4ff",
-  "#eefcf5",
-  "#f5f0ff",
-  "#fff8e8",
-  "#fff0f6",
-  "#fff1f1",
-  "#ecfeff",
-  "#f0f9ff"
-];
+  function getPersonStyle(index) {
+    const kleur = kleuren[index % kleuren.length];
+    return {
+      background: "rgba(255,255,255,0.68)",
+      border: `1px solid ${kleur}`,
+      borderRadius: "16px",
+      padding: "12px 14px",
+      color: "#111827",
+      fontSize: "14px",
+      fontWeight: "500",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      gap: "10px",
+      boxShadow: "0 2px 8px rgba(15,23,42,0.04)"
+    };
+  }
 
-function getCardStyle(index) {
-  return {
-    background: `linear-gradient(180deg, ${kleuren[index % kleuren.length]} 0%, #ffffff 100%)`,
-    borderRadius: "24px",
-    padding: "20px",
-    boxShadow: "0 10px 30px rgba(15,23,42,0.08)",
-    border: "1px solid rgba(255,255,255,0.95)",
-    backdropFilter: "blur(6px)"
-  };
-}
-function getCountStyle(index) {
-  return {
-    display: "inline-block",
-    background: kleuren[index % kleuren.length],
-    color: "#111827",
-    padding: "8px 12px",
-    borderRadius: "12px",
-    fontWeight: "bold",
-    marginBottom: "14px",
-    border: "1px solid #dbe3ea"
-  };
-}
+  function getResultsStyle(index) {
+    const kleur = kleuren[index % kleuren.length];
+    return {
+      border: `1px solid ${kleur}`,
+      borderRadius: "14px",
+      background: "rgba(255,255,255,0.82)",
+      maxHeight: "180px",
+      overflowY: "auto",
+      boxShadow: "0 8px 20px rgba(15,23,42,0.06)"
+    };
+  }
 
-function getNextTagStyle(index) {
-  return {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "8px",
-    background: kleuren[index % kleuren.length],
-    color: "#1f2937",
-    padding: "8px 12px",
-    borderRadius: "12px",
-    fontSize: "14px",
-    fontWeight: "600",
-    marginRight: "8px",
-    marginBottom: "8px",
-    border: "1px solid #dbe3ea"
-  };
-}
+  function voegHandelingBlokToe() {
+    setHandelingen((prev) => [...prev, maakLeegBlok()]);
+  }
 
-function getPersonStyle(index) {
-  return {
-    background: kleuren[index % kleuren.length],
-    border: "1px solid #dbe3ea",
-    borderRadius: "14px",
-    padding: "12px 14px",
-    color: "#111827",
-    fontSize: "14px",
-    fontWeight: "500",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: "10px"
-  };
-}
+  function updateZoekHoofdHandeling(blokId, value) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.id === blokId ? { ...h, zoekHoofdHandeling: value } : h
+      )
+    );
+  }
 
-function getResultsStyle(index) {
-  return {
-    border: "1px solid #dbe3ea",
-    borderRadius: "12px",
-    background: kleuren[index % kleuren.length],
-    maxHeight: "180px",
-    overflowY: "auto"
-  };
-}
-function voegHandelingBlokToe() {
-  setHandelingen((prev) => [...prev, maakLeegBlok()]);
-}
+  function kiesHoofdHandeling(blokId, handelingOptie) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.id === blokId
+          ? {
+              ...h,
+              handeling: handelingOptie,
+              zoekHoofdHandeling: ""
+            }
+          : h
+      )
+    );
+  }
 
-function updateZoekHoofdHandeling(blokId, value) {
-  setHandelingen((prev) =>
-    prev.map((h) =>
-      h.id === blokId ? { ...h, zoekHoofdHandeling: value } : h
-    )
-  );
-}
+  function updateNieuweNaam(blokId, value) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.id === blokId ? { ...h, nieuweNaam: value } : h
+      )
+    );
+  }
 
-function kiesHoofdHandeling(blokId, handelingOptie) {
-  setHandelingen((prev) =>
-    prev.map((h) =>
-      h.id === blokId
-        ? {
+  function voegNaamToeDirect(blokId, naam) {
+    if (!naam) return;
+
+    setHandelingen((prev) =>
+      prev.map((h) => {
+        const zonderDubbel = h.mensen.filter((persoon) => persoon !== naam);
+
+        if (h.id === blokId) {
+          return {
             ...h,
-            handeling: handelingOptie,
-            zoekHoofdHandeling: ""
-          }
-        : h
-    )
-  );
-}
+            mensen: zonderDubbel.includes(naam)
+              ? zonderDubbel
+              : [...zonderDubbel, naam],
+            nieuweNaam: ""
+          };
+        }
 
-function updateNieuweNaam(blokId, value) {
-  setHandelingen((prev) =>
-    prev.map((h) =>
-      h.id === blokId ? { ...h, nieuweNaam: value } : h
-    )
-  );
-}
-
-function voegNaamToeDirect(blokId, naam) {
-  if (!naam) return;
-
-  setHandelingen((prev) =>
-    prev.map((h) => {
-      const zonderDubbel = h.mensen.filter((persoon) => persoon !== naam);
-
-      if (h.id === blokId) {
         return {
           ...h,
-          mensen: zonderDubbel.includes(naam)
-            ? zonderDubbel
-            : [...zonderDubbel, naam],
-          nieuweNaam: ""
+          mensen: zonderDubbel
         };
-      }
-
-      return {
-        ...h,
-        mensen: zonderDubbel
-      };
-    })
-  );
-}
-
-function verwijderNaam(blokId, naam) {
-  setHandelingen((prev) =>
-    prev.map((h) =>
-      h.id === blokId
-        ? { ...h, mensen: h.mensen.filter((persoon) => persoon !== naam) }
-        : h
-    )
-  );
-}
-
-function updateNieuweHandeling(blokId, value) {
-  setHandelingen((prev) =>
-    prev.map((h) =>
-      h.id === blokId ? { ...h, nieuweHandeling: value } : h
-    )
-  );
-}
-
-function voegVervolgHandelingToe(blokId, nieuweHandeling) {
-  if (!nieuweHandeling) return;
-
-  setHandelingen((prev) =>
-    prev.map((h) => {
-      if (h.id !== blokId) return h;
-      if (h.vervolg.some((v) => v.code === nieuweHandeling.code)) {
-        return { ...h, nieuweHandeling: "" };
-      }
-
-      return {
-        ...h,
-        vervolg: [...h.vervolg, nieuweHandeling],
-        nieuweHandeling: ""
-      };
-    })
-  );
-}
-
-function verwijderVervolgHandeling(blokId, vervolgCode) {
-  setHandelingen((prev) =>
-    prev.map((h) =>
-      h.id === blokId
-        ? {
-            ...h,
-            vervolg: h.vervolg.filter((v) => v.code !== vervolgCode)
-          }
-        : h
-    )
-  );
-}
-
-function verwijderBlok(blokId) {
-  setHandelingen((prev) => {
-    const over = prev.filter((h) => h.id !== blokId);
-    return vulAanTotMinimaal12(over);
-  });
-}
-
-useEffect(() => {
-  try {
-    localStorage.setItem(
-      "planning-handelingen",
-      JSON.stringify(normaliseerBlokken(handelingen))
+      })
     );
-  } catch (e) {
-    console.log("Opslaan mislukt");
   }
-}, [handelingen]);
 
-const pageStyle = {
-  minHeight: "100vh",
-  background: "#f3f4f6",
-  padding: "24px",
-  fontFamily: "Arial, sans-serif"
-};
+  function verwijderNaam(blokId, naam) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.id === blokId
+          ? { ...h, mensen: h.mensen.filter((persoon) => persoon !== naam) }
+          : h
+      )
+    );
+  }
 
-const wrapStyle = {
-  maxWidth: "1300px",
-  margin: "0 auto"
-};
+  function updateNieuweHandeling(blokId, value) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.id === blokId ? { ...h, nieuweHandeling: value } : h
+      )
+    );
+  }
 
-const headerStyle = {
-  background: "#ffffff",
-  borderRadius: "24px",
-  padding: "24px",
-  boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-  marginBottom: "24px"
-};
+  function voegVervolgHandelingToe(blokId, nieuweHandeling) {
+    if (!nieuweHandeling) return;
 
-const titleStyle = {
-  margin: "0 0 6px 0",
-  fontSize: "32px",
-  color: "#111827"
-};
+    setHandelingen((prev) =>
+      prev.map((h) => {
+        if (h.id !== blokId) return h;
+        if (h.vervolg.some((v) => v.code === nieuweHandeling.code)) {
+          return { ...h, nieuweHandeling: "" };
+        }
 
-const subStyle = {
-  margin: 0,
-  color: "#6b7280",
-  fontSize: "15px"
-};
+        return {
+          ...h,
+          vervolg: [...h.vervolg, nieuweHandeling],
+          nieuweHandeling: ""
+        };
+      })
+    );
+  }
 
-const topButtonStyle = {
-  border: "none",
-  background: "#111827",
-  color: "#ffffff",
-  borderRadius: "12px",
-  padding: "12px 16px",
-  cursor: "pointer",
-  fontWeight: "600"
-};
+  function verwijderVervolgHandeling(blokId, vervolgCode) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.id === blokId
+          ? {
+              ...h,
+              vervolg: h.vervolg.filter((v) => v.code !== vervolgCode)
+            }
+          : h
+      )
+    );
+  }
 
-const printButtonStyle = {
-  border: "none",
-  background: "#2563eb",
-  color: "#ffffff",
-  borderRadius: "12px",
-  padding: "12px 16px",
-  cursor: "pointer",
-  fontWeight: "600",
-  marginLeft: "10px"
-};
+  function verwijderBlok(blokId) {
+    setHandelingen((prev) => {
+      const over = prev.filter((h) => h.id !== blokId);
+      return vulAanTotMinimaal12(over);
+    });
+  }
 
-const gridStyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-  gap: "20px",
-  alignItems: "start"
-};
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "planning-handelingen",
+        JSON.stringify(normaliseerBlokken(handelingen))
+      );
+    } catch (e) {
+      console.log("Opslaan mislukt");
+    }
+  }, [handelingen]);
 
-const cardTitleStyle = {
-  margin: "0 0 8px 0",
-  fontSize: "22px",
-  color: "#111827"
-};
+  const pageStyle = {
+    minHeight: "100vh",
+    background: "#f3f4f6",
+    padding: "24px",
+    fontFamily: "Arial, sans-serif"
+  };
 
-const smallLabelStyle = {
-  fontSize: "13px",
-  color: "#6b7280",
-  marginBottom: "6px"
-};
+  const wrapStyle = {
+    maxWidth: "1300px",
+    margin: "0 auto"
+  };
 
-const personStyle = {
-  background: "rgba(255,255,255,0.72)",
-  border: "1px solid rgba(255,255,255,0.95)",
-  borderRadius: "16px",
-  padding: "12px 14px",
-  color: "#111827",
-  fontSize: "14px",
-  fontWeight: "500",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: "10px",
-  boxShadow: "0 4px 12px rgba(15,23,42,0.04)"
-};
+  const headerStyle = {
+    background: "#ffffff",
+    borderRadius: "24px",
+    padding: "24px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+    marginBottom: "24px"
+  };
 
-const hoofdHandelingWrapStyle = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "10px",
-  marginBottom: "16px"
-};
+  const titleStyle = {
+    margin: "0 0 6px 0",
+    fontSize: "32px",
+    color: "#111827"
+  };
 
-const nextBlockStyle = {
-  marginBottom: "16px"
-};
+  const subStyle = {
+    margin: 0,
+    color: "#6b7280",
+    fontSize: "15px"
+  };
 
-const nextTagStyle = {
-  display: "inline-flex",
-  alignItems: "center",
-  gap: "8px",
-  background: "rgba(255,255,255,0.78)",
-  color: "#334155",
-  padding: "8px 12px",
-  borderRadius: "999px",
-  fontSize: "14px",
-  fontWeight: "600",
-  marginRight: "8px",
-  marginBottom: "8px",
-  border: "1px solid rgba(255,255,255,0.95)",
-  boxShadow: "0 4px 10px rgba(15,23,42,0.04)"
-};
+  const topButtonStyle = {
+    border: "none",
+    background: "#111827",
+    color: "#ffffff",
+    borderRadius: "12px",
+    padding: "12px 16px",
+    cursor: "pointer",
+    fontWeight: "600"
+  };
 
-const nextRemoveStyle = {
-  border: "none",
-  background: "#eff6ff",
-  color: "#1d4ed8",
-  borderRadius: "8px",
-  padding: "2px 8px",
-  cursor: "pointer",
-  fontWeight: "700"
-};
+  const printButtonStyle = {
+    border: "none",
+    background: "#2563eb",
+    color: "#ffffff",
+    borderRadius: "12px",
+    padding: "12px 16px",
+    cursor: "pointer",
+    fontWeight: "600",
+    marginLeft: "10px"
+  };
 
-const namesWrapStyle = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "10px",
-  marginBottom: "16px"
-};
+  const gridStyle = {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+    gap: "20px",
+    alignItems: "start"
+  };
 
-const personStyle = {
-  background: "rgba(255,255,255,0.72)",
-  border: "1px solid rgba(255,255,255,0.95)",
-  borderRadius: "16px",
-  padding: "12px 14px",
-  color: "#111827",
-  fontSize: "14px",
-  fontWeight: "500",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: "10px",
-  boxShadow: "0 4px 12px rgba(15,23,42,0.04)"
-};
+  const cardTitleStyle = {
+    margin: "0 0 8px 0",
+    fontSize: "22px",
+    color: "#111827"
+  };
 
-const removeButtonStyle = {
-  border: "none",
-  background: "#fff5f5",
-  color: "#b91c1c",
-  borderRadius: "10px",
-  padding: "6px 10px",
-  cursor: "pointer",
-  fontWeight: "700",
-  boxShadow: "0 2px 8px rgba(185,28,28,0.08)"
-};
+  const smallLabelStyle = {
+    fontSize: "13px",
+    color: "#6b7280",
+    marginBottom: "6px"
+  };
 
-const formWrapStyle = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "10px",
-  marginTop: "6px"
-};
+  const hoofdHandelingWrapStyle = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    marginBottom: "16px"
+  };
 
-const searchInputStyle = {
-  width: "100%",
-  padding: "11px 13px",
-  borderRadius: "14px",
-  border: "1px solid rgba(203,213,225,0.9)",
-  background: "rgba(255,255,255,0.9)",
-  fontSize: "14px",
-  boxSizing: "border-box",
-  outline: "none"
-};
-const resultsStyle = {
-  border: "1px solid rgba(255,255,255,0.95)",
-  borderRadius: "14px",
-  background: "rgba(255,255,255,0.88)",
-  maxHeight: "180px",
-  overflowY: "auto",
-  boxShadow: "0 8px 20px rgba(15,23,42,0.06)"
-};
+  const nextBlockStyle = {
+    marginBottom: "16px"
+  };
 
-const resultItemStyle = {
-  padding: "10px 12px",
-  cursor: "pointer",
-  borderBottom: "1px solid rgba(255,255,255,0.55)",
-  fontSize: "14px",
-  color: "#111827",
-  background: "transparent"
-};
+  const nextRemoveStyle = {
+    border: "none",
+    background: "#eff6ff",
+    color: "#1d4ed8",
+    borderRadius: "8px",
+    padding: "2px 8px",
+    cursor: "pointer",
+    fontWeight: "700"
+  };
 
-const hintStyle = {
-  fontSize: "12px",
-  color: "#6b7280"
-};
+  const namesWrapStyle = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    marginBottom: "16px"
+  };
 
-const printAreaStyle = {
-  background: "#ffffff",
-  borderRadius: "24px",
-  padding: "24px",
-  boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-  marginTop: "24px"
-};
+  const removeButtonStyle = {
+    border: "none",
+    background: "#fff5f5",
+    color: "#b91c1c",
+    borderRadius: "10px",
+    padding: "6px 10px",
+    cursor: "pointer",
+    fontWeight: "700",
+    boxShadow: "0 2px 8px rgba(185,28,28,0.08)"
+  };
 
-const printTitleStyle = {
-  margin: "0 0 16px 0",
-  fontSize: "24px",
-  color: "#111827"
-};
+  const formWrapStyle = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    marginTop: "6px"
+  };
 
-const printTableStyle = {
-  width: "100%",
-  borderCollapse: "collapse",
-  fontSize: "13px"
-};
+  const searchInputStyle = {
+    width: "100%",
+    padding: "11px 13px",
+    borderRadius: "14px",
+    border: "1px solid rgba(203,213,225,0.9)",
+    background: "rgba(255,255,255,0.92)",
+    fontSize: "14px",
+    boxSizing: "border-box",
+    outline: "none"
+  };
 
-const thStyle = {
-  textAlign: "left",
-  borderBottom: "2px solid #d1d5db",
-  padding: "8px 6px",
-  color: "#374151"
-};
+  const resultItemStyle = {
+    padding: "10px 12px",
+    cursor: "pointer",
+    borderBottom: "1px solid rgba(226,232,240,0.8)",
+    fontSize: "14px",
+    color: "#111827",
+    background: "transparent"
+  };
 
-const tdStyle = {
-  borderBottom: "1px solid #e5e7eb",
-  padding: "8px 6px",
-  verticalAlign: "top",
-  color: "#111827"
-};
+  const hintStyle = {
+    fontSize: "12px",
+    color: "#6b7280"
+  };
 
-return React.createElement(
-  "div",
-  { style: pageStyle },
-  React.createElement(
+  const printAreaStyle = {
+    background: "#ffffff",
+    borderRadius: "24px",
+    padding: "24px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+    marginTop: "24px"
+  };
+
+  const printTitleStyle = {
+    margin: "0 0 16px 0",
+    fontSize: "24px",
+    color: "#111827"
+  };
+
+  const printTableStyle = {
+    width: "100%",
+    borderCollapse: "collapse",
+    fontSize: "13px"
+  };
+
+  const thStyle = {
+    textAlign: "left",
+    borderBottom: "2px solid #d1d5db",
+    padding: "8px 6px",
+    color: "#374151"
+  };
+
+  const tdStyle = {
+    borderBottom: "1px solid #e5e7eb",
+    padding: "8px 6px",
+    verticalAlign: "top",
+    color: "#111827"
+  };
+
+  return React.createElement(
     "div",
-    { style: wrapStyle },
-    [
-      React.createElement(
-        "div",
-        { style: headerStyle, key: "header" },
-        [
-          React.createElement("img", {
-            src: "https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
-            style: {
-              width: "180px",
-              marginBottom: "12px",
-              borderRadius: "8px"
-            },
-            key: "logo"
-          }),
-          React.createElement("h1", { style: titleStyle, key: "title" }, "Planning App"),
-          React.createElement(
-            "p",
-            { style: subStyle, key: "sub" },
-            "Planbord met namen toevoegen en meerdere vervolg handelingen"
-          ),
-          React.createElement(
-            "div",
-            {
-              style: { marginTop: "16px", display: "flex", gap: "10px", flexWrap: "wrap" },
-              key: "header-actions"
-            },
-            [
-              React.createElement(
-                "button",
-                {
-                  style: topButtonStyle,
-                  onClick: voegHandelingBlokToe,
-                  key: "add-block"
-                },
-                "+ Handeling blok toevoegen"
-              ),
-              React.createElement(
-                "button",
-                {
-                  style: printButtonStyle,
-                  onClick: () => window.print(),
-                  key: "print-button"
-                },
-                "Print / PDF"
-              )
-            ]
-          )
-        ]
-      ),
+    { style: pageStyle },
+    React.createElement(
+      "div",
+      { style: wrapStyle },
+      [
+        React.createElement(
+          "div",
+          { style: headerStyle, key: "header" },
+          [
+            React.createElement("img", {
+              src: "https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
+              style: {
+                width: "180px",
+                marginBottom: "12px",
+                borderRadius: "8px"
+              },
+              key: "logo"
+            }),
+            React.createElement("h1", { style: titleStyle, key: "title" }, "Planning App"),
+            React.createElement(
+              "p",
+              { style: subStyle, key: "sub" },
+              "Planbord met namen toevoegen en meerdere vervolg handelingen"
+            ),
+            React.createElement(
+              "div",
+              {
+                style: { marginTop: "16px", display: "flex", gap: "10px", flexWrap: "wrap" },
+                key: "header-actions"
+              },
+              [
+                React.createElement(
+                  "button",
+                  {
+                    style: topButtonStyle,
+                    onClick: voegHandelingBlokToe,
+                    key: "add-block"
+                  },
+                  "+ Handeling blok toevoegen"
+                ),
+                React.createElement(
+                  "button",
+                  {
+                    style: printButtonStyle,
+                    onClick: () => window.print(),
+                    key: "print-button"
+                  },
+                  "Print / PDF"
+                )
+              ]
+            )
+          ]
+        ),
 
-      React.createElement(
-        "div",
-        { style: gridStyle, key: "grid" },
-        ...handelingen.map((item, index) => {
-          const zoekNaam = item.nieuweNaam || "";
-          const gefilterdeNamen = beschikbareNamen.filter((naam) =>
-            naam.toLowerCase().includes(zoekNaam.toLowerCase())
-          );
+        React.createElement(
+          "div",
+          { style: gridStyle, key: "grid" },
+          ...handelingen.map((item, index) => {
+            const zoekNaam = item.nieuweNaam || "";
+            const gefilterdeNamen = beschikbareNamen.filter((naam) =>
+              naam.toLowerCase().includes(zoekNaam.toLowerCase())
+            );
 
-          const zoekVervolg = item.nieuweHandeling || "";
-          const gefilterdeHandelingen = beschikbareHandelingen.filter(
-            (handelingOptie) =>
-              `${handelingOptie.code} ${handelingOptie.naam}`
-                .toLowerCase()
-                .includes(zoekVervolg.toLowerCase()) &&
-              handelingOptie.code !== item.handeling.code
-          );
+            const zoekVervolg = item.nieuweHandeling || "";
+            const gefilterdeHandelingen = beschikbareHandelingen.filter(
+              (handelingOptie) =>
+                `${handelingOptie.code} ${handelingOptie.naam}`
+                  .toLowerCase()
+                  .includes(zoekVervolg.toLowerCase()) &&
+                handelingOptie.code !== item.handeling.code
+            );
 
-          const zoekHoofd = item.zoekHoofdHandeling || "";
-          const gefilterdeHoofdHandelingen = beschikbareHandelingen.filter(
-            (handelingOptie) =>
-              `${handelingOptie.code} ${handelingOptie.naam}`
-                .toLowerCase()
-                .includes(zoekHoofd.toLowerCase())
-          );
+            const zoekHoofd = item.zoekHoofdHandeling || "";
+            const gefilterdeHoofdHandelingen = beschikbareHandelingen.filter(
+              (handelingOptie) =>
+                `${handelingOptie.code} ${handelingOptie.naam}`
+                  .toLowerCase()
+                  .includes(zoekHoofd.toLowerCase())
+            );
 
-          return React.createElement(
-            "div",
-            { style: getCardStyle(index), key: item.id || index },
-            [
-              React.createElement(
-                "div",
-                { style: smallLabelStyle, key: "label-" + index },
-                "Handeling"
-              ),
-              React.createElement(
-                "div",
-                { style: hoofdHandelingWrapStyle, key: "hoofdhandeling-" + index },
-                [
-                  React.createElement(
-                    "h2",
-                    { style: cardTitleStyle, key: "title-" + index },
-                    formatHandeling(item.handeling)
-                  ),
-                  React.createElement(
-                    "button",
-                    {
-                      style: {
-                        border: "none",
-                        background: "#fee2e2",
-                        color: "#b91c1c",
-                        borderRadius: "10px",
-                        padding: "6px 10px",
-                        cursor: "pointer",
-                        fontWeight: "700",
-                        marginBottom: "10px"
-                      },
-                      onClick: () => verwijderBlok(item.id),
-                      key: "verwijder-" + index
-                    },
-                    "Blok verwijderen"
-                  ),
-                  React.createElement("input", {
-                    type: "text",
-                    placeholder: "Zoek hoofdhandeling of code...",
-                    value: item.zoekHoofdHandeling || "",
-                    onChange: (e) =>
-                      updateZoekHoofdHandeling(item.id, e.target.value),
-                    style: searchInputStyle,
-                    key: "main-input-" + index
-                  }),
-                  zoekHoofd
-                    ? React.createElement(
-                        "div",
-                        { style: getResultsStyle(index), key: "main-results-" + index },
-                        ...(gefilterdeHoofdHandelingen.length > 0
-                          ? gefilterdeHoofdHandelingen.slice(0, 8).map((handelingOptie, i) =>
-                              React.createElement(
-                                "div",
-                                {
-                                  key: "main-result-" + i,
-                                  style: resultItemStyle,
-                                  onClick: () =>
-                                    kiesHoofdHandeling(item.id, handelingOptie)
-                                },
-                                formatHandeling(handelingOptie)
-                              )
-                            )
-                          : [
-                              React.createElement(
-                                "div",
-                                {
-                                  key: "geen-hoofdhandeling",
-                                  style: {
-                                    padding: "10px 12px",
-                                    fontSize: "14px",
-                                    color: "#6b7280"
-                                  }
-                                },
-                                "Geen handeling gevonden"
-                              )
-                            ])
-                      )
-                    : null
-                ]
-              ),
-              React.createElement(
-                "div",
-                { style: getCountStyle(index), key: "count-" + index },
-                item.mensen.length + " mensen"
-              ),
-              React.createElement(
-                "div",
-                { style: nextBlockStyle, key: "nextblock-" + index },
-                [
-                  React.createElement(
-                    "div",
-                    {
-                      style: { ...smallLabelStyle, marginBottom: "10px" },
-                      key: "nextlabel-" + index
-                    },
-                    "Daarna"
-                  ),
-                  ...item.vervolg.map((vervolgItem, i) =>
+            return React.createElement(
+              "div",
+              { style: getCardStyle(index), key: item.id || index },
+              [
+                React.createElement(
+                  "div",
+                  { style: smallLabelStyle, key: "label-" + index },
+                  "Handeling"
+                ),
+                React.createElement(
+                  "div",
+                  { style: hoofdHandelingWrapStyle, key: "hoofdhandeling-" + index },
+                  [
                     React.createElement(
-                      "span",
-                      { style: getNextTagStyle(index), key: "tag-" + i },
+                      "h2",
+                      { style: cardTitleStyle, key: "title-" + index },
+                      formatHandeling(item.handeling)
+                    ),
+                    React.createElement(
+                      "button",
+                      {
+                        style: {
+                          border: "none",
+                          background: "#fee2e2",
+                          color: "#b91c1c",
+                          borderRadius: "10px",
+                          padding: "6px 10px",
+                          cursor: "pointer",
+                          fontWeight: "700",
+                          marginBottom: "10px"
+                        },
+                        onClick: () => verwijderBlok(item.id),
+                        key: "verwijder-" + index
+                      },
+                      "Blok verwijderen"
+                    ),
+                    React.createElement("input", {
+                      type: "text",
+                      placeholder: "Zoek hoofdhandeling of code...",
+                      value: item.zoekHoofdHandeling || "",
+                      onChange: (e) =>
+                        updateZoekHoofdHandeling(item.id, e.target.value),
+                      style: searchInputStyle,
+                      key: "main-input-" + index
+                    }),
+                    zoekHoofd
+                      ? React.createElement(
+                          "div",
+                          { style: getResultsStyle(index), key: "main-results-" + index },
+                          ...(gefilterdeHoofdHandelingen.length > 0
+                            ? gefilterdeHoofdHandelingen.slice(0, 8).map((handelingOptie, i) =>
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "main-result-" + i,
+                                    style: resultItemStyle,
+                                    onClick: () =>
+                                      kiesHoofdHandeling(item.id, handelingOptie)
+                                  },
+                                  formatHandeling(handelingOptie)
+                                )
+                              )
+                            : [
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "geen-hoofdhandeling",
+                                    style: {
+                                      padding: "10px 12px",
+                                      fontSize: "14px",
+                                      color: "#6b7280"
+                                    }
+                                  },
+                                  "Geen handeling gevonden"
+                                )
+                              ])
+                        )
+                      : null
+                  ]
+                ),
+                React.createElement(
+                  "div",
+                  { style: getCountStyle(index), key: "count-" + index },
+                  item.mensen.length + " mensen"
+                ),
+                React.createElement(
+                  "div",
+                  { style: nextBlockStyle, key: "nextblock-" + index },
+                  [
+                    React.createElement(
+                      "div",
+                      {
+                        style: { ...smallLabelStyle, marginBottom: "10px" },
+                        key: "nextlabel-" + index
+                      },
+                      "Daarna"
+                    ),
+                    ...item.vervolg.map((vervolgItem, i) =>
+                      React.createElement(
+                        "span",
+                        { style: getNextTagStyle(index), key: "tag-" + i },
+                        [
+                          formatHandeling(vervolgItem),
+                          React.createElement(
+                            "button",
+                            {
+                              style: nextRemoveStyle,
+                              onClick: () =>
+                                verwijderVervolgHandeling(item.id, vervolgItem.code),
+                              key: "remove-tag-" + i
+                            },
+                            "✕"
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                ),
+                React.createElement(
+                  "div",
+                  { style: namesWrapStyle, key: "names-" + index },
+                  ...item.mensen.map((naam, i) =>
+                    React.createElement(
+                      "div",
+                      { style: getPersonStyle(index), key: "person-" + i },
                       [
-                        formatHandeling(vervolgItem),
+                        React.createElement("span", { key: "person-name-" + i }, naam),
                         React.createElement(
                           "button",
                           {
-                            style: nextRemoveStyle,
-                            onClick: () =>
-                              verwijderVervolgHandeling(item.id, vervolgItem.code),
-                            key: "remove-tag-" + i
+                            style: removeButtonStyle,
+                            onClick: () => verwijderNaam(item.id, naam),
+                            key: "person-remove-" + i
                           },
                           "✕"
                         )
                       ]
                     )
                   )
-                ]
-              ),
-              React.createElement(
-                "div",
-                { style: namesWrapStyle, key: "names-" + index },
-                ...item.mensen.map((naam, i) =>
-                  React.createElement(
-                    "div",
-                    { style: getNextTagStyle(index), key: "tag-" + i },
-                    [
-                      React.createElement("span", { key: "person-name-" + i }, naam),
-                      React.createElement(
-                        "button",
-                        {
-                          style: removeButtonStyle,
-                          onClick: () => verwijderNaam(item.id, naam),
-                          key: "person-remove-" + i
-                        },
-                        "✕"
-                      )
-                    ]
-                  )
-                )
-              ),
-              React.createElement(
-                "div",
-                { style: formWrapStyle, key: "nameform-" + index },
-                [
-                  React.createElement("input", {
-                    type: "text",
-                    placeholder: "Zoek medewerker...",
-                    value: item.nieuweNaam,
-                    onChange: (e) =>
-                      updateNieuweNaam(item.id, e.target.value),
-                    style: searchInputStyle,
-                    key: "name-input-" + index
-                  }),
-                  zoekNaam
-                    ? React.createElement(
-                        "div",
-                       { style: getResultsStyle(index), key: "name-results-" + index },
-                        ...(gefilterdeNamen.length > 0
-                          ? gefilterdeNamen.slice(0, 20).map((naam, i) =>
-                              React.createElement(
-                                "div",
-                                {
-                                  key: "name-result-" + i,
-                                  style: resultItemStyle,
-                                  onClick: () =>
-                                    voegNaamToeDirect(item.id, naam)
-                                },
-                                naam
-                              )
-                            )
-                          : [
-                              React.createElement(
-                                "div",
-                                {
-                                  key: "geen-medewerker",
-                                  style: {
-                                    padding: "10px 12px",
-                                    fontSize: "14px",
-                                    color: "#6b7280"
-                                  }
-                                },
-                                "Geen medewerker gevonden"
-                              )
-                            ])
-                      )
-                    : null,
-                  React.createElement(
-                    "div",
-                    { style: hintStyle, key: "name-hint-" + index },
-                    "Typ een paar letters en klik op een naam"
-                  )
-                ]
-              ),
-              React.createElement(
-                "div",
-                {
-                  style: { ...formWrapStyle, marginTop: "18px" },
-                  key: "nextform-" + index
-                },
-                [
-                  React.createElement("input", {
-                    type: "text",
-                    placeholder: "Zoek vervolg handeling of code...",
-                    value: item.nieuweHandeling,
-                    onChange: (e) =>
-                      updateNieuweHandeling(item.id, e.target.value),
-                    style: searchInputStyle,
-                    key: "next-input-" + index
-                  }),
-                  zoekVervolg
-                    ? React.createElement(
-                        "div",
-                       { style: getResultsStyle(index), key: "next-results-" + index },
-                        ...(gefilterdeHandelingen.length > 0
-                          ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
-                              React.createElement(
-                                "div",
-                                {
-                                  key: "next-result-" + i,
-                                  style: resultItemStyle,
-                                  onClick: () =>
-                                    voegVervolgHandelingToe(item.id, handelingOptie)
-                                },
-                                formatHandeling(handelingOptie)
-                              )
-                            )
-                          : [
-                              React.createElement(
-                                "div",
-                                {
-                                  key: "geen-handeling",
-                                  style: {
-                                    padding: "10px 12px",
-                                    fontSize: "14px",
-                                    color: "#6b7280"
-                                  }
-                                },
-                                "Geen handeling gevonden"
-                              )
-                            ])
-                      )
-                    : null,
-                  React.createElement(
-                    "div",
-                    { style: hintStyle, key: "next-hint-" + index },
-                    "Typ code of naam en klik op een vervolg handeling"
-                  )
-                ]
-              )
-            ]
-          );
-        })
-      ),
-
-      React.createElement(
-        "div",
-        { style: printAreaStyle, key: "print-area" },
-        [
-          React.createElement(
-            "h2",
-            { style: printTitleStyle, key: "print-title" },
-            "Dagprogramma overzicht"
-          ),
-          React.createElement(
-            "table",
-            { style: printTableStyle, key: "print-table" },
-            [
-              React.createElement(
-                "thead",
-                { key: "thead" },
+                ),
                 React.createElement(
-                  "tr",
-                  {},
+                  "div",
+                  { style: formWrapStyle, key: "nameform-" + index },
                   [
-                    React.createElement("th", { style: thStyle, key: "h1" }, "Handeling"),
-                    React.createElement("th", { style: thStyle, key: "h2" }, "Aantal"),
-                    React.createElement("th", { style: thStyle, key: "h3" }, "Namen"),
-                    React.createElement("th", { style: thStyle, key: "h4" }, "Daarna")
+                    React.createElement("input", {
+                      type: "text",
+                      placeholder: "Zoek medewerker...",
+                      value: item.nieuweNaam,
+                      onChange: (e) =>
+                        updateNieuweNaam(item.id, e.target.value),
+                      style: searchInputStyle,
+                      key: "name-input-" + index
+                    }),
+                    zoekNaam
+                      ? React.createElement(
+                          "div",
+                          { style: getResultsStyle(index), key: "name-results-" + index },
+                          ...(gefilterdeNamen.length > 0
+                            ? gefilterdeNamen.slice(0, 20).map((naam, i) =>
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "name-result-" + i,
+                                    style: resultItemStyle,
+                                    onClick: () =>
+                                      voegNaamToeDirect(item.id, naam)
+                                  },
+                                  naam
+                                )
+                              )
+                            : [
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "geen-medewerker",
+                                    style: {
+                                      padding: "10px 12px",
+                                      fontSize: "14px",
+                                      color: "#6b7280"
+                                    }
+                                  },
+                                  "Geen medewerker gevonden"
+                                )
+                              ])
+                        )
+                      : null,
+                    React.createElement(
+                      "div",
+                      { style: hintStyle, key: "name-hint-" + index },
+                      "Typ een paar letters en klik op een naam"
+                    )
+                  ]
+                ),
+                React.createElement(
+                  "div",
+                  {
+                    style: { ...formWrapStyle, marginTop: "18px" },
+                    key: "nextform-" + index
+                  },
+                  [
+                    React.createElement("input", {
+                      type: "text",
+                      placeholder: "Zoek vervolg handeling of code...",
+                      value: item.nieuweHandeling,
+                      onChange: (e) =>
+                        updateNieuweHandeling(item.id, e.target.value),
+                      style: searchInputStyle,
+                      key: "next-input-" + index
+                    }),
+                    zoekVervolg
+                      ? React.createElement(
+                          "div",
+                          { style: getResultsStyle(index), key: "next-results-" + index },
+                          ...(gefilterdeHandelingen.length > 0
+                            ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "next-result-" + i,
+                                    style: resultItemStyle,
+                                    onClick: () =>
+                                      voegVervolgHandelingToe(item.id, handelingOptie)
+                                  },
+                                  formatHandeling(handelingOptie)
+                                )
+                              )
+                            : [
+                                React.createElement(
+                                  "div",
+                                  {
+                                    key: "geen-handeling",
+                                    style: {
+                                      padding: "10px 12px",
+                                      fontSize: "14px",
+                                      color: "#6b7280"
+                                    }
+                                  },
+                                  "Geen handeling gevonden"
+                                )
+                              ])
+                        )
+                      : null,
+                    React.createElement(
+                      "div",
+                      { style: hintStyle, key: "next-hint-" + index },
+                      "Typ code of naam en klik op een vervolg handeling"
+                    )
                   ]
                 )
-              ),
-              React.createElement(
-                "tbody",
-                { key: "tbody" },
-                ...handelingen
-                  .filter((item) => item.handeling && item.handeling.code)
-                  .map((item, index) =>
-                    React.createElement(
-                      "tr",
-                      { key: "row-" + index },
-                      [
-                        React.createElement(
-                          "td",
-                          { style: tdStyle, key: "c1-" + index },
-                          formatHandeling(item.handeling)
-                        ),
-                        React.createElement(
-                          "td",
-                          { style: tdStyle, key: "c2-" + index },
-                          String(item.mensen.length)
-                        ),
-                        React.createElement(
-                          "td",
-                          { style: tdStyle, key: "c3-" + index },
-                          item.mensen.join(", ")
-                        ),
-                        React.createElement(
-                          "td",
-                          { style: tdStyle, key: "c4-" + index },
-                          item.vervolg.length > 0
-                            ? item.vervolg.map((v) => formatHandeling(v)).join(", ")
-                            : "-"
-                        )
-                      ]
-                    )
+              ]
+            );
+          })
+        ),
+
+        React.createElement(
+          "div",
+          { style: printAreaStyle, key: "print-area" },
+          [
+            React.createElement(
+              "h2",
+              { style: printTitleStyle, key: "print-title" },
+              "Dagprogramma overzicht"
+            ),
+            React.createElement(
+              "table",
+              { style: printTableStyle, key: "print-table" },
+              [
+                React.createElement(
+                  "thead",
+                  { key: "thead" },
+                  React.createElement(
+                    "tr",
+                    {},
+                    [
+                      React.createElement("th", { style: thStyle, key: "h1" }, "Handeling"),
+                      React.createElement("th", { style: thStyle, key: "h2" }, "Aantal"),
+                      React.createElement("th", { style: thStyle, key: "h3" }, "Namen"),
+                      React.createElement("th", { style: thStyle, key: "h4" }, "Daarna")
+                    ]
                   )
-              )
-            ]
-          )
-        ]
-      )
-    ]
-  )
-);
+                ),
+                React.createElement(
+                  "tbody",
+                  { key: "tbody" },
+                  ...handelingen
+                    .filter((item) => item.handeling && item.handeling.code)
+                    .map((item, index) =>
+                      React.createElement(
+                        "tr",
+                        { key: "row-" + index },
+                        [
+                          React.createElement(
+                            "td",
+                            { style: tdStyle, key: "c1-" + index },
+                            formatHandeling(item.handeling)
+                          ),
+                          React.createElement(
+                            "td",
+                            { style: tdStyle, key: "c2-" + index },
+                            String(item.mensen.length)
+                          ),
+                          React.createElement(
+                            "td",
+                            { style: tdStyle, key: "c3-" + index },
+                            item.mensen.join(", ")
+                          ),
+                          React.createElement(
+                            "td",
+                            { style: tdStyle, key: "c4-" + index },
+                            item.vervolg.length > 0
+                              ? item.vervolg.map((v) => formatHandeling(v)).join(", ")
+                              : "-"
+                          )
+                        ]
+                      )
+                    )
+                )
+              ]
+            )
+          ]
+        )
+      ]
+    )
+  );
 }

@@ -1307,6 +1307,8 @@ React.createElement(
   { style: hintStyle, key: "extra-hint-" + index },
   "Bijvoorbeeld +5 als uitzendbureau zelf mensen invult"
 ),
+                    ],
+),
                 React.createElement(
                   "div",
                   {

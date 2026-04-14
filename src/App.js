@@ -847,7 +847,7 @@ export default function App() {
                         "div",
                         { style: resultsStyle },
                         ...(gefilterdeNamen.length > 0
-                          ? gefilterdeNamen.slice(0, 8).map((naam, i) =>
+                          ? gefilterdeNamen.slice(0, 20).map((naam, i) =>
                               React.createElement(
                                 "div",
                                 {

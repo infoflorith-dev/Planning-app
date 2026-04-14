@@ -602,7 +602,13 @@ function vulAanTotMinimaal12(blokken) {
       )
     );
   }
-
+useEffect(() => {
+  try {
+    localStorage.setItem("planning-handelingen", JSON.stringify(handelingen));
+  } catch (e) {
+    console.log("Opslaan mislukt");
+  }
+}, [handelingen]);
   const pageStyle = {
     minHeight: "100vh",
     background: "#f3f4f6",

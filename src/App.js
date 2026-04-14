@@ -1260,7 +1260,7 @@ return React.createElement(
           })
         ),
 
-      React.createElement(
+   React.createElement(
   "div",
   { style: printAreaStyle, key: "print-area" },
   [

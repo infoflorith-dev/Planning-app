@@ -923,12 +923,13 @@ function getCardStyle(index) {
   React.Fragment,
   null,
   React.createElement("style", {}, printCss),
+React.createElement(
+  "div",
+  { style: pageStyle },
   React.createElement(
     "div",
-    { style: pageStyle },
-      "div",
-      { style: wrapStyle },
-      [
+    { style: wrapStyle },
+    [
         React.createElement(
           "div",
           { style: headerStyle, key: "header" },

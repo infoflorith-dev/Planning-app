@@ -839,9 +839,49 @@ const resultItemStyle = {
   color: "#111827"
 };
 
-const hintStyle = {
-  fontSize: "12px",
-  color: "#6b7280"
+const printButtonStyle = {
+  border: "none",
+  background: "#2563eb",
+  color: "#ffffff",
+  borderRadius: "12px",
+  padding: "12px 16px",
+  cursor: "pointer",
+  fontWeight: "600",
+  marginLeft: "10px"
+};
+
+const printAreaStyle = {
+  background: "#ffffff",
+  borderRadius: "24px",
+  padding: "24px",
+  boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+  marginTop: "24px"
+};
+
+const printTitleStyle = {
+  margin: "0 0 16px 0",
+  fontSize: "24px",
+  color: "#111827"
+};
+
+const printTableStyle = {
+  width: "100%",
+  borderCollapse: "collapse",
+  fontSize: "13px"
+};
+
+const thStyle = {
+  textAlign: "left",
+  borderBottom: "2px solid #d1d5db",
+  padding: "8px 6px",
+  color: "#374151"
+};
+
+const tdStyle = {
+  borderBottom: "1px solid #e5e7eb",
+  padding: "8px 6px",
+  verticalAlign: "top",
+  color: "#111827"
 };
 
 return React.createElement(
@@ -870,18 +910,33 @@ return React.createElement(
             { style: subStyle, key: "sub" },
             "Planbord met namen toevoegen en meerdere vervolg handelingen"
           ),
-          React.createElement(
-            "div",
-            { style: { marginTop: "16px" }, key: "header-actions" },
-            React.createElement(
-              "button",
-              {
-                style: topButtonStyle,
-                onClick: voegHandelingBlokToe
-              },
-              "+ Handeling blok toevoegen"
-            )
-          )
+        React.createElement(
+  "div",
+  {
+    style: { marginTop: "16px", display: "flex", gap: "10px", flexWrap: "wrap" },
+    key: "header-actions"
+  },
+  [
+    React.createElement(
+      "button",
+      {
+        style: topButtonStyle,
+        onClick: voegHandelingBlokToe,
+        key: "add-block"
+      },
+      "+ Handeling blok toevoegen"
+    ),
+    React.createElement(
+      "button",
+      {
+        style: printButtonStyle,
+        onClick: () => window.print(),
+        key: "print-button"
+      },
+      "Print / PDF"
+    )
+  ]
+)
         ]
       ),
 
@@ -1168,9 +1223,75 @@ return React.createElement(
               )
             ]
           );
-        })
-      )
-    ]
-  )
-);
+        }),
+        React.createElement(
+          "div",
+          { style: printAreaStyle, key: "print-area" },
+          [
+            React.createElement(
+              "h2",
+              { style: printTitleStyle, key: "print-title" },
+              "Dagprogramma overzicht"
+            ),
+            React.createElement(
+              "table",
+              { style: printTableStyle, key: "print-table" },
+              [
+                React.createElement(
+                  "thead",
+                  { key: "thead" },
+                  React.createElement(
+                    "tr",
+                    {},
+                    [
+                      React.createElement("th", { style: thStyle, key: "h1" }, "Handeling"),
+                      React.createElement("th", { style: thStyle, key: "h2" }, "Aantal"),
+                      React.createElement("th", { style: thStyle, key: "h3" }, "Namen"),
+                      React.createElement("th", { style: thStyle, key: "h4" }, "Daarna")
+                    ]
+                  )
+                ),
+                React.createElement(
+                  "tbody",
+                  { key: "tbody" },
+                  ...handelingen
+                    .filter((item) => item.handeling && item.handeling.code)
+                    .map((item, index) =>
+                      React.createElement(
+                        "tr",
+                        { key: "row-" + index },
+                        [
+                          React.createElement(
+                            "td",
+                            { style: tdStyle, key: "c1-" + index },
+                            formatHandeling(item.handeling)
+                          ),
+                          React.createElement(
+                            "td",
+                            { style: tdStyle, key: "c2-" + index },
+                            String(item.mensen.length)
+                          ),
+                          React.createElement(
+                            "td",
+                            { style: tdStyle, key: "c3-" + index },
+                            item.mensen.join(", ")
+                          ),
+                          React.createElement(
+                            "td",
+                            { style: tdStyle, key: "c4-" + index },
+                            item.vervolg.length > 0
+                              ? item.vervolg.map((v) => formatHandeling(v)).join(", ")
+                              : "-"
+                          )
+                        ]
+                      )
+                    )
+                )
+              ]
+            )
+          ]
+        )
+      ]
+    )
+  );
 }

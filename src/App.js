@@ -653,22 +653,11 @@ function verwijderVervolgHandeling(blokId, vervolgCode) {
     )
   );
 }
-function leegBlok(blokId) {
-  setHandelingen((prev) =>
-    prev.map((h) =>
-      h.id === blokId
-        ? {
-            ...h,
-            handeling: { code: "", naam: "" },
-            vervolg: [],
-            mensen: [],
-            nieuweNaam: "",
-            nieuweHandeling: "",
-            zoekHoofdHandeling: ""
-          }
-        : h
-    )
-  );
+function verwijderBlok(blokId) {
+  setHandelingen((prev) => {
+    const over = prev.filter((h) => h.id !== blokId);
+    return vulAanTotMinimaal12(over);
+  });
 }
 useEffect(() => {
   try {
@@ -944,10 +933,10 @@ return React.createElement(
       fontWeight: "700",
       marginBottom: "10px"
     },
-    onClick: () => leegBlok(item.id),
+   onClick: () => verwijderBlok(item.id),
     key: "leeg-" + index
   },
-  "Blok leegmaken"
+ "Blok verwijderen"
 ),
                   React.createElement("input", {
                     type: "text",

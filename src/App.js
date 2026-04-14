@@ -444,6 +444,20 @@ export default function App() {
   ]);
 
 const [handelingen, setHandelingen] = useState(() => {
+  try {
+    const opgeslagen = localStorage.getItem("planning-handelingen");
+
+    if (opgeslagen) {
+      const parsed = JSON.parse(opgeslagen);
+
+      if (Array.isArray(parsed)) {
+        return vulAanTotMinimaal12(parsed);
+      }
+    }
+  } catch (e) {
+    console.log("Kon planning niet laden");
+  }
+
   return vulAanTotMinimaal12([]);
 });
 

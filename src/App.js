@@ -1,4 +1,4 @@
-import React, { useState } from "https://esm.sh/react@18";
+import React, { useState, useEffect } from "https://esm.sh/react@18";
 
 export default function App() {
   const [beschikbareNamen] = useState([
@@ -449,7 +449,24 @@ const [handelingen, setHandelingen] = useState([]);
     if (!handeling || !handeling.code) return "Kies handeling";
     return `[${handeling.code}] ${handeling.naam}`;
   }
+function maakLeegBlok() {
+  return {
+    handeling: { code: "", naam: "" },
+    vervolg: [],
+    mensen: [],
+    nieuweNaam: "",
+    nieuweHandeling: "",
+    zoekHoofdHandeling: ""
+  };
+}
 
+function vulAanTotMinimaal12(blokken) {
+  const resultaat = [...blokken];
+  while (resultaat.length < 12) {
+    resultaat.push(maakLeegBlok());
+  }
+  return resultaat;
+}
   const kleuren = [
     "#eff6ff",
     "#ecfdf5",

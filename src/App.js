@@ -1047,7 +1047,7 @@ return React.createElement(
       </head>
      <body>
   <img src="https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
-       style="position:absolute; top:20px; right:20px; width:120px;" />
+       style="position:absolute; top:5px; right:20px; width:120px;" />
        <h1>Dagprogramma overzicht - ${getVandaag()}</h1>
         <table>
           <thead>

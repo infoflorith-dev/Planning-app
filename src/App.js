@@ -1,28 +1,92 @@
-import React from "https://esm.sh/react@18";
+import React, { useState } from "https://esm.sh/react@18";
 
 export default function App() {
-  const handelingen = [
+  const [beschikbareNamen] = useState([
+    "Antoaneta Stefanova",
+    "Nataliia Prokhorova",
+    "Yana Prokhorova",
+    "Saida Assarar",
+    "Ad Arendse",
+    "Daniela Ilieva",
+    "Plamena Ilieva",
+    "Theo Verdooren",
+    "Tomasz Surmacz",
+  ]);
+
+  const [handelingen, setHandelingen] = useState([
     {
       naam: "Stokken",
       daarna: "Afleveren WP",
       mensen: ["Antoaneta Stefanova", "Nataliia Prokhorova", "Yana Prokhorova"],
+      nieuweNaam: "",
     },
     {
       naam: "Afleveren WP",
       daarna: "Opruimen",
       mensen: ["Saida Assarar", "Ad Arendse"],
+      nieuweNaam: "",
     },
     {
       naam: "Stek steken",
       daarna: "Tray uitlopen",
       mensen: ["Daniela Ilieva", "Plamena Ilieva"],
+      nieuweNaam: "",
     },
     {
       naam: "Tray uitlopen",
       daarna: "Kas opruimen",
       mensen: ["Theo Verdooren"],
+      nieuweNaam: "",
     },
-  ];
+  ]);
+
+  function updateNieuweNaam(handelingNaam, value) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.naam === handelingNaam ? { ...h, nieuweNaam: value } : h
+      )
+    );
+  }
+
+  function voegNaamToe(handelingNaam) {
+    setHandelingen((prev) => {
+      const doelHandeling = prev.find((h) => h.naam === handelingNaam);
+      if (!doelHandeling) return prev;
+
+      const naam = (doelHandeling.nieuweNaam || "").trim();
+      if (!naam) return prev;
+
+      const naamBestaat = beschikbareNamen.includes(naam);
+      if (!naamBestaat) return prev;
+
+      return prev.map((h) => {
+        const zonderDubbel = h.mensen.filter((persoon) => persoon !== naam);
+
+        if (h.naam === handelingNaam) {
+          return {
+            ...h,
+            mensen: [...zonderDubbel, naam],
+            nieuweNaam: "",
+          };
+        }
+
+        return {
+          ...h,
+          mensen: zonderDubbel,
+        };
+      });
+    });
+  }
+
+  function verwijderNaam(handelingNaam, naam) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.naam === handelingNaam
+          ? { ...h, mensen: h.mensen.filter((persoon) => persoon !== naam) }
+          : h
+      )
+    );
+  }
 
   const pageStyle = {
     minHeight: "100vh",
@@ -106,6 +170,7 @@ export default function App() {
     display: "flex",
     flexDirection: "column",
     gap: "10px",
+    marginBottom: "16px",
   };
 
   const personStyle = {
@@ -116,6 +181,46 @@ export default function App() {
     color: "#111827",
     fontSize: "14px",
     fontWeight: "500",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "10px",
+  };
+
+  const removeButtonStyle = {
+    border: "none",
+    background: "#fee2e2",
+    color: "#b91c1c",
+    borderRadius: "10px",
+    padding: "6px 10px",
+    cursor: "pointer",
+    fontWeight: "700",
+  };
+
+  const formWrapStyle = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    marginTop: "6px",
+  };
+
+  const selectStyle = {
+    width: "100%",
+    padding: "10px 12px",
+    borderRadius: "12px",
+    border: "1px solid #d1d5db",
+    background: "#ffffff",
+    fontSize: "14px",
+  };
+
+  const addButtonStyle = {
+    border: "none",
+    background: "#111827",
+    color: "#ffffff",
+    borderRadius: "12px",
+    padding: "10px 12px",
+    cursor: "pointer",
+    fontWeight: "600",
   };
 
   return React.createElement(
@@ -137,7 +242,7 @@ export default function App() {
             React.createElement(
               "p",
               { style: subStyle, key: "sub" },
-              "Planbord versie — mensen zien per handeling direct wat de volgende stap is"
+              "Planbord met namen toevoegen en automatisch verplaatsen zonder dubbelen"
             ),
           ]
         ),
@@ -177,9 +282,59 @@ export default function App() {
                     React.createElement(
                       "div",
                       { style: personStyle, key: i },
-                      naam
+                      [
+                        React.createElement("span", { key: "name-" + i }, naam),
+                        React.createElement(
+                          "button",
+                          {
+                            key: "remove-" + i,
+                            style: removeButtonStyle,
+                            onClick: () => verwijderNaam(handeling.naam, naam),
+                          },
+                          "✕"
+                        ),
+                      ]
                     )
                   )
+                ),
+                React.createElement(
+                  "div",
+                  { style: formWrapStyle, key: "form-" + index },
+                  [
+                    React.createElement(
+                      "select",
+                      {
+                        key: "select-" + index,
+                        style: selectStyle,
+                        value: handeling.nieuweNaam,
+                        onChange: (e) =>
+                          updateNieuweNaam(handeling.naam, e.target.value),
+                      },
+                      [
+                        React.createElement(
+                          "option",
+                          { value: "", key: "empty" },
+                          "Kies medewerker"
+                        ),
+                        ...beschikbareNamen.map((naam, i) =>
+                          React.createElement(
+                            "option",
+                            { value: naam, key: "opt-" + i },
+                            naam
+                          )
+                        ),
+                      ]
+                    ),
+                    React.createElement(
+                      "button",
+                      {
+                        key: "add-" + index,
+                        style: addButtonStyle,
+                        onClick: () => voegNaamToe(handeling.naam),
+                      },
+                      "+ Naam toevoegen"
+                    ),
+                  ]
                 ),
               ]
             )

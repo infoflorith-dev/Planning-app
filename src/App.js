@@ -998,7 +998,9 @@ return React.createElement(
     .map((item) => `
       <tr>
         <td>${formatHandeling(item.handeling)}</td>
-        <td>${item.extraMensen > 0 ? `${item.mensen.length} + ${item.extraMensen}` : item.mensen.length}</td>
+        <td><td>${item.extraMensen > 0
+  ? `${item.mensen.length + item.extraMensen} (${item.mensen.length} + ${item.extraMensen})`
+  : item.mensen.length}</td></td>
         <td>${item.mensen.join(", ") || "-"}</td>
         <td>${item.vervolg.length > 0 ? item.vervolg.map((v) => formatHandeling(v)).join(", ") : "-"}</td>
       </tr>

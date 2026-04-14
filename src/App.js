@@ -1260,7 +1260,7 @@ return React.createElement(
           })
         ),
 
-   React.createElement(
+  React.createElement(
   "div",
   { style: printAreaStyle, key: "print-area" },
   [
@@ -1299,24 +1299,24 @@ return React.createElement(
                 [
                   React.createElement(
                     "td",
-                    { style: tdStyle, key: "c1-" + index },
+                    { style: tdStyle },
                     formatHandeling(item.handeling)
                   ),
                   React.createElement(
                     "td",
-                    { style: tdStyle, key: "c2-" + index },
-                    String(item.mensen.length)
+                    { style: tdStyle },
+                    item.mensen.length
                   ),
                   React.createElement(
                     "td",
-                    { style: tdStyle, key: "c3-" + index },
+                    { style: tdStyle },
                     item.mensen.join(", ")
                   ),
                   React.createElement(
                     "td",
-                    { style: tdStyle, key: "c4-" + index },
-                    item.vervolg.length > 0
-                      ? item.vervolg.map((v) => formatHandeling(v)).join(", ")
+                    { style: tdStyle },
+                    item.vervolg.length
+                      ? item.vervolg.map(v => formatHandeling(v)).join(", ")
                       : "-"
                   )
                 ]
@@ -1325,6 +1325,9 @@ return React.createElement(
         )
       ]
     )
- )
+  ]
+),
+]
+)
 );
 }

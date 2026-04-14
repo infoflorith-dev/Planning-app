@@ -926,8 +926,7 @@ return React.createElement(
     "div",
     { style: wrapStyle },
     [
-      React.createElement("style", { key: "print-style" }, printCss),
-        React.createElement(
+           React.createElement(
           "div",
           { style: headerStyle, key: "header" },
           [

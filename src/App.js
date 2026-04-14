@@ -1325,5 +1325,5 @@ return React.createElement(
         )
       ]
     )
-  ]
-)
+ )
+);

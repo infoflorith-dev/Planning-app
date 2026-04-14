@@ -528,10 +528,14 @@ function normaliseerBlokken(blokken) {
 }
 
 const kleuren = [
-  "#eff6ff",
-  "#ecfdf5",
-  "#f5f3ff",
-  "#fffbeb"
+  "#dbeafe",
+  "#d1fae5",
+  "#ede9fe",
+  "#fef3c7",
+  "#fce7f3",
+  "#fee2e2",
+  "#cffafe",
+  "#e0f2fe"
 ];
 
 function getCardStyle(index) {
@@ -539,8 +543,8 @@ function getCardStyle(index) {
     background: kleuren[index % kleuren.length],
     borderRadius: "22px",
     padding: "20px",
-    boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-    border: "1px solid #e5e7eb"
+    boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+    border: "2px solid rgba(255,255,255,0.9)"
   };
 }
 function getCountStyle(index) {
@@ -781,7 +785,8 @@ const printButtonStyle = {
 const gridStyle = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-  gap: "20px"
+  gap: "20px",
+  alignItems: "start"
 };
 
 const cardTitleStyle = {

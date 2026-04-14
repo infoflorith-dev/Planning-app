@@ -1154,68 +1154,8 @@ return React.createElement(
                               )
                             ])
                       )
-                    : null,
+                                       : null,
                   React.createElement(
-                    "div",
-                    { style: hintStyle, key: "name-hint-" + index },
-                    "Typ een paar letters en klik op een naam"
-                  )
-                ]
-              ),
-              React.createElement(
-                "div",
-                {
-                  style: { ...formWrapStyle, marginTop: "18px" },
-                  key: "nextform-" + index
-                },
-                [
-                  React.createElement("input", {
-                    type: "text",
-                    placeholder: "Zoek vervolg handeling of code...",
-                    value: item.nieuweHandeling,
-                    onChange: (e) =>
-                      updateNieuweHandeling(item.id, e.target.value),
-                    style: searchInputStyle,
-                    key: "next-input-" + index
-                  }),
-                  zoekVervolg
-                    ? React.createElement(
-                        "div",
-                        { style: resultsStyle, key: "next-results-" + index },
-                        ...(gefilterdeHandelingen.length > 0
-                          ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
-                              React.createElement(
-                                "div",
-                                {
-                                  key: "next-result-" + i,
-                                  style: resultItemStyle,
-                                  onClick: () =>
-                                    voegVervolgHandelingToe(
-                                      item.id,
-                                      handelingOptie
-                                    )
-                                },
-                                formatHandeling(handelingOptie)
-                              )
-                            )
-                          : [
-                              React.createElement(
-                                "div",
-                                {
-                                  key: "geen-handeling",
-                                  style: {
-                                    padding: "10px 12px",
-                                    fontSize: "14px",
-                                    color: "#6b7280"
-                                  }
-                                },
-                                "Geen handeling gevonden"
-                              )
-                            ])
-                      )
-                    : null
-),
-React.createElement(
                     "div",
                     { style: hintStyle, key: "next-hint-" + index },
                     "Typ code of naam en klik op een vervolg handeling"

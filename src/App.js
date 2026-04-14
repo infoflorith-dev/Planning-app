@@ -467,6 +467,7 @@ const [handelingen, setHandelingen] = useState(() => {
   }
 function maakLeegBlok() {
   return {
+    id: crypto.randomUUID(),
     handeling: { code: "", naam: "" },
     vervolg: [],
     mensen: [],

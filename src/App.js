@@ -1046,9 +1046,11 @@ return React.createElement(
         </style>
       </head>
      <body>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+  <h1 style="margin:0;">Dagprogramma overzicht - ${getVandaag()}</h1>
   <img src="https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
-      style="position:absolute; top:18px; right:40px; width:85px; opacity:0.9;"
-       <h1>Dagprogramma overzicht - ${getVandaag()}</h1>
+       style="width:90px;" />
+</div>
         <table>
           <thead>
             <tr>

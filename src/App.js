@@ -528,27 +528,27 @@ export default function App() {
     }));
   }
 
-  const kleuren = [
-  "#dbeafe",
-  "#dcfce7",
-  "#ede9fe",
-  "#fef3c7",
-  "#fce7f3",
-  "#ffe4d6",
-  "#cffafe",
-  "#dbeafe",
-  "#ecfccb",
-  "#fee2e2"
+ const kleuren = [
+  "#e8f0ff",
+  "#e8f8ee",
+  "#f1ebff",
+  "#fff5dd",
+  "#fdebf3",
+  "#fff0e8",
+  "#e7f9fb",
+  "#eaf4ff",
+  "#eef8df",
+  "#fdeaea"
 ];
 
- function getCardStyle(index) {
+function getCardStyle(index) {
   const kleur = kleuren[index % kleuren.length];
   return {
     background: kleur,
     borderRadius: "24px",
     padding: "20px",
-    boxShadow: "0 8px 24px rgba(15,23,42,0.08)",
-    border: "1px solid rgba(100,116,139,0.18)"
+    boxShadow: "0 6px 18px rgba(15,23,42,0.05)",
+    border: "1px solid rgba(148,163,184,0.12)"
   };
 }
   function getCountStyle(index) {

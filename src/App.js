@@ -13,6 +13,294 @@ export default function App() {
     "Tomasz Surmacz",
   ]);
 
+  const [beschikbareHandelingen] = useState([
+    "Stokken",
+    "Afleveren WP",
+    "Opruimen",
+    "Stek steken",
+    "Tray uitlopen",
+    "Kas opruimen",
+  ]);
+
+  const [handelingen, setHandelingen] = useState([
+    {
+      naam: "Stokken",
+      vervolg: ["Afleveren WP"],
+      mensen: ["Antoaneta Stefanova", "Nataliia Prokhorova"],
+      nieuweNaam: "",
+      nieuweHandeling: "",
+    },
+    {
+      naam: "Afleveren WP",
+      vervolg: ["Opruimen"],
+      mensen: ["Saida Assarar"],
+      nieuweNaam: "",
+      nieuweHandeling: "",
+    },
+  ]);
+
+  // ---------------------------
+  // NAAM TOEVOEGEN (met verplaatsen)
+  // ---------------------------
+  function voegNaamToeDirect(handelingNaam, naam) {
+    setHandelingen((prev) =>
+      prev.map((h) => {
+        const zonderDubbel = h.mensen.filter((p) => p !== naam);
+
+        if (h.naam === handelingNaam) {
+          return {
+            ...h,
+            mensen: [...zonderDubbel, naam],
+            nieuweNaam: "",
+          };
+        }
+
+        return { ...h, mensen: zonderDubbel };
+      })
+    );
+  }
+
+  function updateNieuweNaam(handelingNaam, value) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.naam === handelingNaam ? { ...h, nieuweNaam: value } : h
+      )
+    );
+  }
+
+  function verwijderNaam(handelingNaam, naam) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.naam === handelingNaam
+          ? { ...h, mensen: h.mensen.filter((p) => p !== naam) }
+          : h
+      )
+    );
+  }
+
+  // ---------------------------
+  // HANDELING TOEVOEGEN
+  // ---------------------------
+  function updateNieuweHandeling(handelingNaam, value) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.naam === handelingNaam ? { ...h, nieuweHandeling: value } : h
+      )
+    );
+  }
+
+  function voegHandelingToe(handelingNaam, nieuwe) {
+    if (!nieuwe) return;
+
+    setHandelingen((prev) =>
+      prev.map((h) => {
+        if (h.naam !== handelingNaam) return h;
+
+        if (h.vervolg.includes(nieuwe)) return h;
+
+        return {
+          ...h,
+          vervolg: [...h.vervolg, nieuwe],
+          nieuweHandeling: "",
+        };
+      })
+    );
+  }
+
+  function verwijderHandeling(handelingNaam, remove) {
+    setHandelingen((prev) =>
+      prev.map((h) =>
+        h.naam === handelingNaam
+          ? {
+              ...h,
+              vervolg: h.vervolg.filter((v) => v !== remove),
+            }
+          : h
+      )
+    );
+  }
+
+  // ---------------------------
+  // STYLES (ongewijzigd)
+  // ---------------------------
+  const cardStyle = {
+    background: "#fff",
+    padding: "20px",
+    borderRadius: "20px",
+    marginBottom: "20px",
+    border: "1px solid #ddd",
+  };
+
+  const tagStyle = {
+    display: "inline-block",
+    background: "#e0f2fe",
+    padding: "6px 10px",
+    borderRadius: "10px",
+    marginRight: "6px",
+    marginBottom: "6px",
+  };
+
+  return React.createElement(
+    "div",
+    { style: { padding: "30px", fontFamily: "Arial" } },
+    handelingen.map((handeling, index) => {
+      const zoekNaam = handeling.nieuweNaam || "";
+      const gefilterdeNamen = beschikbareNamen.filter((n) =>
+        n.toLowerCase().includes(zoekNaam.toLowerCase())
+      );
+
+      const zoekHandeling = handeling.nieuweHandeling || "";
+      const gefilterdeHandelingen = beschikbareHandelingen.filter((h) =>
+        h.toLowerCase().includes(zoekHandeling.toLowerCase())
+      );
+
+      return React.createElement(
+        "div",
+        { key: index, style: cardStyle },
+        [
+          // TITEL
+          React.createElement("h2", {}, handeling.naam),
+
+          // VERVOLG HANDELINGEN
+          React.createElement(
+            "div",
+            {},
+            [
+              React.createElement("strong", {}, "Daarna: "),
+              handeling.vervolg.map((v, i) =>
+                React.createElement(
+                  "span",
+                  { key: i, style: tagStyle },
+                  [
+                    v,
+                    " ",
+                    React.createElement(
+                      "button",
+                      {
+                        onClick: () =>
+                          verwijderHandeling(handeling.naam, v),
+                      },
+                      "x"
+                    ),
+                  ]
+                )
+              ),
+            ]
+          ),
+
+          // MENSEN
+          React.createElement(
+            "div",
+            { style: { marginTop: "10px" } },
+            handeling.mensen.map((naam, i) =>
+              React.createElement(
+                "div",
+                { key: i },
+                [
+                  naam,
+                  " ",
+                  React.createElement(
+                    "button",
+                    {
+                      onClick: () =>
+                        verwijderNaam(handeling.naam, naam),
+                    },
+                    "x"
+                  ),
+                ]
+              )
+            )
+          ),
+
+          // ---------------------------
+          // NAAM ZOEKEN
+          // ---------------------------
+          React.createElement(
+            "div",
+            { style: { marginTop: "10px" } },
+            [
+              React.createElement("input", {
+                placeholder: "Zoek medewerker...",
+                value: handeling.nieuweNaam,
+                onChange: (e) =>
+                  updateNieuweNaam(handeling.naam, e.target.value),
+              }),
+
+              zoekNaam &&
+                React.createElement(
+                  "div",
+                  {},
+                  gefilterdeNamen.map((naam, i) =>
+                    React.createElement(
+                      "div",
+                      {
+                        key: i,
+                        onClick: () =>
+                          voegNaamToeDirect(handeling.naam, naam),
+                        style: { cursor: "pointer" },
+                      },
+                      naam
+                    )
+                  )
+                ),
+            ]
+          ),
+
+          // ---------------------------
+          // HANDELING ZOEKEN
+          // ---------------------------
+          React.createElement(
+            "div",
+            { style: { marginTop: "10px" } },
+            [
+              React.createElement("input", {
+                placeholder: "Voeg vervolg handeling toe...",
+                value: handeling.nieuweHandeling,
+                onChange: (e) =>
+                  updateNieuweHandeling(
+                    handeling.naam,
+                    e.target.value
+                  ),
+              }),
+
+              zoekHandeling &&
+                React.createElement(
+                  "div",
+                  {},
+                  gefilterdeHandelingen.map((h, i) =>
+                    React.createElement(
+                      "div",
+                      {
+                        key: i,
+                        onClick: () =>
+                          voegHandelingToe(handeling.naam, h),
+                        style: { cursor: "pointer" },
+                      },
+                      h
+                    )
+                  )
+                ),
+            ]
+          ),
+        ]
+      );
+    })
+  );
+}import React, { useState } from "https://esm.sh/react@18";
+
+export default function App() {
+  const [beschikbareNamen] = useState([
+    "Antoaneta Stefanova",
+    "Nataliia Prokhorova",
+    "Yana Prokhorova",
+    "Saida Assarar",
+    "Ad Arendse",
+    "Daniela Ilieva",
+    "Plamena Ilieva",
+    "Theo Verdooren",
+    "Tomasz Surmacz",
+  ]);
+
   const [handelingen, setHandelingen] = useState([
     {
       naam: "Stokken",

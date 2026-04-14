@@ -902,7 +902,7 @@ function getCardStyle(index) {
 const printTableStyle = {
   width: "100%",
   borderCollapse: "collapse",
-  fontSize: "11px",
+  fontSize: "10px",
   tableLayout: "fixed"
 };
 

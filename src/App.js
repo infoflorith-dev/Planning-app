@@ -919,10 +919,13 @@ function getCardStyle(index) {
     color: "#111827"
   };
 
-  return React.createElement(
+ return React.createElement(
+  React.Fragment,
+  null,
+  React.createElement("style", {}, printCss),
+  React.createElement(
     "div",
     { style: pageStyle },
-    React.createElement(
       "div",
       { style: wrapStyle },
       [

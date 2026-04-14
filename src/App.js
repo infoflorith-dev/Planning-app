@@ -741,7 +741,13 @@ function getCardStyle(index) {
       console.log("Opslaan mislukt");
     }
   }, [handelingen]);
-
+function getVandaag() {
+  const d = new Date();
+  const dag = String(d.getDate()).padStart(2, "0");
+  const maand = String(d.getMonth() + 1).padStart(2, "0");
+  const jaar = d.getFullYear();
+  return `${dag}-${maand}-${jaar}`;
+}
   const pageStyle = {
     minHeight: "100vh",
     background: "#f3f4f6",

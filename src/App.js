@@ -443,7 +443,9 @@ export default function App() {
     { code: "165", naam: "Directie" }
   ]);
 
-const [handelingen, setHandelingen] = useState([]);
+const [handelingen, setHandelingen] = useState(() => {
+  return vulAanTotMinimaal12([]);
+});
 
   function formatHandeling(handeling) {
     if (!handeling || !handeling.code) return "Kies handeling";

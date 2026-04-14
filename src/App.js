@@ -1034,7 +1034,7 @@ return React.createElement(
         </style>
       </head>
       <body>
-        <h1>Dagprogramma overzicht</h1>
+       <h1>Dagprogramma overzicht - ${getVandaag()}</h1>
         <table>
           <thead>
             <tr>

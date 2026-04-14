@@ -543,7 +543,61 @@ function getCardStyle(index) {
     border: "1px solid #e5e7eb"
   };
 }
+function getCountStyle(index) {
+  return {
+    display: "inline-block",
+    background: kleuren[index % kleuren.length],
+    color: "#111827",
+    padding: "8px 12px",
+    borderRadius: "12px",
+    fontWeight: "bold",
+    marginBottom: "14px",
+    border: "1px solid #dbe3ea"
+  };
+}
 
+function getNextTagStyle(index) {
+  return {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "8px",
+    background: kleuren[index % kleuren.length],
+    color: "#1f2937",
+    padding: "8px 12px",
+    borderRadius: "12px",
+    fontSize: "14px",
+    fontWeight: "600",
+    marginRight: "8px",
+    marginBottom: "8px",
+    border: "1px solid #dbe3ea"
+  };
+}
+
+function getPersonStyle(index) {
+  return {
+    background: kleuren[index % kleuren.length],
+    border: "1px solid #dbe3ea",
+    borderRadius: "14px",
+    padding: "12px 14px",
+    color: "#111827",
+    fontSize: "14px",
+    fontWeight: "500",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "10px"
+  };
+}
+
+function getResultsStyle(index) {
+  return {
+    border: "1px solid #dbe3ea",
+    borderRadius: "12px",
+    background: kleuren[index % kleuren.length],
+    maxHeight: "180px",
+    overflowY: "auto"
+  };
+}
 function voegHandelingBlokToe() {
   setHandelingen((prev) => [...prev, maakLeegBlok()]);
 }
@@ -846,9 +900,10 @@ const resultsStyle = {
 const resultItemStyle = {
   padding: "10px 12px",
   cursor: "pointer",
-  borderBottom: "1px solid #f3f4f6",
+  borderBottom: "1px solid rgba(255,255,255,0.55)",
   fontSize: "14px",
-  color: "#111827"
+  color: "#111827",
+  background: "transparent"
 };
 
 const hintStyle = {
@@ -1020,7 +1075,7 @@ return React.createElement(
                   zoekHoofd
                     ? React.createElement(
                         "div",
-                        { style: resultsStyle, key: "main-results-" + index },
+                        { style: getResultsStyle(index), key: "main-results-" + index },
                         ...(gefilterdeHoofdHandelingen.length > 0
                           ? gefilterdeHoofdHandelingen.slice(0, 8).map((handelingOptie, i) =>
                               React.createElement(
@@ -1054,7 +1109,7 @@ return React.createElement(
               ),
               React.createElement(
                 "div",
-                { style: countStyle, key: "count-" + index },
+                { style: getCountStyle(index), key: "count-" + index },
                 item.mensen.length + " mensen"
               ),
               React.createElement(
@@ -1072,7 +1127,7 @@ return React.createElement(
                   ...item.vervolg.map((vervolgItem, i) =>
                     React.createElement(
                       "span",
-                      { style: nextTagStyle, key: "tag-" + i },
+                      { style: getNextTagStyle(index), key: "tag-" + i },
                       [
                         formatHandeling(vervolgItem),
                         React.createElement(
@@ -1096,7 +1151,7 @@ return React.createElement(
                 ...item.mensen.map((naam, i) =>
                   React.createElement(
                     "div",
-                    { style: personStyle, key: "person-" + i },
+                    { style: getNextTagStyle(index), key: "tag-" + i },
                     [
                       React.createElement("span", { key: "person-name-" + i }, naam),
                       React.createElement(
@@ -1128,7 +1183,7 @@ return React.createElement(
                   zoekNaam
                     ? React.createElement(
                         "div",
-                        { style: resultsStyle, key: "name-results-" + index },
+                       { style: getResultsStyle(index), key: "name-results-" + index },
                         ...(gefilterdeNamen.length > 0
                           ? gefilterdeNamen.slice(0, 20).map((naam, i) =>
                               React.createElement(
@@ -1184,7 +1239,7 @@ return React.createElement(
                   zoekVervolg
                     ? React.createElement(
                         "div",
-                        { style: resultsStyle, key: "next-results-" + index },
+                       { style: getResultsStyle(index), key: "next-results-" + index },
                         ...(gefilterdeHandelingen.length > 0
                           ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
                               React.createElement(

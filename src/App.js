@@ -855,6 +855,15 @@ return React.createElement(
         "div",
         { style: headerStyle, key: "header" },
         [
+          React.createElement("img", {
+  src: "https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
+  style: {
+    width: "180px",
+    marginBottom: "12px",
+    borderRadius: "8px"
+  },
+  key: "logo"
+}),
           React.createElement("h1", { style: titleStyle, key: "title" }, "Planning App"),
           React.createElement(
             "p",

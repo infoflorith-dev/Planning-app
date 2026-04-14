@@ -1292,7 +1292,22 @@ return React.createElement(
                       "div",
                       { style: hintStyle, key: "name-hint-" + index },
                       "Typ een paar letters en klik op een naam"
-                    )
+                    ),
+        React.createElement("input", {
+  type: "number",
+  min: "0",
+  placeholder: "Extra mensen zonder naam",
+  value: item.extraMensen || 0,
+  onChange: (e) => updateExtraMensen(item.id, e.target.value),
+  style: searchInputStyle,
+  key: "extra-input-" + index
+}),
+React.createElement(
+  "div",
+  { style: hintStyle, key: "extra-hint-" + index },
+  "Bijvoorbeeld +5 als uitzendbureau zelf mensen invult"
+)
+     ]
                   ]
                 ),
                 React.createElement(

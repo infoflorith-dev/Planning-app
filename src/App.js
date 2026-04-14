@@ -970,7 +970,81 @@ return React.createElement(
                   "button",
                   {
                     style: printButtonStyle,
-                    onClick: () => window.print(),
+                   onClick: () => {
+  const printInhoud = handelingen
+    .filter((item) => item.handeling && item.handeling.code)
+    .map((item) => `
+      <tr>
+        <td>${formatHandeling(item.handeling)}</td>
+        <td>${item.mensen.length}</td>
+        <td>${item.mensen.join(", ") || "-"}</td>
+        <td>${item.vervolg.length > 0 ? item.vervolg.map((v) => formatHandeling(v)).join(", ") : "-"}</td>
+      </tr>
+    `)
+    .join("");
+
+  const win = window.open("", "_blank");
+  win.document.write(`
+    <html>
+      <head>
+        <title>Dagprogramma overzicht</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            color: #111827;
+          }
+          h1 {
+            font-size: 18px;
+            margin-bottom: 10px;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+            table-layout: fixed;
+          }
+          th, td {
+            border: 1px solid #d1d5db;
+            padding: 4px;
+            text-align: left;
+            vertical-align: top;
+            word-break: break-word;
+            line-height: 1.1;
+          }
+          th:nth-child(1), td:nth-child(1) { width: 24%; }
+          th:nth-child(2), td:nth-child(2) { width: 8%; }
+          th:nth-child(3), td:nth-child(3) { width: 44%; }
+          th:nth-child(4), td:nth-child(4) { width: 24%; }
+
+          @page {
+            size: A4 landscape;
+            margin: 10mm;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Dagprogramma overzicht</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Handeling</th>
+              <th>Aantal</th>
+              <th>Namen</th>
+              <th>Daarna</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${printInhoud}
+          </tbody>
+        </table>
+      </body>
+    </html>
+  `);
+  win.document.close();
+  win.focus();
+  win.print();
+},
                     key: "print-button"
                   },
                   "Print / PDF"

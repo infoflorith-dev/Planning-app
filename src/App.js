@@ -653,7 +653,23 @@ function verwijderVervolgHandeling(blokId, vervolgCode) {
     )
   );
 }
-
+function leegBlok(blokId) {
+  setHandelingen((prev) =>
+    prev.map((h) =>
+      h.id === blokId
+        ? {
+            ...h,
+            handeling: { code: "", naam: "" },
+            vervolg: [],
+            mensen: [],
+            nieuweNaam: "",
+            nieuweHandeling: "",
+            zoekHoofdHandeling: ""
+          }
+        : h
+    )
+  );
+}
 useEffect(() => {
   try {
     localStorage.setItem(
@@ -915,6 +931,24 @@ return React.createElement(
                     { style: cardTitleStyle, key: "title-" + index },
                     formatHandeling(item.handeling)
                   ),
+                  React.createElement(
+  "button",
+  {
+    style: {
+      border: "none",
+      background: "#fee2e2",
+      color: "#b91c1c",
+      borderRadius: "10px",
+      padding: "6px 10px",
+      cursor: "pointer",
+      fontWeight: "700",
+      marginBottom: "10px"
+    },
+    onClick: () => leegBlok(item.id),
+    key: "leeg-" + index
+  },
+  "Blok leegmaken"
+),
                   React.createElement("input", {
                     type: "text",
                     placeholder: "Zoek hoofdhandeling of code...",

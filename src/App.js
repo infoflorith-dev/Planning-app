@@ -1260,7 +1260,7 @@ return React.createElement(
           })
         ),
 
-        React.createElement(
+      React.createElement(
   "div",
   { style: printAreaStyle, key: "print-area" },
   [
@@ -1273,16 +1273,6 @@ return React.createElement(
       "table",
       { style: printTableStyle, key: "print-table" },
       [
-        React.createElement(
-          "colgroup",
-          { key: "colgroup" },
-          [
-            React.createElement("col", { key: "col1", style: { width: "24%" } }),
-            React.createElement("col", { key: "col2", style: { width: "8%" } }),
-            React.createElement("col", { key: "col3", style: { width: "44%" } }),
-            React.createElement("col", { key: "col4", style: { width: "24%" } })
-          ]
-        ),
         React.createElement(
           "thead",
           { key: "thead" },
@@ -1301,12 +1291,7 @@ return React.createElement(
           "tbody",
           { key: "tbody" },
           ...handelingen
-            .filter(
-              (item) =>
-                item.handeling &&
-                item.handeling.code &&
-                (item.mensen.length > 0 || item.vervolg.length > 0)
-            )
+            .filter((item) => item.handeling && item.handeling.code)
             .map((item, index) =>
               React.createElement(
                 "tr",
@@ -1325,7 +1310,7 @@ return React.createElement(
                   React.createElement(
                     "td",
                     { style: tdStyle, key: "c3-" + index },
-                    item.mensen.length > 0 ? item.mensen.join(", ") : "-"
+                    item.mensen.join(", ")
                   ),
                   React.createElement(
                     "td",

@@ -893,9 +893,9 @@ function getCardStyle(index) {
   marginTop: "24px"
 };
 
-  const printTitleStyle = {
-  margin: "0 0 10px 0",
-  fontSize: "20px",
+ const printTitleStyle = {
+  margin: "0 0 6px 0",
+  fontSize: "16px",
   color: "#111827"
 };
 

@@ -909,19 +909,19 @@ const printTableStyle = {
 const thStyle = {
   textAlign: "left",
   borderBottom: "2px solid #d1d5db",
-  padding: "6px 5px",
+  padding: "4px 4px",
   color: "#374151",
-  fontSize: "11px",
-  lineHeight: "1.2"
+  fontSize: "10px",
+  lineHeight: "1.1"
 };
 
 const tdStyle = {
   borderBottom: "1px solid #e5e7eb",
-  padding: "5px 5px",
+  padding: "4px 4px",
   verticalAlign: "top",
   color: "#111827",
   fontSize: "10px",
-  lineHeight: "1.2",
+  lineHeight: "1.1",
   wordBreak: "break-word"
 };
 return React.createElement(

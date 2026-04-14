@@ -1182,11 +1182,11 @@ return React.createElement(
                       : null
                   ]
                 ),
-                React.createElement(
-                  "div",
-                  { style: getCountStyle(index), key: "count-" + index },
-                  item.mensen.length + " mensen"
-                ),
+               React.createElement(
+  "div",
+  { style: getCountStyle(index), key: "count-" + index },
+  (item.mensen.length + (item.extraMensen || 0)) + " mensen"
+),
                 React.createElement(
                   "div",
                   { style: nextBlockStyle, key: "nextblock-" + index },

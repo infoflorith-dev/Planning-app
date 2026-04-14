@@ -653,12 +653,14 @@ function verwijderVervolgHandeling(blokId, vervolgCode) {
     )
   );
 }
+
 function verwijderBlok(blokId) {
   setHandelingen((prev) => {
     const over = prev.filter((h) => h.id !== blokId);
     return vulAanTotMinimaal12(over);
   });
 }
+
 useEffect(() => {
   try {
     localStorage.setItem(
@@ -839,6 +841,11 @@ const resultItemStyle = {
   color: "#111827"
 };
 
+const hintStyle = {
+  fontSize: "12px",
+  color: "#6b7280"
+};
+
 const printButtonStyle = {
   border: "none",
   background: "#2563eb",
@@ -896,47 +903,47 @@ return React.createElement(
         { style: headerStyle, key: "header" },
         [
           React.createElement("img", {
-  src: "https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
-  style: {
-    width: "180px",
-    marginBottom: "12px",
-    borderRadius: "8px"
-  },
-  key: "logo"
-}),
+            src: "https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
+            style: {
+              width: "180px",
+              marginBottom: "12px",
+              borderRadius: "8px"
+            },
+            key: "logo"
+          }),
           React.createElement("h1", { style: titleStyle, key: "title" }, "Planning App"),
           React.createElement(
             "p",
             { style: subStyle, key: "sub" },
             "Planbord met namen toevoegen en meerdere vervolg handelingen"
           ),
-        React.createElement(
-  "div",
-  {
-    style: { marginTop: "16px", display: "flex", gap: "10px", flexWrap: "wrap" },
-    key: "header-actions"
-  },
-  [
-    React.createElement(
-      "button",
-      {
-        style: topButtonStyle,
-        onClick: voegHandelingBlokToe,
-        key: "add-block"
-      },
-      "+ Handeling blok toevoegen"
-    ),
-    React.createElement(
-      "button",
-      {
-        style: printButtonStyle,
-        onClick: () => window.print(),
-        key: "print-button"
-      },
-      "Print / PDF"
-    )
-  ]
-)
+          React.createElement(
+            "div",
+            {
+              style: { marginTop: "16px", display: "flex", gap: "10px", flexWrap: "wrap" },
+              key: "header-actions"
+            },
+            [
+              React.createElement(
+                "button",
+                {
+                  style: topButtonStyle,
+                  onClick: voegHandelingBlokToe,
+                  key: "add-block"
+                },
+                "+ Handeling blok toevoegen"
+              ),
+              React.createElement(
+                "button",
+                {
+                  style: printButtonStyle,
+                  onClick: () => window.print(),
+                  key: "print-button"
+                },
+                "Print / PDF"
+              )
+            ]
+          )
         ]
       ),
 
@@ -985,23 +992,23 @@ return React.createElement(
                     formatHandeling(item.handeling)
                   ),
                   React.createElement(
-  "button",
-  {
-    style: {
-      border: "none",
-      background: "#fee2e2",
-      color: "#b91c1c",
-      borderRadius: "10px",
-      padding: "6px 10px",
-      cursor: "pointer",
-      fontWeight: "700",
-      marginBottom: "10px"
-    },
-   onClick: () => verwijderBlok(item.id),
-    key: "leeg-" + index
-  },
- "Blok verwijderen"
-),
+                    "button",
+                    {
+                      style: {
+                        border: "none",
+                        background: "#fee2e2",
+                        color: "#b91c1c",
+                        borderRadius: "10px",
+                        padding: "6px 10px",
+                        cursor: "pointer",
+                        fontWeight: "700",
+                        marginBottom: "10px"
+                      },
+                      onClick: () => verwijderBlok(item.id),
+                      key: "verwijder-" + index
+                    },
+                    "Blok verwijderen"
+                  ),
                   React.createElement("input", {
                     type: "text",
                     placeholder: "Zoek hoofdhandeling of code...",
@@ -1074,10 +1081,7 @@ return React.createElement(
                           {
                             style: nextRemoveStyle,
                             onClick: () =>
-                              verwijderVervolgHandeling(
-                                item.id,
-                                vervolgItem.code
-                              ),
+                              verwijderVervolgHandeling(item.id, vervolgItem.code),
                             key: "remove-tag-" + i
                           },
                           "✕"
@@ -1154,7 +1158,63 @@ return React.createElement(
                               )
                             ])
                       )
-                                       : null,
+                    : null,
+                  React.createElement(
+                    "div",
+                    { style: hintStyle, key: "name-hint-" + index },
+                    "Typ een paar letters en klik op een naam"
+                  )
+                ]
+              ),
+              React.createElement(
+                "div",
+                {
+                  style: { ...formWrapStyle, marginTop: "18px" },
+                  key: "nextform-" + index
+                },
+                [
+                  React.createElement("input", {
+                    type: "text",
+                    placeholder: "Zoek vervolg handeling of code...",
+                    value: item.nieuweHandeling,
+                    onChange: (e) =>
+                      updateNieuweHandeling(item.id, e.target.value),
+                    style: searchInputStyle,
+                    key: "next-input-" + index
+                  }),
+                  zoekVervolg
+                    ? React.createElement(
+                        "div",
+                        { style: resultsStyle, key: "next-results-" + index },
+                        ...(gefilterdeHandelingen.length > 0
+                          ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
+                              React.createElement(
+                                "div",
+                                {
+                                  key: "next-result-" + i,
+                                  style: resultItemStyle,
+                                  onClick: () =>
+                                    voegVervolgHandelingToe(item.id, handelingOptie)
+                                },
+                                formatHandeling(handelingOptie)
+                              )
+                            )
+                          : [
+                              React.createElement(
+                                "div",
+                                {
+                                  key: "geen-handeling",
+                                  style: {
+                                    padding: "10px 12px",
+                                    fontSize: "14px",
+                                    color: "#6b7280"
+                                  }
+                                },
+                                "Geen handeling gevonden"
+                              )
+                            ])
+                      )
+                    : null,
                   React.createElement(
                     "div",
                     { style: hintStyle, key: "next-hint-" + index },

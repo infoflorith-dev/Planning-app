@@ -1213,8 +1213,9 @@ return React.createElement(
                               )
                             ])
                       )
-                    : null,
-                  React.createElement(
+                    : null
+),
+React.createElement(
                     "div",
                     { style: hintStyle, key: "next-hint-" + index },
                     "Typ code of naam en klik op een vervolg handeling"

@@ -997,7 +997,7 @@ return React.createElement(
   win.document.write(`
     <html>
       <head>
-        <title>Dagprogramma overzicht</title>
+        <title>Dagprogramma overzicht - ${getVandaag()}</title>
         <style>
           body {
             font-family: Arial, sans-serif;

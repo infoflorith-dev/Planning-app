@@ -950,7 +950,11 @@ return React.createElement(
               },
               key: "logo"
             }),
-            React.createElement("h1", { style: titleStyle, key: "title" }, "Planning App"),
+            React.createElement(
+  "h1",
+  { style: titleStyle, key: "title" },
+  `Planning App - ${getVandaag()}`
+),
             React.createElement(
               "p",
               { style: subStyle, key: "sub" },

@@ -687,7 +687,15 @@ function getCardStyle(index) {
       )
     );
   }
+function updateExtraMensen(blokId, value) {
+  const nummer = Math.max(0, Number(value) || 0);
 
+  setHandelingen((prev) =>
+    prev.map((h) =>
+      h.id === blokId ? { ...h, extraMensen: nummer } : h
+    )
+  );
+}
   function updateNieuweHandeling(blokId, value) {
     setHandelingen((prev) =>
       prev.map((h) =>

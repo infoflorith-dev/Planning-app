@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "https://esm.sh/react@18";
-
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+const supabaseUrl = "https://dgqdhencetroqjbzitfl.supabase.co";
+const supabaseKey = "sb_publishable_Su60RGRB8xf-i327v9DLuw_U7YNmvgb";
+const supabase = createClient(supabaseUrl, supabaseKey);
 export default function App() {
   const [beschikbareNamen] = useState([
     "Su Tran",

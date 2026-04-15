@@ -802,7 +802,16 @@ function updateExtraMensen(blokId, value) {
   useEffect(() => {
   localStorage.setItem("planning-overig", overigWerk);
 }, [overigWerk]);
-function getVandaag() {
+  function berekenTotaalUitzend(handelingen) {
+  return handelingen.reduce((totaal, item) => {
+    const aantal = item.mensen
+      .filter((naam) => !vasteMensen.includes(naam))
+      .length;
+
+    return totaal + aantal + (item.extraMensen || 0);
+  }, 0);
+}
+  function getVandaag() {
   const d = new Date();
   const dag = String(d.getDate()).padStart(2, "0");
   const maand = String(d.getMonth() + 1).padStart(2, "0");

@@ -867,18 +867,7 @@ useEffect(() => {
     return totaal + aantal + (item.extraMensen || 0);
   }, 0);
 }
-  function maakUitzendLijst(handelingen) {
- function maakHandelingTelling(handelingen) {
-  return handelingen
-    .filter((item) => item.handeling && item.handeling.code)
-    .map((item) => ({
-      handeling: formatHandeling(item.handeling),
-      aantal:
-        item.mensen.filter((naam) => !vasteMensen.includes(naam)).length +
-        (item.extraMensen || 0)
-    }))
-    .filter((item) => item.aantal > 0);
-}
+function maakUitzendLijst(handelingen) {
   const namenSet = new Set();
   let extraTotaal = 0;
 
@@ -897,6 +886,18 @@ useEffect(() => {
     extra: extraTotaal
   };
 }
+
+function maakHandelingTelling(handelingen) {
+  return handelingen
+    .filter((item) => item.handeling && item.handeling.code)
+    .map((item) => ({
+      handeling: formatHandeling(item.handeling),
+      aantal:
+        item.mensen.filter((naam) => !vasteMensen.includes(naam)).length +
+        (item.extraMensen || 0)
+    }))
+    .filter((item) => item.aantal > 0);
+} 
   function getVandaag() {
   const d = new Date();
   const dag = String(d.getDate()).padStart(2, "0");

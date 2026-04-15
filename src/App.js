@@ -1102,18 +1102,49 @@ return React.createElement(
     style: printButtonStyle,
          key: "save-pdf-button",
     onClick: () => {
-          const inhoud = document.body.innerHTML;
+  const printInhoud = handelingen
+    .filter((item) => item.handeling && item.handeling.code)
+    .map((item) => `
+      <tr>
+        <td>${formatHandeling(item.handeling)}</td>
+        <td>${item.mensen.length + (item.extraMensen || 0)}</td>
+        <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
+        <td>${item.vervolg.length > 0 ? item.vervolg.map((v) => formatHandeling(v)).join(", ") : "-"}</td>
+      </tr>
+    `)
+    .join("");
 
-      const win = window.open("", "_blank");
-      win.document.write(inhoud);
-      win.document.close();
+  const win = window.open("", "_blank");
+  win.document.write(`
+    <html>
+      <head>
+        <title>Planning-${getVandaag()}</title>
+      </head>
+      <body>
+        <h1>Dagprogramma overzicht - ${getVandaag()}</h1>
+        <table border="1" style="width:100%; border-collapse:collapse; font-size:10px;">
+          <thead>
+            <tr>
+              <th>Handeling</th>
+              <th>Aantal</th>
+              <th>Namen</th>
+              <th>Daarna</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${printInhoud}
+          </tbody>
+        </table>
 
-      setTimeout(() => {
-        win.document.title = `Planning-${getVandaag()}`;
-        win.print();
-      }, 300);
-    }
-  },
+        <h2 style="margin-top:20px;">Overig werk</h2>
+        <p style="font-size:12px; white-space:pre-line;">${overigWerk || "-"}</p>
+      </body>
+    </html>
+  `);
+  win.document.close();
+  win.print();
+}
+     },
   "Opslaan als PDF"
 ),
                 )

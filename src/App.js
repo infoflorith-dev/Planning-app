@@ -1028,11 +1028,12 @@ return React.createElement(
             React.createElement(
   "div",
   {
-    style: {
-      marginTop: "6px",
-      fontSize: "16px",
-      fontWeight: "600"
-    },
+   style: {
+  marginTop: "8px",
+  fontSize: "28px",
+  fontWeight: "700",
+  color: "#111827"
+},
     key: "totaal-uitzend"
   },
   `Totaal uitzendkrachten: ${berekenTotaalUitzend(handelingen)}`

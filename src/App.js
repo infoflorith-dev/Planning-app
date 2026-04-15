@@ -1291,7 +1291,7 @@ return React.createElement(
                React.createElement(
   "div",
   { style: getCountStyle(index), key: "count-" + index },
-  (item.mensen.length + (item.extraMensen || 0)) + " mensen"
+ (item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)) + " mensen"
 ),
                 React.createElement(
                   "div",

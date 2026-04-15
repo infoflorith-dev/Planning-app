@@ -909,7 +909,9 @@ function maakHandelingTelling(handelingen) {
     tellingen[sleutel].aantal += aantal;
   });
 
-  return Object.values(tellingen).filter((item) => item.aantal > 0);
+ return Object.values(tellingen)
+  .filter((item) => item.aantal > 0)
+  .sort((a, b) => b.aantal - a.aantal);
 }
   function getVandaag() {
   const d = new Date();

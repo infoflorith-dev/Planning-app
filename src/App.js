@@ -1017,6 +1017,18 @@ return React.createElement(
   `Planning App - ${getVandaag()}`
 ),
             React.createElement(
+  "div",
+  {
+    style: {
+      marginTop: "6px",
+      fontSize: "16px",
+      fontWeight: "600"
+    },
+    key: "totaal-uitzend"
+  },
+  `Totaal uitzendkrachten: ${berekenTotaalUitzend(handelingen)}`
+),
+            React.createElement(
               "p",
               { style: subStyle, key: "sub" },
               "Planbord met namen toevoegen en meerdere vervolg handelingen"

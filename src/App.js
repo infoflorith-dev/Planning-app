@@ -1095,13 +1095,12 @@ return React.createElement(
 },
                     key: "print-button"
                   },
-                  "Print / PDF"
+                  "Print / PDF",
                   React.createElement(
   "button",
   {
     style: printButtonStyle,
-       style: printButtonStyle,
-    key: "save-pdf-button",
+         key: "save-pdf-button",
     onClick: () => {
           const inhoud = document.body.innerHTML;
 

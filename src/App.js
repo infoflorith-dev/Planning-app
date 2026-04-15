@@ -361,7 +361,9 @@ export default function App() {
     "Silvestar Kirilov",
     "Antoaneta Stefanova"
   ]);
-
+const [overigWerk, setOverigWerk] = useState(() => {
+  return localStorage.getItem("planning-overig") || "";
+});
   const [beschikbareHandelingen] = useState([
     { code: "1", naam: "Looptijd" },
     { code: "2", naam: "Flo tray handeling" },

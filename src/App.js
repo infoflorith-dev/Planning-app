@@ -1154,8 +1154,12 @@ return React.createElement(
             </ul>
 
             <h3 style="margin-top:20px;">
-              + extra mensen: ${lijst.extra}
-            </h3>
+  + extra mensen: ${lijst.extra}
+</h3>
+
+<h2 style="margin-top:10px;">
+  Totaal mensen: ${lijst.namen.length + lijst.extra}
+</h2>
           </body>
         </html>
       `;

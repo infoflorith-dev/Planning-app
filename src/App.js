@@ -792,48 +792,72 @@ function updateExtraMensen(blokId, value) {
       return vulAanTotMinimaal12(over);
     });
   }
+useEffect(() => {
+  async function laadPlanning() {
+    const { data, error } = await supabase
+      .from("planning_app")
+      .select("*")
+      .eq("id", "main")
+      .single();
+
+    if (!error && data && data.data) {
+      if (data.data.handelingen) {
+        setHandelingen(
+          vulAanTotMinimaal12(
+            normaliseerBlokken(data.data.handelingen)
+          )
+        );
+      }
+
+      if (typeof data.data.overigWerk === "string") {
+        setOverigWerk(data.data.overigWerk);
+      }
+    }
+
+    setIsInitialLoadDone(true);
+  }
+
+  laadPlanning();
+}, []);
 
 useEffect(() => {
-  supabase
-    .from("planning_app")
-    .upsert({
-      id: "main",
-      data: {
-        handelingen: normaliseerBlokken(handelingen),
-        overigWerk
-      }
-    });
+  if (!isInitialLoadDone) return;
+
+  async function bewaarPlanning() {
+    const payload = {
+      handelingen: normaliseerBlokken(handelingen),
+      overigWerk
+    };
+
+    const { error } = await supabase
+      .from("planning_app")
+      .upsert(
+        {
+          id: "main",
+          data: payload,
+          updated_at: new Date().toISOString()
+        },
+        { onConflict: "id" }
+      );
+
+    if (error) {
+      console.log("Supabase opslaan mislukt:", error.message);
+    }
+  }
+
+  bewaarPlanning();
 
   try {
     localStorage.setItem(
       "planning-handelingen",
       JSON.stringify(normaliseerBlokken(handelingen))
     );
+    localStorage.setItem("planning-overig", overigWerk);
   } catch (e) {
     console.log("Opslaan mislukt");
   }
-}, [handelingen, overigWerk]);
+}, [handelingen, overigWerk, isInitialLoadDone]);
 
-useEffect(() => {
-  async function laadPlanning() {
-    const { data } = await supabase
-      .from("planning_app")
-      .select("*")
-      .eq("id", "main")
-      .single();
-
-    if (data && data.data) {
-      if (data.data.handelingen) {
-  setHandelingen(vulAanTotMinimaal12(normaliseerBlokken(data.data.handelingen)));
-}
-            if (typeof data.data.overigWerk === "string") {
-        setOverigWerk(data.data.overigWerk);
-      }
-    }
-  }
-
-  laadPlanning();
-}, []);
   function berekenTotaalUitzend(handelingen) {
   return handelingen.reduce((totaal, item) => {
     const aantal = item.mensen

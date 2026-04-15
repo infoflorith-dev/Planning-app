@@ -770,6 +770,9 @@ function updateExtraMensen(blokId, value) {
       console.log("Opslaan mislukt");
     }
   }, [handelingen]);
+  useEffect(() => {
+  localStorage.setItem("planning-overig", overigWerk);
+}, [overigWerk]);
 function getVandaag() {
   const d = new Date();
   const dag = String(d.getDate()).padStart(2, "0");
@@ -1457,6 +1460,38 @@ React.createElement(
       ]
     )
   ]
+    React.createElement(
+  "div",
+  {
+    style: {
+      marginTop: "20px",
+      background: "#ffffff",
+      padding: "16px",
+      borderRadius: "12px",
+      boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
+    },
+    key: "overig-blok"
+  },
+  [
+    React.createElement(
+      "h3",
+      { style: { marginBottom: "10px" } },
+      "Overig werk"
+    ),
+    React.createElement("textarea", {
+      value: overigWerk,
+      onChange: (e) => setOverigWerk(e.target.value),
+      placeholder: "Typ hier overig werk...",
+      style: {
+        width: "100%",
+        minHeight: "80px",
+        padding: "10px",
+        borderRadius: "8px",
+        border: "1px solid #ccc"
+      }
+    })
+  ]
+),
 ),
 ]
 )

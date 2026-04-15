@@ -1690,7 +1690,65 @@ React.createElement(
     )
   ]
     ),
+   React.createElement(
+  "div",
+  {
+    style: {
+      marginTop: "20px",
+      background: "#ffffff",
+      padding: "16px",
+      borderRadius: "12px",
+      boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
+    },
+    key: "handeling-aantallen"
+  },
+  [
     React.createElement(
+      "h3",
+      { style: { marginBottom: "10px" } },
+      "Aantal per handeling"
+    ),
+    React.createElement(
+      "table",
+      {
+        style: {
+          width: "100%",
+          borderCollapse: "collapse",
+          fontSize: "14px"
+        }
+      },
+      [
+        React.createElement(
+          "thead",
+          {},
+          React.createElement(
+            "tr",
+            {},
+            [
+              React.createElement("th", { style: thStyle }, "Handeling"),
+              React.createElement("th", { style: thStyle }, "Aantal")
+            ]
+          )
+        ),
+        React.createElement(
+          "tbody",
+          {},
+          ...maakHandelingTelling(handelingen).map((item, index) =>
+            React.createElement(
+              "tr",
+              { key: index },
+              [
+                React.createElement("td", { style: tdStyle }, item.handeling),
+                React.createElement("td", { style: tdStyle }, item.aantal)
+              ]
+            )
+          )
+        )
+      ]
+    )
+  ]
+),
+      React.createElement(
   "div",
   {
     style: {

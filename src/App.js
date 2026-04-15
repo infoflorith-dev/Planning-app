@@ -1492,7 +1492,6 @@ React.createElement(
     })
   ]
 ),
-),
 ]
 )
 );

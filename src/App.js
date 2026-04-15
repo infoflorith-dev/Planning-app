@@ -792,19 +792,43 @@ function updateExtraMensen(blokId, value) {
     });
   }
 
-  useEffect(() => {
-    try {
-      localStorage.setItem(
-        "planning-handelingen",
-        JSON.stringify(normaliseerBlokken(handelingen))
-      );
-    } catch (e) {
-      console.log("Opslaan mislukt");
-    }
-  }, [handelingen]);
-  useEffect(() => {
+ useEffect(() => {
+  supabase
+    .from("planning_app")
+    .upsert({
+      id: "main",
+      data: handelingen
+    });
+
+  try {
+    localStorage.setItem(
+      "planning-handelingen",
+      JSON.stringify(normaliseerBlokken(handelingen))
+    );
+  } catch (e) {
+    console.log("Opslaan mislukt");
+  }
+}, [handelingen]);
+
+useEffect(() => {
   localStorage.setItem("planning-overig", overigWerk);
 }, [overigWerk]);
+
+useEffect(() => {
+  async function laadPlanning() {
+    const { data } = await supabase
+      .from("planning_app")
+      .select("*")
+      .eq("id", "main")
+      .single();
+
+    if (data && data.data) {
+      setHandelingen(normaliseerBlokken(data.data));
+    }
+  }
+
+  laadPlanning();
+}, []);
   function berekenTotaalUitzend(handelingen) {
   return handelingen.reduce((totaal, item) => {
     const aantal = item.mensen

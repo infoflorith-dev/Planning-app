@@ -1135,6 +1135,41 @@ return React.createElement(
                   "+ Handeling blok toevoegen"
                 ),
                 React.createElement(
+  "button",
+  {
+    style: topButtonStyle,
+    onClick: () => {
+      const lijst = maakUitzendLijst(handelingen);
+
+      const inhoud = `
+        <html>
+          <head>
+            <title>Uitzendlijst - ${getVandaag()}</title>
+          </head>
+          <body style="font-family: Arial; padding:20px;">
+            <h2>Uitzendkrachten - ${getVandaag()}</h2>
+
+            <ul>
+              ${lijst.namen.map((naam) => `<li>${naam}</li>`).join("")}
+            </ul>
+
+            <h3 style="margin-top:20px;">
+              + extra mensen: ${lijst.extra}
+            </h3>
+          </body>
+        </html>
+      `;
+
+      const win = window.open("", "_blank");
+      win.document.write(inhoud);
+      win.document.close();
+      win.print();
+    },
+    key: "print-uitzendlijst"
+  },
+  "Print lijst"
+),
+                React.createElement(
                   "button",
                   {
                     style: printButtonStyle,

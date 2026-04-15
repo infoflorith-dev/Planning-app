@@ -867,6 +867,25 @@ useEffect(() => {
     return totaal + aantal + (item.extraMensen || 0);
   }, 0);
 }
+  function maakUitzendLijst(handelingen) {
+  const namenSet = new Set();
+  let extraTotaal = 0;
+
+  handelingen.forEach((item) => {
+    const uitzend = item.mensen.filter(
+      (naam) => !vasteMensen.includes(naam)
+    );
+
+    uitzend.forEach((naam) => namenSet.add(naam));
+
+    extraTotaal += item.extraMensen || 0;
+  });
+
+  return {
+    namen: Array.from(namenSet).sort(),
+    extra: extraTotaal
+  };
+}
   function getVandaag() {
   const d = new Date();
   const dag = String(d.getDate()).padStart(2, "0");

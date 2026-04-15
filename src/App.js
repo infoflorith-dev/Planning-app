@@ -913,12 +913,19 @@ function maakHandelingTelling(handelingen) {
   .filter((item) => item.aantal > 0)
   .sort((a, b) => b.aantal - a.aantal);
 }
-  function getVandaag() {
+ function getVandaag() {
   const d = new Date();
+  d.setDate(d.getDate() + 1);
+
+  const weekdag = d.toLocaleDateString("nl-NL", { weekday: "long" });
+  const weekdagMetHoofdletter =
+    weekdag.charAt(0).toUpperCase() + weekdag.slice(1);
+
   const dag = String(d.getDate()).padStart(2, "0");
   const maand = String(d.getMonth() + 1).padStart(2, "0");
   const jaar = d.getFullYear();
-  return `${dag}-${maand}-${jaar}`;
+
+  return `${weekdagMetHoofdletter} ${dag}-${maand}-${jaar}`;
 }
   const pageStyle = {
     minHeight: "100vh",

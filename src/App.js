@@ -1100,14 +1100,10 @@ return React.createElement(
   "button",
   {
     style: printButtonStyle,
-    React.createElement(
-  "button",
-  {
-    style: printButtonStyle,
+       style: printButtonStyle,
     key: "save-pdf-button",
     onClick: () => {
-    onClick: () => {
-      const inhoud = document.body.innerHTML;
+          const inhoud = document.body.innerHTML;
 
       const win = window.open("", "_blank");
       win.document.write(inhoud);

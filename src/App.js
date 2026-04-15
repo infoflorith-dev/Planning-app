@@ -823,7 +823,8 @@ useEffect(() => {
 
     if (data && data.data) {
       if (data.data.handelingen) {
-        setHandelingen(normaliseerBlokken(data.data.handelingen));
+  setHandelingen(vulAanTotMinimaal12(normaliseerBlokken(data.data.handelingen)));
+}
       }
       if (typeof data.data.overigWerk === "string") {
         setOverigWerk(data.data.overigWerk);

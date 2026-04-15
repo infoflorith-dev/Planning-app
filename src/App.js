@@ -1096,6 +1096,31 @@ return React.createElement(
                     key: "print-button"
                   },
                   "Print / PDF"
+                  React.createElement(
+  "button",
+  {
+    style: printButtonStyle,
+    React.createElement(
+  "button",
+  {
+    style: printButtonStyle,
+    key: "save-pdf-button",
+    onClick: () => {
+    onClick: () => {
+      const inhoud = document.body.innerHTML;
+
+      const win = window.open("", "_blank");
+      win.document.write(inhoud);
+      win.document.close();
+
+      setTimeout(() => {
+        win.document.title = `Planning-${getVandaag()}`;
+        win.print();
+      }, 300);
+    }
+  },
+  "Opslaan als PDF"
+),
                 )
               ]
             )

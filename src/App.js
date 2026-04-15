@@ -867,6 +867,7 @@ useEffect(() => {
     return totaal + aantal + (item.extraMensen || 0);
   }, 0);
 }
+  function maakUitzendLijst(handelingen) {
  function maakHandelingTelling(handelingen) {
   return handelingen
     .filter((item) => item.handeling && item.handeling.code)

@@ -1047,7 +1047,7 @@ return React.createElement(
     .map((item) => `
       <<tr>
   <td>${formatHandeling(item.handeling)}</td>
-  <td>${item.mensen.length + (item.extraMensen || 0)}</td>
+<td>${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}</td>
   <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
   <td>${item.vervolg.length > 0 ? item.vervolg.map((v) => formatHandeling(v)).join(", ") : "-"}</td>
 </tr>
@@ -1136,7 +1136,7 @@ return React.createElement(
     .map((item) => `
       <tr>
         <td>${formatHandeling(item.handeling)}</td>
-        <td>${item.mensen.length + (item.extraMensen || 0)}</td>
+        <<td>${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}</td>
         <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
         <td>${item.vervolg.length > 0 ? item.vervolg.map((v) => formatHandeling(v)).join(", ") : "-"}</td>
       </tr>

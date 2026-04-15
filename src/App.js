@@ -367,6 +367,7 @@ export default function App() {
 const [overigWerk, setOverigWerk] = useState(() => {
   return localStorage.getItem("planning-overig") || "";
 });
+  const [isInitialLoadDone, setIsInitialLoadDone] = useState(false);
   const vasteMensen = [
   "Su Tran",
   "Ali Karaaslan",

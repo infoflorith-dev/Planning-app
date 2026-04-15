@@ -792,12 +792,15 @@ function updateExtraMensen(blokId, value) {
     });
   }
 
- useEffect(() => {
+useEffect(() => {
   supabase
     .from("planning_app")
     .upsert({
       id: "main",
-      data: handelingen
+      data: {
+        handelingen: normaliseerBlokken(handelingen),
+        overigWerk
+      }
     });
 
   try {
@@ -808,11 +811,7 @@ function updateExtraMensen(blokId, value) {
   } catch (e) {
     console.log("Opslaan mislukt");
   }
-}, [handelingen]);
-
-useEffect(() => {
-  localStorage.setItem("planning-overig", overigWerk);
-}, [overigWerk]);
+}, [handelingen, overigWerk]);
 
 useEffect(() => {
   async function laadPlanning() {
@@ -823,7 +822,12 @@ useEffect(() => {
       .single();
 
     if (data && data.data) {
-      setHandelingen(normaliseerBlokken(data.data));
+      if (data.data.handelingen) {
+        setHandelingen(normaliseerBlokken(data.data.handelingen));
+      }
+      if (typeof data.data.overigWerk === "string") {
+        setOverigWerk(data.data.overigWerk);
+      }
     }
   }
 

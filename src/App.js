@@ -888,16 +888,29 @@ function maakUitzendLijst(handelingen) {
 }
 
 function maakHandelingTelling(handelingen) {
-  return handelingen
-    .filter((item) => item.handeling && item.handeling.code)
-    .map((item) => ({
-      handeling: formatHandeling(item.handeling),
-      aantal:
-        item.mensen.filter((naam) => !vasteMensen.includes(naam)).length +
-        (item.extraMensen || 0)
-    }))
-    .filter((item) => item.aantal > 0);
-} 
+  const tellingen = {};
+
+  handelingen.forEach((item) => {
+    if (!item.handeling || !item.handeling.code) return;
+
+    const sleutel = item.handeling.code;
+    const naam = formatHandeling(item.handeling);
+    const aantal =
+      item.mensen.filter((naam) => !vasteMensen.includes(naam)).length +
+      (item.extraMensen || 0);
+
+    if (!tellingen[sleutel]) {
+      tellingen[sleutel] = {
+        handeling: naam,
+        aantal: 0
+      };
+    }
+
+    tellingen[sleutel].aantal += aantal;
+  });
+
+  return Object.values(tellingen).filter((item) => item.aantal > 0);
+}
   function getVandaag() {
   const d = new Date();
   const dag = String(d.getDate()).padStart(2, "0");

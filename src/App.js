@@ -364,6 +364,35 @@ export default function App() {
 const [overigWerk, setOverigWerk] = useState(() => {
   return localStorage.getItem("planning-overig") || "";
 });
+  const vasteMensen = [
+  "Su Tran",
+  "Ali Karaaslan",
+  "Richard de Jong",
+  "Arnold Dellaert",
+  "Johan van Es",
+  "Ad Arendse",
+  "Tolga Yildiz",
+  "Saida Assarar",
+  "Lucy Kolodziej",
+  "Michel van Gelder",
+  "Yodith Mesfin Melese",
+  "Colinda van der Steen",
+  "Wim Snoeij",
+  "Ramazan Doǧrusöz",
+  "Jacqueline Borger",
+  "Nicolae Sabadas",
+  "Aldona Magdziak",
+  "Monika Kopka",
+  "Petra Kaptein",
+  "Jowan Klok",
+  "Ivan Ivanov",
+  "Gyulten Molla",
+  "Aleksi Aleksiev",
+  "Plamen Petkov",
+  "Silvia Petkova",
+  "Roos van der Arend"
+];
+
   const [beschikbareHandelingen] = useState([
     { code: "1", naam: "Looptijd" },
     { code: "2", naam: "Flo tray handeling" },

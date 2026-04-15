@@ -1460,6 +1460,7 @@ React.createElement(
       ]
     )
   ]
+    ),
     React.createElement(
   "div",
   {

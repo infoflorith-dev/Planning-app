@@ -1544,7 +1544,10 @@ return React.createElement(
             {
               style: nextRemoveStyle,
               onClick: () =>
-                verwijderVervolgHandeling(item.id, (vervolgItem.handeling || vervolgItem).code),
+                verwijderVervolgHandeling(
+                  item.id,
+                  (vervolgItem.handeling || vervolgItem).code
+                ),
               key: "remove-tag-" + i
             },
             "X"
@@ -1571,7 +1574,9 @@ return React.createElement(
       })
     ]
   )
-)
+),
+    ]
+  ),
                 React.createElement(
                   "div",
                   { style: namesWrapStyle, key: "names-" + index },

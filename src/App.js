@@ -1580,28 +1580,7 @@ return React.createElement(
     ]
   )
 ),
-      React.createElement("input", {
-        type: "text",
-        placeholder: "Klantnaam vervolg",
-        value: vervolgItem.klantNaam || "",
-        onChange: (e) =>
-          updateVervolgKlantNaam(
-            item.id,
-            (vervolgItem.handeling || vervolgItem).code,
-            e.target.value
-          ),
-        style: {
-          ...searchInputStyle,
-          marginTop: "6px",
-          fontSize: "13px",
-          padding: "8px 10px"
-        },
-        key: "vervolg-klant-" + i
-      })
-    ]
-  )
-),
-                React.createElement(
+                      React.createElement(
                   "div",
                   { style: namesWrapStyle, key: "names-" + index },
                   ...item.mensen.map((naam, i) =>

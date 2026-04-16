@@ -559,7 +559,8 @@ klantNaam: blok.klantNaam || ""
       mensen: [],
       nieuweNaam: "",
       nieuweHandeling: "",
-      zoekHoofdHandeling: ""
+     zoekHoofdHandeling: "",
+klantNaam: ""
     };
   }
 

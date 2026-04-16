@@ -581,7 +581,8 @@ klantNaam: ""
       mensen: Array.isArray(blok.mensen) ? blok.mensen : [],
       nieuweNaam: blok.nieuweNaam || "",
       nieuweHandeling: blok.nieuweHandeling || "",
-      zoekHoofdHandeling: blok.zoekHoofdHandeling || ""
+     zoekHoofdHandeling: blok.zoekHoofdHandeling || "",
+klantNaam: blok.klantNaam || ""
     }));
   }
 

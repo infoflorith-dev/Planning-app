@@ -1558,34 +1558,28 @@ return React.createElement(
                       },
                       "Daarna"
                     ),
-              ...item.vervolg.map((vervolgItem, i) =>
+          ...item.vervolg.map((vervolgItem, i) =>
   React.createElement(
-    "div",
-    {
-      key: "vervolg-wrap-" + i,
-      style: { marginBottom: "10px" }
-    },
+    "span",
+    { style: getNextTagStyle(index), key: "tag-" + i },
     [
+      `${formatHandeling(vervolgItem.handeling || vervolgItem)}${vervolgItem.klantNaam ? " - " + vervolgItem.klantNaam : ""}`,
       React.createElement(
-        "div",
-        { style: getNextTagStyle(index), key: "tag-" + i },
-        [
-          `${formatHandeling(vervolgItem.handeling || vervolgItem)}${vervolgItem.klantNaam ? " - " + vervolgItem.klantNaam : ""}`,
-          React.createElement(
-            "button",
-            {
-              style: nextRemoveStyle,
-              onClick: () =>
-                verwijderVervolgHandeling(
-                  item.id,
-                  (vervolgItem.handeling || vervolgItem).code
-                ),
-              key: "remove-tag-" + i
-            },
-            "X"
-          )
-        ]
-      ),
+        "button",
+        {
+          style: nextRemoveStyle,
+          onClick: () =>
+            verwijderVervolgHandeling(
+              item.id,
+              (vervolgItem.handeling || vervolgItem).code
+            ),
+          key: "remove-tag-" + i
+        },
+        "X"
+      )
+    ]
+  )
+),
       React.createElement("input", {
         type: "text",
         placeholder: "Klantnaam vervolg",

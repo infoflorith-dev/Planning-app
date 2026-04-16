@@ -1498,249 +1498,269 @@ return React.createElement(
                       "Blok verwijderen"
                     ),
                     React.createElement("input", {
-                      type: "text",
-                      placeholder: "Zoek hoofdhandeling of code...",
-                      value: item.zoekHoofdHandeling || "",
-                      onChange: (e) =>
-                        updateZoekHoofdHandeling(item.id, e.target.value),
-                      style: searchInputStyle,
-                      key: "main-input-" + index
-                    }),
-                    zoekHoofd
-                      ? React.createElement(
-                          "div",
-                          { style: getResultsStyle(index), key: "main-results-" + index },
-                          ...(gefilterdeHoofdHandelingen.length > 0
-                            ? gefilterdeHoofdHandelingen.slice(0, 8).map((handelingOptie, i) =>
-                                React.createElement(
-                                  "div",
-                                  {
-                                    key: "main-result-" + i,
-                                    style: resultItemStyle,
-                                    onClick: () =>
-                                      kiesHoofdHandeling(item.id, handelingOptie)
-                                  },
-                                  formatHandeling(handelingOptie)
-                                )
-                              )
-                            : [
-                                React.createElement(
-                                  "div",
-                                  {
-                                    key: "geen-hoofdhandeling",
-                                    style: {
-                                      padding: "10px 12px",
-                                      fontSize: "14px",
-                                      color: "#6b7280"
-                                    }
-                                  },
-                                  "Geen handeling gevonden"
-                                )
-                              ])
-                        )
-                      : null
-                  ]
-                ),
-               React.createElement(
+  type: "text",
+  placeholder: "Zoek hoofdhandeling of code...",
+  value: item.zoekHoofdHandeling || "",
+  onChange: (e) =>
+    updateZoekHoofdHandeling(item.id, e.target.value),
+  style: searchInputStyle,
+  key: "main-input-" + index
+}),
+zoekHoofd
+  ? React.createElement(
+      "div",
+      { style: getResultsStyle(index), key: "main-results-" + index },
+      ...(gefilterdeHoofdHandelingen.length > 0
+        ? gefilterdeHoofdHandelingen.slice(0, 8).map((handelingOptie, i) =>
+            React.createElement(
+              "div",
+              {
+                key: "main-result-" + i,
+                style: resultItemStyle,
+                onClick: () =>
+                  kiesHoofdHandeling(item.id, handelingOptie)
+              },
+              formatHandeling(handelingOptie)
+            )
+          )
+        : [
+            React.createElement(
+              "div",
+              {
+                key: "geen-hoofdhandeling",
+                style: {
+                  padding: "10px 12px",
+                  fontSize: "14px",
+                  color: "#6b7280"
+                }
+              },
+              "Geen handeling gevonden"
+            )
+          ])
+    )
+  : null
+]
+),
+React.createElement(
   "div",
   { style: getCountStyle(index), key: "count-" + index },
- (item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)) + " mensen"
+  (item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)) + " mensen"
 ),
-                React.createElement(
-                  "div",
-                  { style: nextBlockStyle, key: "nextblock-" + index },
-                  [
-                    React.createElement(
-                      "div",
-                      {
-                        style: { ...smallLabelStyle, marginBottom: "10px" },
-                        key: "nextlabel-" + index
-                      },
-                      "Daarna"
-                    ),
-          ...item.vervolg.map((vervolgItem, i) =>
-  React.createElement(
-    "span",
-    { style: getNextTagStyle(index), key: "tag-" + i },
-    [
-      `${formatHandeling(vervolgItem.handeling || vervolgItem)}${vervolgItem.klantNaam ? " - " + vervolgItem.klantNaam : ""}`,
+React.createElement(
+  "div",
+  { style: nextBlockStyle, key: "nextblock-" + index },
+  [
+    React.createElement(
+      "div",
+      {
+        style: { ...smallLabelStyle, marginBottom: "10px" },
+        key: "nextlabel-" + index
+      },
+      "Daarna"
+    ),
+    ...item.vervolg.map((vervolgItem, i) =>
       React.createElement(
-        "button",
+        "div",
         {
-          style: nextRemoveStyle,
-          onClick: () =>
-            verwijderVervolgHandeling(
-              item.id,
-              (vervolgItem.handeling || vervolgItem).code
-            ),
-          key: "remove-tag-" + i
+          key: "vervolg-wrap-" + i,
+          style: { marginBottom: "10px" }
         },
-        "X"
+        [
+          React.createElement(
+            "span",
+            { style: getNextTagStyle(index), key: "tag-" + i },
+            [
+              `${formatHandeling(vervolgItem.handeling || vervolgItem)}${vervolgItem.klantNaam ? " - " + vervolgItem.klantNaam : ""}`,
+              React.createElement(
+                "button",
+                {
+                  style: nextRemoveStyle,
+                  onClick: () =>
+                    verwijderVervolgHandeling(
+                      item.id,
+                      (vervolgItem.handeling || vervolgItem).code
+                    ),
+                  key: "remove-tag-" + i
+                },
+                "✕"
+              )
+            ]
+          ),
+          React.createElement("input", {
+            type: "text",
+            placeholder: "Klantnaam vervolg",
+            value: vervolgItem.klantNaam || "",
+            onChange: (e) =>
+              updateVervolgKlantNaam(
+                item.id,
+                (vervolgItem.handeling || vervolgItem).code,
+                e.target.value
+              ),
+            style: searchInputStyle,
+            key: "vervolg-klant-" + i
+          })
+        ]
       )
-    ]
+    )
+  ]
+),
+React.createElement(
+  "div",
+  { style: namesWrapStyle, key: "names-" + index },
+  ...item.mensen.map((naam, i) =>
+    React.createElement(
+      "div",
+      { style: getPersonStyle(index), key: "person-" + i },
+      [
+        React.createElement("span", { key: "person-name-" + i }, naam),
+        React.createElement(
+          "button",
+          {
+            style: removeButtonStyle,
+            onClick: () => verwijderNaam(item.id, naam),
+            key: "person-remove-" + i
+          },
+          "✕"
+        )
+      ]
+    )
   )
 ),
-                      React.createElement(
-                  "div",
-                  { style: namesWrapStyle, key: "names-" + index },
-                  ...item.mensen.map((naam, i) =>
-                    React.createElement(
-                      "div",
-                      { style: getPersonStyle(index), key: "person-" + i },
-                      [
-                        React.createElement("span", { key: "person-name-" + i }, naam),
-                        React.createElement(
-                          "button",
-                          {
-                            style: removeButtonStyle,
-                            onClick: () => verwijderNaam(item.id, naam),
-                            key: "person-remove-" + i
-                          },
-                          "✕"
-                        )
-                      ]
-                    )
-                  )
-                ),
-                React.createElement(
-                  "div",
-                  { style: formWrapStyle, key: "nameform-" + index },
-                  [
-                    React.createElement("input", {
-                      type: "text",
-                      placeholder: "Zoek medewerker...",
-                      value: item.nieuweNaam,
-                      onChange: (e) =>
-                        updateNieuweNaam(item.id, e.target.value),
-                      style: searchInputStyle,
-                      key: "name-input-" + index
-                    }),
-                    zoekNaam
-                      ? React.createElement(
-                          "div",
-                          { style: getResultsStyle(index), key: "name-results-" + index },
-                          ...(gefilterdeNamen.length > 0
-                            ? gefilterdeNamen.slice(0, 20).map((naam, i) =>
-                                React.createElement(
-                                  "div",
-                                  {
-                                    key: "name-result-" + i,
-                                    style: resultItemStyle,
-                                    onClick: () =>
-                                      voegNaamToeDirect(item.id, naam)
-                                  },
-                                  naam
-                                )
-                              )
-                            : [
-                                React.createElement(
-                                  "div",
-                                  {
-                                    key: "geen-medewerker",
-                                    style: {
-                                      padding: "10px 12px",
-                                      fontSize: "14px",
-                                      color: "#6b7280"
-                                    }
-                                  },
-                                  "Geen medewerker gevonden"
-                                )
-                              ])
-                        )
-                      : null,
-           React.createElement(
-  "div",
-  { style: hintStyle, key: "name-hint-" + index },
-  "Typ een paar letters en klik op een naam"
-),
-React.createElement("input", {
-  type: "number",
-  min: "0",
-  placeholder: "Extra mensen zonder naam",
-  value: item.extraMensen || 0,
-  onChange: (e) => updateExtraMensen(item.id, e.target.value),
-  style: searchInputStyle,
-  key: "extra-input-" + index
-}),
 React.createElement(
   "div",
-  { style: hintStyle, key: "extra-hint-" + index },
-  "Bijvoorbeeld +5 als uitzendbureau zelf mensen invult"
-),
-                    React.createElement("input", {
-  type: "text",
-  placeholder: "Klantnaam",
-  value: item.klantNaam || "",
-  onChange: (e) => updateKlantNaam(item.id, e.target.value),
-  style: searchInputStyle,
-  key: "klant-input-" + index
-}),
-React.createElement(
-  "div",
-  { style: hintStyle, key: "klant-hint-" + index },
-  "Vrij invulbaar, bijvoorbeeld Agro Care"
-),
-                    ],
-),
+  { style: formWrapStyle, key: "nameform-" + index },
+  [
+    React.createElement("input", {
+      type: "text",
+      placeholder: "Zoek medewerker...",
+      value: item.nieuweNaam,
+      onChange: (e) =>
+        updateNieuweNaam(item.id, e.target.value),
+      style: searchInputStyle,
+      key: "name-input-" + index
+    }),
+    zoekNaam
+      ? React.createElement(
+          "div",
+          { style: getResultsStyle(index), key: "name-results-" + index },
+          ...(gefilterdeNamen.length > 0
+            ? gefilterdeNamen.slice(0, 20).map((naam, i) =>
                 React.createElement(
                   "div",
                   {
-                    style: { ...formWrapStyle, marginTop: "18px" },
-                    key: "nextform-" + index
+                    key: "name-result-" + i,
+                    style: resultItemStyle,
+                    onClick: () =>
+                      voegNaamToeDirect(item.id, naam)
                   },
-                  [
-                    React.createElement("input", {
-                      type: "text",
-                      placeholder: "Zoek vervolg handeling of code...",
-                      value: item.nieuweHandeling,
-                      onChange: (e) =>
-                        updateNieuweHandeling(item.id, e.target.value),
-                      style: searchInputStyle,
-                      key: "next-input-" + index
-                    }),
-                    zoekVervolg
-                      ? React.createElement(
-                          "div",
-                          { style: getResultsStyle(index), key: "next-results-" + index },
-                          ...(gefilterdeHandelingen.length > 0
-                            ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
-                                React.createElement(
-                                  "div",
-                                  {
-                                    key: "next-result-" + i,
-                                    style: resultItemStyle,
-                                    onClick: () =>
-                                      voegVervolgHandelingToe(item.id, handelingOptie)
-                                  },
-                                  formatHandeling(handelingOptie)
-                                )
-                              )
-                            : [
-                                React.createElement(
-                                  "div",
-                                  {
-                                    key: "geen-handeling",
-                                    style: {
-                                      padding: "10px 12px",
-                                      fontSize: "14px",
-                                      color: "#6b7280"
-                                    }
-                                  },
-                                  "Geen handeling gevonden"
-                                )
-                              ])
-                        )
-                      : null,
-                    React.createElement(
-                      "div",
-                      { style: hintStyle, key: "next-hint-" + index },
-                      "Typ code of naam en klik op een vervolg handeling"
-                    )
-                  ]
+                  naam
                 )
-              ]
-            );
-          })
+              )
+            : [
+                React.createElement(
+                  "div",
+                  {
+                    key: "geen-medewerker",
+                    style: {
+                      padding: "10px 12px",
+                      fontSize: "14px",
+                      color: "#6b7280"
+                    }
+                  },
+                  "Geen medewerker gevonden"
+                )
+              ])
+        )
+      : null,
+    React.createElement(
+      "div",
+      { style: hintStyle, key: "name-hint-" + index },
+      "Typ een paar letters en klik op een naam"
+    ),
+    React.createElement("input", {
+      type: "number",
+      min: "0",
+      placeholder: "Extra mensen zonder naam",
+      value: item.extraMensen || 0,
+      onChange: (e) => updateExtraMensen(item.id, e.target.value),
+      style: searchInputStyle,
+      key: "extra-input-" + index
+    }),
+    React.createElement(
+      "div",
+      { style: hintStyle, key: "extra-hint-" + index },
+      "Bijvoorbeeld +5 als uitzendbureau zelf mensen invult"
+    ),
+    React.createElement("input", {
+      type: "text",
+      placeholder: "Klantnaam",
+      value: item.klantNaam || "",
+      onChange: (e) => updateKlantNaam(item.id, e.target.value),
+      style: searchInputStyle,
+      key: "klant-input-" + index
+    }),
+    React.createElement(
+      "div",
+      { style: hintStyle, key: "klant-hint-" + index },
+      "Vrij invulbaar, bijvoorbeeld Agro Care"
+    )
+  ]
+),
+React.createElement(
+  "div",
+  {
+    style: { ...formWrapStyle, marginTop: "18px" },
+    key: "nextform-" + index
+  },
+  [
+    React.createElement("input", {
+      type: "text",
+      placeholder: "Zoek vervolg handeling of code...",
+      value: item.nieuweHandeling,
+      onChange: (e) =>
+        updateNieuweHandeling(item.id, e.target.value),
+      style: searchInputStyle,
+      key: "next-input-" + index
+    }),
+    zoekVervolg
+      ? React.createElement(
+          "div",
+          { style: getResultsStyle(index), key: "next-results-" + index },
+          ...(gefilterdeHandelingen.length > 0
+            ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
+                React.createElement(
+                  "div",
+                  {
+                    key: "next-result-" + i,
+                    style: resultItemStyle,
+                    onClick: () =>
+                      voegVervolgHandelingToe(item.id, handelingOptie)
+                  },
+                  formatHandeling(handelingOptie)
+                )
+              )
+            : [
+                React.createElement(
+                  "div",
+                  {
+                    key: "geen-handeling",
+                    style: {
+                      padding: "10px 12px",
+                      fontSize: "14px",
+                      color: "#6b7280"
+                    }
+                  },
+                  "Geen handeling gevonden"
+                )
+              ])
+        )
+      : null,
+    React.createElement(
+      "div",
+      { style: hintStyle, key: "next-hint-" + index },
+      "Typ code of naam en klik op een vervolg handeling"
+    )
+  ]
         ),
 
   React.createElement(

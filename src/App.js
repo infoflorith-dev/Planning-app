@@ -1228,6 +1228,15 @@ return React.createElement(
   "Print lijst"
 ),
                 React.createElement(
+  "button",
+  {
+    style: printButtonStyle,
+    onClick: mailUitzendLijst,
+    key: "mail-uitzendlijst"
+  },
+  "Mail lijst"
+),
+                React.createElement(
                   "button",
                   {
                     style: printButtonStyle,

@@ -811,17 +811,20 @@ function updateKlantNaam(blokId, value) {
   }
 
   function verwijderVervolgHandeling(blokId, vervolgCode) {
-    setHandelingen((prev) =>
-      prev.map((h) =>
-        h.id === blokId
-          ? {
-              ...h,
-              vervolg: h.vervolg.filter((v) => v.code !== vervolgCode)
-            }
-          : h
-      )
-    );
-  }
+  setHandelingen((prev) =>
+    prev.map((h) =>
+      h.id === blokId
+        ? {
+            ...h,
+            vervolg: h.vervolg.filter(
+              (v) => (v.handeling || v).code !== vervolgCode
+            )
+          }
+        : h
+    )
+  );
+}
+
 function updateVervolgKlantNaam(blokId, vervolgCode, value) {
   setHandelingen((prev) =>
     prev.map((h) =>

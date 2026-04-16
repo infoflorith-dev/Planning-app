@@ -503,7 +503,9 @@ const [overigWerk, setOverigWerk] = useState(() => {
         extraMensen: 0,
         nieuweNaam: "",
         nieuweHandeling: "",
-        zoekHoofdHandeling: ""
+       zoekHoofdHandeling: "",
+klantNaam: ""
+       
       };
     }
 
@@ -523,7 +525,8 @@ const [overigWerk, setOverigWerk] = useState(() => {
         extraMensen: Number(blok.extraMensen || 0),
         mensen: Array.isArray(blok.mensen) ? blok.mensen : [],
         nieuweNaam: blok.nieuweNaam || "",
-        nieuweHandeling: blok.nieuweHandeling || "",
+        zoekHoofdHandeling: blok.zoekHoofdHandeling || "",
+klantNaam: blok.klantNaam || ""
         zoekHoofdHandeling: blok.zoekHoofdHandeling || ""
       }));
     }

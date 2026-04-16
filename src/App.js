@@ -927,10 +927,6 @@ function maakHandelingTelling(handelingen) {
 
   return `${weekdagMetHoofdletter} ${dag}-${maand}-${jaar}`;
 }
-  function getVandaag() {
-  ...
-}
-
 function mailUitzendLijst() {
   const lijst = maakUitzendLijst(handelingen);
 

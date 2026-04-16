@@ -1549,60 +1549,60 @@ React.createElement(
 React.createElement(
   "div",
   { style: nextBlockStyle, key: "nextblock-" + index },
-  [
+[
+  React.createElement(
+    "div",
+    {
+      style: { ...smallLabelStyle, marginBottom: "10px" },
+      key: "nextlabel-" + index
+    },
+    "Daarna"
+  ),
+  ...item.vervolg.map((vervolgItem, i) =>
     React.createElement(
       "div",
       {
-        style: { ...smallLabelStyle, marginBottom: "10px" },
-        key: "nextlabel-" + index
+        key: "vervolg-wrap-" + i,
+        style: { marginBottom: "10px" }
       },
-      "Daarna"
-    ),
-    ...item.vervolg.map((vervolgItem, i) =>
-      React.createElement(
-        "div",
-        {
-          key: "vervolg-wrap-" + i,
-          style: { marginBottom: "10px" }
-        },
-        [
-          React.createElement(
-            "span",
-            { style: getNextTagStyle(index), key: "tag-" + i },
-            [
-              `${formatHandeling(vervolgItem.handeling || vervolgItem)}${vervolgItem.klantNaam ? " - " + vervolgItem.klantNaam : ""}`,
-              React.createElement(
-                "button",
-                {
-                  style: nextRemoveStyle,
-                  onClick: () =>
-                    verwijderVervolgHandeling(
-                      item.id,
-                      (vervolgItem.handeling || vervolgItem).code
-                    ),
-                  key: "remove-tag-" + i
-                },
-                "✕"
-              )
-            ]
-          ),
-          React.createElement("input", {
-            type: "text",
-            placeholder: "Klantnaam vervolg",
-            value: vervolgItem.klantNaam || "",
-            onChange: (e) =>
-              updateVervolgKlantNaam(
-                item.id,
-                (vervolgItem.handeling || vervolgItem).code,
-                e.target.value
-              ),
-            style: searchInputStyle,
-            key: "vervolg-klant-" + i
-          })
-        ]
-      )
+      [
+        React.createElement(
+          "span",
+          { style: getNextTagStyle(index), key: "tag-" + i },
+          [
+            `${formatHandeling(vervolgItem.handeling || vervolgItem)}${vervolgItem.klantNaam ? " - " + vervolgItem.klantNaam : ""}`,
+            React.createElement(
+              "button",
+              {
+                style: nextRemoveStyle,
+                onClick: () =>
+                  verwijderVervolgHandeling(
+                    item.id,
+                    (vervolgItem.handeling || vervolgItem).code
+                  ),
+                key: "remove-tag-" + i
+              },
+              "✕"
+            )
+          ]
+        ),
+        React.createElement("input", {
+          type: "text",
+          placeholder: "Klantnaam vervolg",
+          value: vervolgItem.klantNaam || "",
+          onChange: (e) =>
+            updateVervolgKlantNaam(
+              item.id,
+              (vervolgItem.handeling || vervolgItem).code,
+              e.target.value
+            ),
+          style: searchInputStyle,
+          key: "vervolg-klant-" + i
+        })
+      ]
     )
-  ]
+  )
+]
 ),
 React.createElement(
   "div",

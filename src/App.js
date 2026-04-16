@@ -764,6 +764,27 @@ function updateKlantNaam(blokId, value) {
     )
   );
 }
+  function updateVervolgKlantNaam(blokId, code, value) {
+  setHandelingen((prev) =>
+    prev.map((h) => {
+      if (h.id !== blokId) return h;
+
+      return {
+        ...h,
+        vervolg: h.vervolg.map((v) => {
+          const vCode = (v.handeling || v).code;
+          if (vCode !== code) return v;
+
+          return {
+        return {
+  ...(v.handeling ? v : { handeling: v }),
+  klantNaam: value
+};
+        })
+      };
+    })
+  );
+}
   function voegVervolgHandelingToe(blokId, nieuweHandeling) {
     if (!nieuweHandeling) return;
 

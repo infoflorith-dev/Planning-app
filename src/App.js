@@ -927,6 +927,30 @@ function maakHandelingTelling(handelingen) {
 
   return `${weekdagMetHoofdletter} ${dag}-${maand}-${jaar}`;
 }
+  function getVandaag() {
+  ...
+}
+
+function mailUitzendLijst() {
+  const lijst = maakUitzendLijst(handelingen);
+
+  const onderwerp = `Uitzendlijst - ${getVandaag()}`;
+
+  const regels = [
+    `Uitzendkrachten - ${getVandaag()}`,
+    ``,
+    ...lijst.namen.map((naam) => `- ${naam}`),
+    ``,
+    `Extra mensen: ${lijst.extra}`,
+    `Totaal mensen: ${lijst.namen.length + lijst.extra}`
+  ];
+
+  const body = regels.join("\n");
+
+  const mailto = `mailto:?subject=${encodeURIComponent(onderwerp)}&body=${encodeURIComponent(body)}`;
+
+  window.location.href = mailto;
+}
   const pageStyle = {
     minHeight: "100vh",
     background: "#f3f4f6",

@@ -795,7 +795,22 @@ function updateKlantNaam(blokId, value) {
       )
     );
   }
-
+function updateVervolgKlantNaam(blokId, vervolgCode, value) {
+  setHandelingen((prev) =>
+    prev.map((h) =>
+      h.id === blokId
+        ? {
+            ...h,
+            vervolg: h.vervolg.map((v) =>
+              (v.handeling || v).code === vervolgCode
+                ? { ...v, klantNaam: value }
+                : v
+            )
+          }
+        : h
+    )
+  );
+}
   function verwijderBlok(blokId) {
     setHandelingen((prev) => {
       const over = prev.filter((h) => h.id !== blokId);

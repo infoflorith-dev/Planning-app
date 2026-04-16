@@ -1253,7 +1253,7 @@ return React.createElement(
     .filter((item) => item.handeling && item.handeling.code)
     .map((item) => `
       <<tr>
-  <td>${formatHandeling(item.handeling)}</td>
+  <td>${formatHandeling(item.handeling)}${item.klantNaam ? ` - ${item.klantNaam}` : ""}</td>
 <td>${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}</td>
   <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
   <td>${item.vervolg.length > 0 ? item.vervolg.map((v) => formatHandeling(v)).join(", ") : "-"}</td>
@@ -1341,8 +1341,8 @@ return React.createElement(
   const printInhoud = handelingen
     .filter((item) => item.handeling && item.handeling.code)
     .map((item) => `
-      <tr>
-        <td>${formatHandeling(item.handeling)}</td>
+      <tr><td>
+        <td>${formatHandeling(item.handeling)}${item.klantNaam ? ` - ${item.klantNaam}` : ""}</td>
         <<td>${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}</td>
         <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
         <td>${item.vervolg.length > 0 ? item.vervolg.map((v) => formatHandeling(v)).join(", ") : "-"}</td>
@@ -1431,7 +1431,7 @@ return React.createElement(
                     React.createElement(
                       "h2",
                       { style: cardTitleStyle, key: "title-" + index },
-                      formatHandeling(item.handeling)
+                     `${formatHandeling(item.handeling)}${item.klantNaam ? " - " + item.klantNaam : ""}`
                     ),
                     React.createElement(
                       "button",

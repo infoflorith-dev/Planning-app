@@ -770,15 +770,15 @@ function updateKlantNaam(blokId, value) {
     setHandelingen((prev) =>
       prev.map((h) => {
         if (h.id !== blokId) return h;
-        if (h.vervolg.some((v) => v.code === nieuweHandeling.code)) {
+       if (h.vervolg.some((v) => (v.handeling || v).code === nieuweHandeling.code)) {
           return { ...h, nieuweHandeling: "" };
         }
 
-        return {
-          ...h,
-          vervolg: [...h.vervolg, nieuweHandeling],
-          nieuweHandeling: ""
-        };
+       return {
+  ...h,
+  vervolg: [...h.vervolg, nieuweHandeling],
+  nieuweHandeling: ""
+};
       })
     );
   }

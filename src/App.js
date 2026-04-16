@@ -1558,13 +1558,16 @@ return React.createElement(
                       },
                       "Daarna"
                     ),
-                   ...item.vervolg.map((vervolgItem, i) =>
+              ...item.vervolg.map((vervolgItem, i) =>
   React.createElement(
     "div",
-    { key: "vervolg-wrap-" + i, style: { marginBottom: "8px" } },
+    {
+      key: "vervolg-wrap-" + i,
+      style: { marginBottom: "10px" }
+    },
     [
       React.createElement(
-        "span",
+        "div",
         { style: getNextTagStyle(index), key: "tag-" + i },
         [
           `${formatHandeling(vervolgItem.handeling || vervolgItem)}${vervolgItem.klantNaam ? " - " + vervolgItem.klantNaam : ""}`,
@@ -1604,8 +1607,6 @@ return React.createElement(
     ]
   )
 ),
-    ]
-  ),
                 React.createElement(
                   "div",
                   { style: namesWrapStyle, key: "names-" + index },

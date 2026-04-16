@@ -518,17 +518,18 @@ klantNaam: ""
     }
 
     function normaliseerBlokkenInit(blokken) {
-      return blokken.map((blok) => ({
-        id: blok.id || crypto.randomUUID(),
-        handeling: blok.handeling || { code: "", naam: "" },
-        vervolg: Array.isArray(blok.vervolg) ? blok.vervolg : [],
-        extraMensen: Number(blok.extraMensen || 0),
-        mensen: Array.isArray(blok.mensen) ? blok.mensen : [],
-        nieuweNaam: blok.nieuweNaam || "",
-        zoekHoofdHandeling: blok.zoekHoofdHandeling || "",
-klantNaam: blok.klantNaam || ""
-           }));
-    }
+  return blokken.map((blok) => ({
+    id: blok.id || crypto.randomUUID(),
+    handeling: blok.handeling || { code: "", naam: "" },
+    vervolg: Array.isArray(blok.vervolg) ? blok.vervolg : [],
+    extraMensen: Number(blok.extraMensen || 0),
+    mensen: Array.isArray(blok.mensen) ? blok.mensen : [],
+    nieuweNaam: blok.nieuweNaam || "",
+    nieuweHandeling: blok.nieuweHandeling || "",
+    zoekHoofdHandeling: blok.zoekHoofdHandeling || "",
+    klantNaam: blok.klantNaam || ""
+  }));
+}
 
     try {
       const opgeslagen = localStorage.getItem("planning-handelingen");
@@ -764,26 +765,6 @@ function updateKlantNaam(blokId, value) {
     )
   );
 }
- function updateVervolgKlantNaam(blokId, code, value) {
-  setHandelingen((prev) =>
-    prev.map((h) => {
-      if (h.id !== blokId) return h;
-
-      return {
-        ...h,
-        vervolg: h.vervolg.map((v) => {
-          const vCode = (v.handeling || v).code;
-          if (vCode !== code) return v;
-
-          return {
-            ...(v.handeling ? v : { handeling: v }),
-            klantNaam: value
-          };
-        })
-      };
-    })
-  );
-}
   function voegVervolgHandelingToe(blokId, nieuweHandeling) {
     if (!nieuweHandeling) return;
 
@@ -1002,149 +983,149 @@ function mailUitzendLijst() {
   window.location.href = mailto;
 }
   const pageStyle = {
-    minHeight: "100vh",
-    background: "#f3f4f6",
-    padding: "24px",
-    fontFamily: "Arial, sans-serif"
-  };
+  minHeight: "100vh",
+  background: "#f3f4f6",
+  padding: "24px",
+  fontFamily: "Arial, sans-serif"
+};
 
-  const wrapStyle = {
-    maxWidth: "1300px",
-    margin: "0 auto"
-  };
+const wrapStyle = {
+  maxWidth: "1300px",
+  margin: "0 auto"
+};
 
-  const headerStyle = {
-    background: "#ffffff",
-    borderRadius: "24px",
-    padding: "24px",
-    boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-    marginBottom: "24px"
-  };
+const headerStyle = {
+  background: "#ffffff",
+  borderRadius: "24px",
+  padding: "24px",
+  boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+  marginBottom: "24px"
+};
 
-  const titleStyle = {
-    margin: "0 0 6px 0",
-    fontSize: "32px",
-    color: "#111827"
-  };
+const titleStyle = {
+  margin: "0 0 6px 0",
+  fontSize: "32px",
+  color: "#111827"
+};
 
-  const subStyle = {
-    margin: 0,
-    color: "#6b7280",
-    fontSize: "15px"
-  };
+const subStyle = {
+  margin: 0,
+  color: "#6b7280",
+  fontSize: "15px"
+};
 
-  const topButtonStyle = {
-    border: "none",
-    background: "#111827",
-    color: "#ffffff",
-    borderRadius: "12px",
-    padding: "12px 16px",
-    cursor: "pointer",
-    fontWeight: "600"
-  };
+const topButtonStyle = {
+  border: "none",
+  background: "#111827",
+  color: "#ffffff",
+  borderRadius: "12px",
+  padding: "12px 16px",
+  cursor: "pointer",
+  fontWeight: "600"
+};
 
-  const printButtonStyle = {
-    border: "none",
-    background: "#2563eb",
-    color: "#ffffff",
-    borderRadius: "12px",
-    padding: "12px 16px",
-    cursor: "pointer",
-    fontWeight: "600",
-    marginLeft: "10px"
-  };
+const printButtonStyle = {
+  border: "none",
+  background: "#2563eb",
+  color: "#ffffff",
+  borderRadius: "12px",
+  padding: "12px 16px",
+  cursor: "pointer",
+  fontWeight: "600",
+  marginLeft: "10px"
+};
 
-  const gridStyle = {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-    gap: "20px",
-    alignItems: "start"
-  };
+const gridStyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+  gap: "20px",
+  alignItems: "start"
+};
 
-  const cardTitleStyle = {
-    margin: "0 0 8px 0",
-    fontSize: "22px",
-    color: "#111827"
-  };
+const cardTitleStyle = {
+  margin: "0 0 8px 0",
+  fontSize: "22px",
+  color: "#111827"
+};
 
-  const smallLabelStyle = {
-    fontSize: "13px",
-    color: "#6b7280",
-    marginBottom: "6px"
-  };
+const smallLabelStyle = {
+  fontSize: "13px",
+  color: "#6b7280",
+  marginBottom: "6px"
+};
 
-  const hoofdHandelingWrapStyle = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-    marginBottom: "16px"
-  };
+const hoofdHandelingWrapStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
+  marginBottom: "16px"
+};
 
-  const nextBlockStyle = {
-    marginBottom: "16px"
-  };
+const nextBlockStyle = {
+  marginBottom: "16px"
+};
 
-  const nextRemoveStyle = {
-    border: "none",
-    background: "#eff6ff",
-    color: "#1d4ed8",
-    borderRadius: "8px",
-    padding: "2px 8px",
-    cursor: "pointer",
-    fontWeight: "700"
-  };
+const nextRemoveStyle = {
+  border: "none",
+  background: "#eff6ff",
+  color: "#1d4ed8",
+  borderRadius: "8px",
+  padding: "2px 8px",
+  cursor: "pointer",
+  fontWeight: "700"
+};
 
-  const namesWrapStyle = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-    marginBottom: "16px"
-  };
+const namesWrapStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
+  marginBottom: "16px"
+};
 
-  const removeButtonStyle = {
-    border: "none",
-    background: "#fff5f5",
-    color: "#b91c1c",
-    borderRadius: "10px",
-    padding: "6px 10px",
-    cursor: "pointer",
-    fontWeight: "700",
-    boxShadow: "0 2px 8px rgba(185,28,28,0.08)"
-  };
+const removeButtonStyle = {
+  border: "none",
+  background: "#fff5f5",
+  color: "#b91c1c",
+  borderRadius: "10px",
+  padding: "6px 10px",
+  cursor: "pointer",
+  fontWeight: "700",
+  boxShadow: "0 2px 8px rgba(185,28,28,0.08)"
+};
 
-  const formWrapStyle = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-    marginTop: "6px"
-  };
+const formWrapStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
+  marginTop: "6px"
+};
 
-  const searchInputStyle = {
-    width: "100%",
-    padding: "11px 13px",
-    borderRadius: "14px",
-    border: "1px solid rgba(203,213,225,0.9)",
-    background: "rgba(255,255,255,0.92)",
-    fontSize: "14px",
-    boxSizing: "border-box",
-    outline: "none"
-  };
+const searchInputStyle = {
+  width: "100%",
+  padding: "11px 13px",
+  borderRadius: "14px",
+  border: "1px solid rgba(203,213,225,0.9)",
+  background: "rgba(255,255,255,0.92)",
+  fontSize: "14px",
+  boxSizing: "border-box",
+  outline: "none"
+};
 
-  const resultItemStyle = {
-    padding: "10px 12px",
-    cursor: "pointer",
-    borderBottom: "1px solid rgba(226,232,240,0.8)",
-    fontSize: "14px",
-    color: "#111827",
-    background: "transparent"
-  };
+const resultItemStyle = {
+  padding: "10px 12px",
+  cursor: "pointer",
+  borderBottom: "1px solid rgba(226,232,240,0.8)",
+  fontSize: "14px",
+  color: "#111827",
+  background: "transparent"
+};
 
-  const hintStyle = {
-    fontSize: "12px",
-    color: "#6b7280"
-  };
+const hintStyle = {
+  fontSize: "12px",
+  color: "#6b7280"
+};
 
-  const printAreaStyle = {
+const printAreaStyle = {
   background: "#ffffff",
   borderRadius: "18px",
   padding: "16px",
@@ -1152,7 +1133,7 @@ function mailUitzendLijst() {
   marginTop: "24px"
 };
 
- const printTitleStyle = {
+const printTitleStyle = {
   margin: "0 0 6px 0",
   fontSize: "16px",
   color: "#111827"
@@ -1183,6 +1164,7 @@ const tdStyle = {
   lineHeight: "1.1",
   wordBreak: "break-word"
 };
+
 return React.createElement(
   "div",
   { style: pageStyle },
@@ -1190,775 +1172,753 @@ return React.createElement(
     "div",
     { style: wrapStyle },
     [
-           React.createElement(
-          "div",
-          { style: headerStyle, key: "header" },
-          [
-            React.createElement("img", {
-              src: "https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
-              style: {
-                width: "180px",
-                marginBottom: "12px",
-                borderRadius: "8px"
-              },
-              key: "logo"
-            }),
-            React.createElement(
-  "h1",
-  { style: titleStyle, key: "title" },
-  `Planning App - ${getVandaag()}`
-),
-            React.createElement(
-  "div",
-  {
-   style: {
-  marginTop: "8px",
-  fontSize: "28px",
-  fontWeight: "700",
-  color: "#111827"
-},
-    key: "totaal-uitzend"
-  },
-  `Totaal uitzendkrachten: ${berekenTotaalUitzend(handelingen)}`
-),
-            React.createElement(
-              "p",
-              { style: subStyle, key: "sub" },
-              "Planbord met namen toevoegen en meerdere vervolg handelingen"
-            ),
-            React.createElement(
-              "div",
-              {
-                style: { marginTop: "16px", display: "flex", gap: "10px", flexWrap: "wrap" },
-                key: "header-actions"
-              },
-              [
-                React.createElement(
-                  "button",
-                  {
-                    style: topButtonStyle,
-                    onClick: voegHandelingBlokToe,
-                    key: "add-block"
-                  },
-                  "+ Handeling blok toevoegen"
-                ),
-                React.createElement(
-  "button",
-  {
-    style: topButtonStyle,
-    onClick: () => {
-      const lijst = maakUitzendLijst(handelingen);
-
-      const inhoud = `
-        <html>
-          <head>
-            <title>Uitzendlijst - ${getVandaag()}</title>
-          </head>
-          <body style="font-family: Arial; padding:20px;">
-            <h2>Uitzendkrachten - ${getVandaag()}</h2>
-
-            <ul>
-              ${lijst.namen.map((naam) => `<li>${naam}</li>`).join("")}
-            </ul>
-
-            <h3 style="margin-top:20px;">
-  + extra mensen: ${lijst.extra}
-</h3>
-
-<h2 style="margin-top:10px;">
-  Totaal mensen: ${lijst.namen.length + lijst.extra}
-</h2>
-          </body>
-        </html>
-      `;
-
-      const win = window.open("", "_blank");
-      win.document.write(inhoud);
-      win.document.close();
-      win.print();
-    },
-    key: "print-uitzendlijst"
-  },
-  "Print lijst"
-),
-                React.createElement(
-  "button",
-  {
-    style: printButtonStyle,
-    onClick: mailUitzendLijst,
-    key: "mail-uitzendlijst"
-  },
-  "Mail lijst"
-),
-                React.createElement(
-                  "button",
-                  {
-                    style: printButtonStyle,
-                   onClick: () => {
-  const printInhoud = handelingen
-    .filter((item) => item.handeling && item.handeling.code)
-    .map((item) => `
-      <<tr>
-  <td>${formatHandeling(item.handeling)}${item.klantNaam ? ` - ${item.klantNaam}` : ""}</td>
-<td>${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}</td>
-  <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
-  <td>${item.vervolg.length > 0 ? item.vervolg.map((v) => formatHandeling(v)).join(", ") : "-"}</td>
-</tr>
-    `)
-    .join("");
-
-  const win = window.open("", "_blank");
-  win.document.write(`
-    <html>
-      <head>
-        <title>Dagprogramma overzicht - ${getVandaag()}</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            color: #111827;
-          }
-          h1 {
-            font-size: 18px;
-            margin-bottom: 10px;
-          }
-          table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 10px;
-            table-layout: fixed;
-          }
-          th, td {
-            border: 1px solid #d1d5db;
-            padding: 4px;
-            text-align: left;
-            vertical-align: top;
-            word-break: break-word;
-            line-height: 1.1;
-          }
-          th:nth-child(1), td:nth-child(1) { width: 24%; }
-          th:nth-child(2), td:nth-child(2) { width: 8%; }
-          th:nth-child(3), td:nth-child(3) { width: 44%; }
-          th:nth-child(4), td:nth-child(4) { width: 24%; }
-
-          @page {
-            size: A4 landscape;
-            margin: 10mm;
-          }
-        </style>
-      </head>
-     <body>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-  <h1 style="margin:0;">Dagprogramma overzicht - ${getVandaag()}</h1>
-  <img src="https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
-       style="width:90px;" />
-</div>
-        <table>
-          <thead>
-            <tr>
-              <th>Handeling</th>
-              <th>Aantal</th>
-              <th>Namen</th>
-              <th>Daarna</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${printInhoud}
-          </tbody>
-        </table>
-        <h2 style="margin-top:20px;">Overig werk</h2>
-<p style="font-size:12px; white-space:pre-line;">${overigWerk || "-"}</p>
-      </body>
-    </html>
-  `);
-  win.document.close();
-  win.focus();
-  win.print();
-},
-                    key: "print-button"
-                  },
-                  "Print / PDF",
-                  React.createElement(
-  "button",
-  {
-    style: printButtonStyle,
-         key: "save-pdf-button",
-    onClick: () => {
-  const printInhoud = handelingen
-    .filter((item) => item.handeling && item.handeling.code)
-    .map((item) => `
-      <tr><td>
-        <td>${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}</td>
-        <<td>${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}</td>
-        <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
-        <td>${item.vervolg.length > 0 ? item.vervolg.map((v) => formatHandeling(v)).join(", ") : "-"}</td>
-      </tr>
-    `)
-    .join("");
-
-  const win = window.open("", "_blank");
-  win.document.write(`
-    <html>
-      <head>
-        <title>Planning-${getVandaag()}</title>
-      </head>
-      <body>
-        <h1>Dagprogramma overzicht - ${getVandaag()}</h1>
-        <table border="1" style="width:100%; border-collapse:collapse; font-size:10px;">
-          <thead>
-            <tr>
-              <th>Handeling</th>
-              <th>Aantal</th>
-              <th>Namen</th>
-              <th>Daarna</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${printInhoud}
-          </tbody>
-        </table>
-
-        <h2 style="margin-top:20px;">Overig werk</h2>
-        <p style="font-size:12px; white-space:pre-line;">${overigWerk || "-"}</p>
-      </body>
-    </html>
-  `);
-  win.document.close();
-  win.print();
-}
-     },
-  "Opslaan als PDF"
-),
-                )
-              ]
-            )
-          ]
-        ),
-
-        React.createElement(
-          "div",
-          { style: gridStyle, key: "grid" },
-          ...handelingen.map((item, index) => {
-            const zoekNaam = item.nieuweNaam || "";
-            const gefilterdeNamen = beschikbareNamen.filter((naam) =>
-              naam.toLowerCase().includes(zoekNaam.toLowerCase())
-            );
-
-            const zoekVervolg = item.nieuweHandeling || "";
-            const gefilterdeHandelingen = beschikbareHandelingen.filter(
-              (handelingOptie) =>
-                `${handelingOptie.code} ${handelingOptie.naam}`
-                  .toLowerCase()
-                  .includes(zoekVervolg.toLowerCase()) &&
-                handelingOptie.code !== item.handeling.code
-            );
-
-            const zoekHoofd = item.zoekHoofdHandeling || "";
-            const gefilterdeHoofdHandelingen = beschikbareHandelingen.filter(
-              (handelingOptie) =>
-                `${handelingOptie.code} ${handelingOptie.naam}`
-                  .toLowerCase()
-                  .includes(zoekHoofd.toLowerCase())
-            );
-
-            return React.createElement(
-              "div",
-              { style: getCardStyle(index), key: item.id || index },
-              [
-                React.createElement(
-                  "div",
-                  { style: smallLabelStyle, key: "label-" + index },
-                  "Handeling"
-                ),
-                React.createElement(
-                  "div",
-                  { style: hoofdHandelingWrapStyle, key: "hoofdhandeling-" + index },
-                  [
-                    React.createElement(
-                      "h2",
-                      { style: cardTitleStyle, key: "title-" + index },
-                     `${formatHandeling(item.handeling)}${item.klantNaam ? " - " + item.klantNaam : ""}`
-                    ),
-                    React.createElement(
-                      "button",
-                      {
-                        style: {
-                          border: "none",
-                          background: "#fee2e2",
-                          color: "#b91c1c",
-                          borderRadius: "10px",
-                          padding: "6px 10px",
-                          cursor: "pointer",
-                          fontWeight: "700",
-                          marginBottom: "10px"
-                        },
-                        onClick: () => verwijderBlok(item.id),
-                        key: "verwijder-" + index
-                      },
-                      "Blok verwijderen"
-                    ),
-                    React.createElement("input", {
-  type: "text",
-  placeholder: "Zoek hoofdhandeling of code...",
-  value: item.zoekHoofdHandeling || "",
-  onChange: (e) =>
-    updateZoekHoofdHandeling(item.id, e.target.value),
-  style: searchInputStyle,
-  key: "main-input-" + index
-}),
-zoekHoofd
-  ? React.createElement(
-      "div",
-      { style: getResultsStyle(index), key: "main-results-" + index },
-      ...(gefilterdeHoofdHandelingen.length > 0
-        ? gefilterdeHoofdHandelingen.slice(0, 8).map((handelingOptie, i) =>
-            React.createElement(
-              "div",
-              {
-                key: "main-result-" + i,
-                style: resultItemStyle,
-                onClick: () =>
-                  kiesHoofdHandeling(item.id, handelingOptie)
-              },
-              formatHandeling(handelingOptie)
-            )
-          )
-        : [
-            React.createElement(
-              "div",
-              {
-                key: "geen-hoofdhandeling",
-                style: {
-                  padding: "10px 12px",
-                  fontSize: "14px",
-                  color: "#6b7280"
-                }
-              },
-              "Geen handeling gevonden"
-            )
-          ])
-    )
-  : null
-]
-),
-React.createElement(
-  "div",
-  { style: getCountStyle(index), key: "count-" + index },
-  (item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)) + " mensen"
-),
-React.createElement(
-  "div",
-  { style: nextBlockStyle, key: "nextblock-" + index },
-[
-  React.createElement(
-    "div",
-    {
-      style: { ...smallLabelStyle, marginBottom: "10px" },
-      key: "nextlabel-" + index
-    },
-    "Daarna"
-  ),
-  ...item.vervolg.map((vervolgItem, i) =>
-    React.createElement(
-      "div",
-      {
-        key: "vervolg-wrap-" + i,
-        style: { marginBottom: "10px" }
-      },
-      [
-        React.createElement(
-          "span",
-          { style: getNextTagStyle(index), key: "tag-" + i },
-          [
-            `${formatHandeling(vervolgItem.handeling || vervolgItem)}${vervolgItem.klantNaam ? " - " + vervolgItem.klantNaam : ""}`,
-            React.createElement(
-              "button",
-              {
-                style: nextRemoveStyle,
-                onClick: () =>
-                  verwijderVervolgHandeling(
-                    item.id,
-                    (vervolgItem.handeling || vervolgItem).code
-                  ),
-                key: "remove-tag-" + i
-              },
-              "✕"
-            )
-          ]
-        ),
-        React.createElement("input", {
-          type: "text",
-          placeholder: "Klantnaam vervolg",
-          value: vervolgItem.klantNaam || "",
-          onChange: (e) =>
-            updateVervolgKlantNaam(
-              item.id,
-              (vervolgItem.handeling || vervolgItem).code,
-              e.target.value
-            ),
-          style: searchInputStyle,
-          key: "vervolg-klant-" + i
-        })
-      ]
-    )
-  )
-]
-),
-React.createElement(
-  "div",
-  { style: namesWrapStyle, key: "names-" + index },
-  ...item.mensen.map((naam, i) =>
-    React.createElement(
-      "div",
-      { style: getPersonStyle(index), key: "person-" + i },
-      [
-        React.createElement("span", { key: "person-name-" + i }, naam),
-        React.createElement(
-          "button",
-          {
-            style: removeButtonStyle,
-            onClick: () => verwijderNaam(item.id, naam),
-            key: "person-remove-" + i
-          },
-          "✕"
-        )
-      ]
-    )
-  )
-),
-React.createElement(
-  "div",
-  { style: formWrapStyle, key: "nameform-" + index },
-  [
-    React.createElement("input", {
-      type: "text",
-      placeholder: "Zoek medewerker...",
-      value: item.nieuweNaam,
-      onChange: (e) =>
-        updateNieuweNaam(item.id, e.target.value),
-      style: searchInputStyle,
-      key: "name-input-" + index
-    }),
-    zoekNaam
-      ? React.createElement(
-          "div",
-          { style: getResultsStyle(index), key: "name-results-" + index },
-          ...(gefilterdeNamen.length > 0
-            ? gefilterdeNamen.slice(0, 20).map((naam, i) =>
-                React.createElement(
-                  "div",
-                  {
-                    key: "name-result-" + i,
-                    style: resultItemStyle,
-                    onClick: () =>
-                      voegNaamToeDirect(item.id, naam)
-                  },
-                  naam
-                )
-              )
-            : [
-                React.createElement(
-                  "div",
-                  {
-                    key: "geen-medewerker",
-                    style: {
-                      padding: "10px 12px",
-                      fontSize: "14px",
-                      color: "#6b7280"
-                    }
-                  },
-                  "Geen medewerker gevonden"
-                )
-              ])
-        )
-      : null,
-    React.createElement(
-      "div",
-      { style: hintStyle, key: "name-hint-" + index },
-      "Typ een paar letters en klik op een naam"
-    ),
-    React.createElement("input", {
-      type: "number",
-      min: "0",
-      placeholder: "Extra mensen zonder naam",
-      value: item.extraMensen || 0,
-      onChange: (e) => updateExtraMensen(item.id, e.target.value),
-      style: searchInputStyle,
-      key: "extra-input-" + index
-    }),
-    React.createElement(
-      "div",
-      { style: hintStyle, key: "extra-hint-" + index },
-      "Bijvoorbeeld +5 als uitzendbureau zelf mensen invult"
-    ),
-    React.createElement("input", {
-      type: "text",
-      placeholder: "Klantnaam",
-      value: item.klantNaam || "",
-      onChange: (e) => updateKlantNaam(item.id, e.target.value),
-      style: searchInputStyle,
-      key: "klant-input-" + index
-    }),
-    React.createElement(
-      "div",
-      { style: hintStyle, key: "klant-hint-" + index },
-      "Vrij invulbaar, bijvoorbeeld Agro Care"
-    )
-  ]
-),
-React.createElement(
-  "div",
-  {
-    style: { ...formWrapStyle, marginTop: "18px" },
-    key: "nextform-" + index
-  },
-  [
-    React.createElement("input", {
-      type: "text",
-      placeholder: "Zoek vervolg handeling of code...",
-      value: item.nieuweHandeling,
-      onChange: (e) =>
-        updateNieuweHandeling(item.id, e.target.value),
-      style: searchInputStyle,
-      key: "next-input-" + index
-    }),
-    zoekVervolg
-      ? React.createElement(
-          "div",
-          { style: getResultsStyle(index), key: "next-results-" + index },
-          ...(gefilterdeHandelingen.length > 0
-            ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
-                React.createElement(
-                  "div",
-                  {
-                    key: "next-result-" + i,
-                    style: resultItemStyle,
-                    onClick: () =>
-                      voegVervolgHandelingToe(item.id, handelingOptie)
-                  },
-                  formatHandeling(handelingOptie)
-                )
-              )
-            : [
-                React.createElement(
-                  "div",
-                  {
-                    key: "geen-handeling",
-                    style: {
-                      padding: "10px 12px",
-                      fontSize: "14px",
-                      color: "#6b7280"
-                    }
-                  },
-                  "Geen handeling gevonden"
-                )
-              ])
-        )
-      : null,
-    React.createElement(
-      "div",
-      { style: hintStyle, key: "next-hint-" + index },
-      "Typ code of naam en klik op een vervolg handeling"
-    )
-  ]
-        ),
-
-  React.createElement(
-  "div",
-  { style: printAreaStyle, key: "print-area" },
-  [
-    React.createElement(
-      "h2",
-      { style: printTitleStyle, key: "print-title" },
-      "Dagprogramma overzicht"
-    ),
-    React.createElement(
-      "table",
-      { style: printTableStyle, key: "print-table" },
-      [
-        React.createElement(
-          "thead",
-          { key: "thead" },
+      React.createElement(
+        "div",
+        { style: headerStyle, key: "header" },
+        [
+          React.createElement("img", {
+            src: "https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
+            style: {
+              width: "180px",
+              marginBottom: "12px",
+              borderRadius: "8px"
+            },
+            key: "logo"
+          }),
           React.createElement(
-            "tr",
-            {},
+            "h1",
+            { style: titleStyle, key: "title" },
+            `Planning App - ${getVandaag()}`
+          ),
+          React.createElement(
+            "div",
+            {
+              style: {
+                marginTop: "8px",
+                fontSize: "28px",
+                fontWeight: "700",
+                color: "#111827"
+              },
+              key: "totaal-uitzend"
+            },
+            `Totaal uitzendkrachten: ${berekenTotaalUitzend(handelingen)}`
+          ),
+          React.createElement(
+            "p",
+            { style: subStyle, key: "sub" },
+            "Planbord met namen toevoegen en meerdere vervolg handelingen"
+          ),
+          React.createElement(
+            "div",
+            {
+              style: { marginTop: "16px", display: "flex", gap: "10px", flexWrap: "wrap" },
+              key: "header-actions"
+            },
             [
-              React.createElement("th", { style: thStyle, key: "h1" }, "Handeling"),
-              React.createElement("th", { style: thStyle, key: "h2" }, "Aantal"),
-              React.createElement("th", { style: thStyle, key: "h3" }, "Namen"),
-              React.createElement("th", { style: thStyle, key: "h4" }, "Daarna")
+              React.createElement(
+                "button",
+                {
+                  style: topButtonStyle,
+                  onClick: voegHandelingBlokToe,
+                  key: "add-block"
+                },
+                "+ Handeling blok toevoegen"
+              ),
+              React.createElement(
+                "button",
+                {
+                  style: topButtonStyle,
+                  onClick: () => {
+                    const lijst = maakUitzendLijst(handelingen);
+
+                    const inhoud = `
+                      <html>
+                        <head>
+                          <title>Uitzendlijst - ${getVandaag()}</title>
+                        </head>
+                        <body style="font-family: Arial; padding:20px;">
+                          <h2>Uitzendkrachten - ${getVandaag()}</h2>
+                          <ul>
+                            ${lijst.namen.map((naam) => `<li>${naam}</li>`).join("")}
+                          </ul>
+                          <h3 style="margin-top:20px;">+ extra mensen: ${lijst.extra}</h3>
+                          <h2 style="margin-top:10px;">Totaal mensen: ${lijst.namen.length + lijst.extra}</h2>
+                        </body>
+                      </html>
+                    `;
+
+                    const win = window.open("", "_blank");
+                    win.document.write(inhoud);
+                    win.document.close();
+                    win.print();
+                  },
+                  key: "print-uitzendlijst"
+                },
+                "Print lijst"
+              ),
+              React.createElement(
+                "button",
+                {
+                  style: printButtonStyle,
+                  onClick: mailUitzendLijst,
+                  key: "mail-uitzendlijst"
+                },
+                "Mail lijst"
+              ),
+              React.createElement(
+                "button",
+                {
+                  style: printButtonStyle,
+                  onClick: () => {
+                    const printInhoud = handelingen
+                      .filter((item) => item.handeling && item.handeling.code)
+                      .map((item) => `
+                        <tr>
+                          <td>${formatHandeling(item.handeling)}${item.klantNaam ? ` - ${item.klantNaam}` : ""}</td>
+                          <td>${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}</td>
+                          <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
+                          <td>${
+                            item.vervolg.length > 0
+                              ? item.vervolg
+                                  .map((v) => `${formatHandeling(v.handeling || v)}${v.klantNaam ? ` - ${v.klantNaam}` : ""}`)
+                                  .join(", ")
+                              : "-"
+                          }</td>
+                        </tr>
+                      `)
+                      .join("");
+
+                    const win = window.open("", "_blank");
+                    win.document.write(`
+                      <html>
+                        <head>
+                          <title>Dagprogramma overzicht - ${getVandaag()}</title>
+                          <style>
+                            body {
+                              font-family: Arial, sans-serif;
+                              padding: 20px;
+                              color: #111827;
+                            }
+                            h1 {
+                              font-size: 18px;
+                              margin-bottom: 10px;
+                            }
+                            table {
+                              width: 100%;
+                              border-collapse: collapse;
+                              font-size: 10px;
+                              table-layout: fixed;
+                            }
+                            th, td {
+                              border: 1px solid #d1d5db;
+                              padding: 4px;
+                              text-align: left;
+                              vertical-align: top;
+                              word-break: break-word;
+                              line-height: 1.1;
+                            }
+                            th:nth-child(1), td:nth-child(1) { width: 24%; }
+                            th:nth-child(2), td:nth-child(2) { width: 8%; }
+                            th:nth-child(3), td:nth-child(3) { width: 44%; }
+                            th:nth-child(4), td:nth-child(4) { width: 24%; }
+                            @page {
+                              size: A4 landscape;
+                              margin: 10mm;
+                            }
+                          </style>
+                        </head>
+                        <body>
+                          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <h1 style="margin:0;">Dagprogramma overzicht - ${getVandaag()}</h1>
+                            <img src="https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3" style="width:90px;" />
+                          </div>
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>Handeling</th>
+                                <th>Aantal</th>
+                                <th>Namen</th>
+                                <th>Daarna</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              ${printInhoud}
+                            </tbody>
+                          </table>
+                          <h2 style="margin-top:20px;">Overig werk</h2>
+                          <p style="font-size:12px; white-space:pre-line;">${overigWerk || "-"}</p>
+                        </body>
+                      </html>
+                    `);
+                    win.document.close();
+                    win.focus();
+                    win.print();
+                  },
+                  key: "print-button"
+                },
+                "Print / PDF"
+              ),
+              React.createElement(
+                "button",
+                {
+                  style: printButtonStyle,
+                  key: "save-pdf-button",
+                  onClick: () => {
+                    const printInhoud = handelingen
+                      .filter((item) => item.handeling && item.handeling.code)
+                      .map((item) => `
+                        <tr>
+                          <td>${formatHandeling(item.handeling)}${item.klantNaam ? ` - ${item.klantNaam}` : ""}</td>
+                          <td>${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}</td>
+                          <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
+                          <td>${
+                            item.vervolg.length > 0
+                              ? item.vervolg
+                                  .map((v) => `${formatHandeling(v.handeling || v)}${v.klantNaam ? ` - ${v.klantNaam}` : ""}`)
+                                  .join(", ")
+                              : "-"
+                          }</td>
+                        </tr>
+                      `)
+                      .join("");
+
+                    const win = window.open("", "_blank");
+                    win.document.write(`
+                      <html>
+                        <head>
+                          <title>Planning-${getVandaag()}</title>
+                        </head>
+                        <body>
+                          <h1>Dagprogramma overzicht - ${getVandaag()}</h1>
+                          <table border="1" style="width:100%; border-collapse:collapse; font-size:10px;">
+                            <thead>
+                              <tr>
+                                <th>Handeling</th>
+                                <th>Aantal</th>
+                                <th>Namen</th>
+                                <th>Daarna</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              ${printInhoud}
+                            </tbody>
+                          </table>
+                          <h2 style="margin-top:20px;">Overig werk</h2>
+                          <p style="font-size:12px; white-space:pre-line;">${overigWerk || "-"}</p>
+                        </body>
+                      </html>
+                    `);
+                    win.document.close();
+                    win.print();
+                  }
+                },
+                "Opslaan als PDF"
+              )
             ]
           )
-        ),
-        React.createElement(
-          "tbody",
-          { key: "tbody" },
-          ...handelingen
-            .filter((item) => item.handeling && item.handeling.code)
-            .map((item, index) =>
+        ]
+      ),
+
+      React.createElement(
+        "div",
+        { style: gridStyle, key: "grid" },
+        ...handelingen.map((item, index) => {
+          const zoekNaam = item.nieuweNaam || "";
+          const gefilterdeNamen = beschikbareNamen.filter((naam) =>
+            naam.toLowerCase().includes(zoekNaam.toLowerCase())
+          );
+
+          const zoekVervolg = item.nieuweHandeling || "";
+          const gefilterdeHandelingen = beschikbareHandelingen.filter(
+            (handelingOptie) =>
+              `${handelingOptie.code} ${handelingOptie.naam}`
+                .toLowerCase()
+                .includes(zoekVervolg.toLowerCase()) &&
+              handelingOptie.code !== item.handeling.code
+          );
+
+          const zoekHoofd = item.zoekHoofdHandeling || "";
+          const gefilterdeHoofdHandelingen = beschikbareHandelingen.filter(
+            (handelingOptie) =>
+              `${handelingOptie.code} ${handelingOptie.naam}`
+                .toLowerCase()
+                .includes(zoekHoofd.toLowerCase())
+          );
+
+          return React.createElement(
+            "div",
+            { style: getCardStyle(index), key: item.id || index },
+            [
               React.createElement(
-                "tr",
-                { key: "row-" + index },
+                "div",
+                { style: smallLabelStyle, key: "label-" + index },
+                "Handeling"
+              ),
+
+              React.createElement(
+                "div",
+                { style: hoofdHandelingWrapStyle, key: "hoofdhandeling-" + index },
                 [
                   React.createElement(
-                    "td",
-                    { style: tdStyle },
-                `${formatHandeling(item.handeling)}${item.klantNaam ? " - " + item.klantNaam : ""}`
+                    "h2",
+                    { style: cardTitleStyle, key: "title-" + index },
+                    `${formatHandeling(item.handeling)}${item.klantNaam ? " - " + item.klantNaam : ""}`
                   ),
                   React.createElement(
-                    "td",
-                    { style: tdStyle },
-                    item.mensen.length
+                    "button",
+                    {
+                      style: {
+                        border: "none",
+                        background: "#fee2e2",
+                        color: "#b91c1c",
+                        borderRadius: "10px",
+                        padding: "6px 10px",
+                        cursor: "pointer",
+                        fontWeight: "700",
+                        marginBottom: "10px"
+                      },
+                      onClick: () => verwijderBlok(item.id),
+                      key: "verwijder-" + index
+                    },
+                    "Blok verwijderen"
                   ),
+                  React.createElement("input", {
+                    type: "text",
+                    placeholder: "Zoek hoofdhandeling of code...",
+                    value: item.zoekHoofdHandeling || "",
+                    onChange: (e) =>
+                      updateZoekHoofdHandeling(item.id, e.target.value),
+                    style: searchInputStyle,
+                    key: "main-input-" + index
+                  }),
+                  zoekHoofd
+                    ? React.createElement(
+                        "div",
+                        { style: getResultsStyle(index), key: "main-results-" + index },
+                        ...(gefilterdeHoofdHandelingen.length > 0
+                          ? gefilterdeHoofdHandelingen.slice(0, 8).map((handelingOptie, i) =>
+                              React.createElement(
+                                "div",
+                                {
+                                  key: "main-result-" + i,
+                                  style: resultItemStyle,
+                                  onClick: () =>
+                                    kiesHoofdHandeling(item.id, handelingOptie)
+                                },
+                                formatHandeling(handelingOptie)
+                              )
+                            )
+                          : [
+                              React.createElement(
+                                "div",
+                                {
+                                  key: "geen-hoofdhandeling",
+                                  style: {
+                                    padding: "10px 12px",
+                                    fontSize: "14px",
+                                    color: "#6b7280"
+                                  }
+                                },
+                                "Geen handeling gevonden"
+                              )
+                            ])
+                      )
+                    : null
+                ]
+              ),
+
+              React.createElement(
+                "div",
+                { style: getCountStyle(index), key: "count-" + index },
+                (item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)) + " mensen"
+              ),
+
+              React.createElement(
+                "div",
+                { style: nextBlockStyle, key: "nextblock-" + index },
+                [
                   React.createElement(
-                    "td",
-                    { style: tdStyle },
-                    item.mensen.join(", ")
+                    "div",
+                    {
+                      style: { ...smallLabelStyle, marginBottom: "10px" },
+                      key: "nextlabel-" + index
+                    },
+                    "Daarna"
                   ),
+                  ...item.vervolg.map((vervolgItem, i) =>
+                    React.createElement(
+                      "div",
+                      {
+                        key: "vervolg-wrap-" + i,
+                        style: { marginBottom: "10px" }
+                      },
+                      [
+                        React.createElement(
+                          "span",
+                          { style: getNextTagStyle(index), key: "tag-" + i },
+                          [
+                            `${formatHandeling(vervolgItem.handeling || vervolgItem)}${vervolgItem.klantNaam ? " - " + vervolgItem.klantNaam : ""}`,
+                            React.createElement(
+                              "button",
+                              {
+                                style: nextRemoveStyle,
+                                onClick: () =>
+                                  verwijderVervolgHandeling(
+                                    item.id,
+                                    (vervolgItem.handeling || vervolgItem).code
+                                  ),
+                                key: "remove-tag-" + i
+                              },
+                              "✕"
+                            )
+                          ]
+                        ),
+                        React.createElement("input", {
+                          type: "text",
+                          placeholder: "Klantnaam vervolg",
+                          value: vervolgItem.klantNaam || "",
+                          onChange: (e) =>
+                            updateVervolgKlantNaam(
+                              item.id,
+                              (vervolgItem.handeling || vervolgItem).code,
+                              e.target.value
+                            ),
+                          style: searchInputStyle,
+                          key: "vervolg-klant-" + i
+                        })
+                      ]
+                    )
+                  )
+                ]
+              ),
+
+              React.createElement(
+                "div",
+                { style: namesWrapStyle, key: "names-" + index },
+                ...item.mensen.map((naam, i) =>
                   React.createElement(
-                    "td",
-                    { style: tdStyle },
-                    item.vervolg.length
-                      ? item.vervolg.map(v => formatHandeling(v)).join(", ")
-                      : "-"
+                    "div",
+                    { style: getPersonStyle(index), key: "person-" + i },
+                    [
+                      React.createElement("span", { key: "person-name-" + i }, naam),
+                      React.createElement(
+                        "button",
+                        {
+                          style: removeButtonStyle,
+                          onClick: () => verwijderNaam(item.id, naam),
+                          key: "person-remove-" + i
+                        },
+                        "✕"
+                      )
+                    ]
+                  )
+                )
+              ),
+
+              React.createElement(
+                "div",
+                { style: formWrapStyle, key: "nameform-" + index },
+                [
+                  React.createElement("input", {
+                    type: "text",
+                    placeholder: "Zoek medewerker...",
+                    value: item.nieuweNaam,
+                    onChange: (e) =>
+                      updateNieuweNaam(item.id, e.target.value),
+                    style: searchInputStyle,
+                    key: "name-input-" + index
+                  }),
+                  zoekNaam
+                    ? React.createElement(
+                        "div",
+                        { style: getResultsStyle(index), key: "name-results-" + index },
+                        ...(gefilterdeNamen.length > 0
+                          ? gefilterdeNamen.slice(0, 20).map((naam, i) =>
+                              React.createElement(
+                                "div",
+                                {
+                                  key: "name-result-" + i,
+                                  style: resultItemStyle,
+                                  onClick: () =>
+                                    voegNaamToeDirect(item.id, naam)
+                                },
+                                naam
+                              )
+                            )
+                          : [
+                              React.createElement(
+                                "div",
+                                {
+                                  key: "geen-medewerker",
+                                  style: {
+                                    padding: "10px 12px",
+                                    fontSize: "14px",
+                                    color: "#6b7280"
+                                  }
+                                },
+                                "Geen medewerker gevonden"
+                              )
+                            ])
+                      )
+                    : null,
+                  React.createElement(
+                    "div",
+                    { style: hintStyle, key: "name-hint-" + index },
+                    "Typ een paar letters en klik op een naam"
+                  ),
+                  React.createElement("input", {
+                    type: "number",
+                    min: "0",
+                    placeholder: "Extra mensen zonder naam",
+                    value: item.extraMensen || 0,
+                    onChange: (e) => updateExtraMensen(item.id, e.target.value),
+                    style: searchInputStyle,
+                    key: "extra-input-" + index
+                  }),
+                  React.createElement(
+                    "div",
+                    { style: hintStyle, key: "extra-hint-" + index },
+                    "Bijvoorbeeld +5 als uitzendbureau zelf mensen invult"
+                  ),
+                  React.createElement("input", {
+                    type: "text",
+                    placeholder: "Klantnaam",
+                    value: item.klantNaam || "",
+                    onChange: (e) => updateKlantNaam(item.id, e.target.value),
+                    style: searchInputStyle,
+                    key: "klant-input-" + index
+                  }),
+                  React.createElement(
+                    "div",
+                    { style: hintStyle, key: "klant-hint-" + index },
+                    "Vrij invulbaar, bijvoorbeeld Agro Care"
+                  )
+                ]
+              ),
+
+              React.createElement(
+                "div",
+                {
+                  style: { ...formWrapStyle, marginTop: "18px" },
+                  key: "nextform-" + index
+                },
+                [
+                  React.createElement("input", {
+                    type: "text",
+                    placeholder: "Zoek vervolg handeling of code...",
+                    value: item.nieuweHandeling,
+                    onChange: (e) =>
+                      updateNieuweHandeling(item.id, e.target.value),
+                    style: searchInputStyle,
+                    key: "next-input-" + index
+                  }),
+                  zoekVervolg
+                    ? React.createElement(
+                        "div",
+                        { style: getResultsStyle(index), key: "next-results-" + index },
+                        ...(gefilterdeHandelingen.length > 0
+                          ? gefilterdeHandelingen.slice(0, 8).map((handelingOptie, i) =>
+                              React.createElement(
+                                "div",
+                                {
+                                  key: "next-result-" + i,
+                                  style: resultItemStyle,
+                                  onClick: () =>
+                                    voegVervolgHandelingToe(item.id, handelingOptie)
+                                },
+                                formatHandeling(handelingOptie)
+                              )
+                            )
+                          : [
+                              React.createElement(
+                                "div",
+                                {
+                                  key: "geen-handeling",
+                                  style: {
+                                    padding: "10px 12px",
+                                    fontSize: "14px",
+                                    color: "#6b7280"
+                                  }
+                                },
+                                "Geen handeling gevonden"
+                              )
+                            ])
+                      )
+                    : null,
+                  React.createElement(
+                    "div",
+                    { style: hintStyle, key: "next-hint-" + index },
+                    "Typ code of naam en klik op een vervolg handeling"
                   )
                 ]
               )
-            )
-        )
-      ]
-    )
-  ]
-    ),
-   React.createElement(
-  "div",
-  {
-    style: {
-      marginTop: "20px",
-      background: "#ffffff",
-      padding: "16px",
-      borderRadius: "12px",
-      boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
-    },
-    key: "handeling-aantallen"
-  },
-  [
-    React.createElement(
-      "h3",
-      { style: { marginBottom: "10px" } },
-      "Aantal per handeling"
-    ),
-    React.createElement(
-      "table",
-      {
-        style: {
-          width: "100%",
-          borderCollapse: "collapse",
-          fontSize: "14px"
-        }
-      },
-      [
-        React.createElement(
-          "thead",
-          {},
+            ]
+          );
+        })
+      ),
+
+      React.createElement(
+        "div",
+        { style: printAreaStyle, key: "print-area" },
+        [
           React.createElement(
-            "tr",
-            {},
+            "h2",
+            { style: printTitleStyle, key: "print-title" },
+            "Dagprogramma overzicht"
+          ),
+          React.createElement(
+            "table",
+            { style: printTableStyle, key: "print-table" },
             [
-              React.createElement("th", { style: thStyle }, "Handeling"),
-              React.createElement("th", { style: thStyle }, "Aantal")
+              React.createElement(
+                "thead",
+                { key: "thead" },
+                React.createElement(
+                  "tr",
+                  {},
+                  [
+                    React.createElement("th", { style: thStyle, key: "h1" }, "Handeling"),
+                    React.createElement("th", { style: thStyle, key: "h2" }, "Aantal"),
+                    React.createElement("th", { style: thStyle, key: "h3" }, "Namen"),
+                    React.createElement("th", { style: thStyle, key: "h4" }, "Daarna")
+                  ]
+                )
+              ),
+              React.createElement(
+                "tbody",
+                { key: "tbody" },
+                ...handelingen
+                  .filter((item) => item.handeling && item.handeling.code)
+                  .map((item, index) =>
+                    React.createElement(
+                      "tr",
+                      { key: "row-" + index },
+                      [
+                        React.createElement(
+                          "td",
+                          { style: tdStyle },
+                          `${formatHandeling(item.handeling)}${item.klantNaam ? " - " + item.klantNaam : ""}`
+                        ),
+                        React.createElement(
+                          "td",
+                          { style: tdStyle },
+                          item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)
+                        ),
+                        React.createElement(
+                          "td",
+                          { style: tdStyle },
+                          [...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ")
+                        ),
+                        React.createElement(
+                          "td",
+                          { style: tdStyle },
+                          item.vervolg.length
+                            ? item.vervolg
+                                .map((v) => `${formatHandeling(v.handeling || v)}${v.klantNaam ? " - " + v.klantNaam : ""}`)
+                                .join(", ")
+                            : "-"
+                        )
+                      ]
+                    )
+                  )
+              )
             ]
           )
-        ),
-        React.createElement(
-          "tbody",
-          {},
-          ...maakHandelingTelling(handelingen).map((item, index) =>
-            React.createElement(
-              "tr",
-              { key: index },
-              [
-                React.createElement("td", { style: tdStyle }, item.handeling),
-                React.createElement("td", { style: tdStyle }, item.aantal)
-              ]
-            )
-          )
-        )
-      ]
-    )
-  ]
-),
-      React.createElement(
-  "div",
-  {
-    style: {
-      marginTop: "20px",
-      background: "#ffffff",
-      padding: "16px",
-      borderRadius: "12px",
-      boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
-    },
-    key: "handeling-aantallen"
-  },
-  [
-    React.createElement(
-      "h3",
-      { style: { marginBottom: "10px" } },
-      "Aantal per handeling"
-    ),
-   maakHandelingTelling(handelingen).map((item, index) =>
+        ]
+      ),
+
       React.createElement(
         "div",
         {
-          key: index,
           style: {
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "6px 0",
-            borderBottom: "1px solid #eee"
-          }
+            marginTop: "20px",
+            background: "#ffffff",
+            padding: "16px",
+            borderRadius: "12px",
+            boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
+          },
+          key: "handeling-aantallen"
         },
         [
-          React.createElement("span", {}, item.handeling),
-          React.createElement("strong", {}, item.aantal)
+          React.createElement(
+            "h3",
+            { style: { marginBottom: "10px" } },
+            "Aantal per handeling"
+          ),
+          React.createElement(
+            "table",
+            {
+              style: {
+                width: "100%",
+                borderCollapse: "collapse",
+                fontSize: "14px"
+              }
+            },
+            [
+              React.createElement(
+                "thead",
+                {},
+                React.createElement(
+                  "tr",
+                  {},
+                  [
+                    React.createElement("th", { style: thStyle }, "Handeling"),
+                    React.createElement("th", { style: thStyle }, "Aantal")
+                  ]
+                )
+              ),
+              React.createElement(
+                "tbody",
+                {},
+                ...maakHandelingTelling(handelingen).map((item, index) =>
+                  React.createElement(
+                    "tr",
+                    { key: index },
+                    [
+                      React.createElement("td", { style: tdStyle }, item.handeling),
+                      React.createElement("td", { style: tdStyle }, item.aantal)
+                    ]
+                  )
+                )
+              )
+            ]
+          )
+        ]
+      ),
+
+      React.createElement(
+        "div",
+        {
+          style: {
+            marginTop: "20px",
+            background: "#ffffff",
+            padding: "16px",
+            borderRadius: "12px",
+            boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
+          },
+          key: "overig-blok"
+        },
+        [
+          React.createElement(
+            "h3",
+            { style: { marginBottom: "10px" } },
+            "Overig werk"
+          ),
+          React.createElement("textarea", {
+            value: overigWerk,
+            onChange: (e) => setOverigWerk(e.target.value),
+            placeholder: "Typ hier overig werk...",
+            style: {
+              width: "100%",
+              minHeight: "80px",
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #ccc"
+            }
+          })
         ]
       )
-    )
-  ]
-),
-      React.createElement(
-  "div",
-  {
-    style: {
-      marginTop: "20px",
-      background: "#ffffff",
-      padding: "16px",
-      borderRadius: "12px",
-      boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
-    },
-    key: "overig-blok"
-  },
-  [
-    React.createElement(
-      "h3",
-      { style: { marginBottom: "10px" } },
-      "Overig werk"
-    ),
-    React.createElement("textarea", {
-      value: overigWerk,
-      onChange: (e) => setOverigWerk(e.target.value),
-      placeholder: "Typ hier overig werk...",
-      style: {
-        width: "100%",
-        minHeight: "80px",
-        padding: "10px",
-        borderRadius: "8px",
-        border: "1px solid #ccc"
-      }
-    })
-  ]
-),
-]
-)
+    ]
+  )
 );
 }

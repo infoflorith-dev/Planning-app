@@ -527,8 +527,7 @@ klantNaam: ""
         nieuweNaam: blok.nieuweNaam || "",
         zoekHoofdHandeling: blok.zoekHoofdHandeling || "",
 klantNaam: blok.klantNaam || ""
-        zoekHoofdHandeling: blok.zoekHoofdHandeling || ""
-      }));
+           }));
     }
 
     try {

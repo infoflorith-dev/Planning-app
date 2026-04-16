@@ -904,7 +904,7 @@ function maakHandelingTelling(handelingen) {
     if (!item.handeling || !item.handeling.code) return;
 
     const sleutel = item.handeling.code;
-    const naam = formatHandeling(item.handeling);
+    const naam = `${formatHandeling(item.handeling)}${item.klantNaam ? " - " + item.klantNaam : ""}`;
     const aantal =
       item.mensen.filter((naam) => !vasteMensen.includes(naam)).length +
       (item.extraMensen || 0);

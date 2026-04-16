@@ -1620,6 +1620,19 @@ React.createElement(
   { style: hintStyle, key: "extra-hint-" + index },
   "Bijvoorbeeld +5 als uitzendbureau zelf mensen invult"
 ),
+                    React.createElement("input", {
+  type: "text",
+  placeholder: "Klantnaam",
+  value: item.klantNaam || "",
+  onChange: (e) => updateKlantNaam(item.id, e.target.value),
+  style: searchInputStyle,
+  key: "klant-input-" + index
+}),
+React.createElement(
+  "div",
+  { style: hintStyle, key: "klant-hint-" + index },
+  "Vrij invulbaar, bijvoorbeeld Agro Care"
+),
                     ],
 ),
                 React.createElement(

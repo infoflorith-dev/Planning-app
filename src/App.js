@@ -755,7 +755,13 @@ function updateExtraMensen(blokId, value) {
       )
     );
   }
-
+function updateKlantNaam(blokId, value) {
+  setHandelingen((prev) =>
+    prev.map((h) =>
+      h.id === blokId ? { ...h, klantNaam: value } : h
+    )
+  );
+}
   function voegVervolgHandelingToe(blokId, nieuweHandeling) {
     if (!nieuweHandeling) return;
 

@@ -1738,7 +1738,7 @@ React.createElement(
                   React.createElement(
                     "td",
                     { style: tdStyle },
-                    formatHandeling(item.handeling)
+                `${formatHandeling(item.handeling)}${item.klantNaam ? " - " + item.klantNaam : ""}`
                   ),
                   React.createElement(
                     "td",

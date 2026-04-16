@@ -764,7 +764,7 @@ function updateKlantNaam(blokId, value) {
     )
   );
 }
-  function updateVervolgKlantNaam(blokId, code, value) {
+ function updateVervolgKlantNaam(blokId, code, value) {
   setHandelingen((prev) =>
     prev.map((h) => {
       if (h.id !== blokId) return h;
@@ -776,10 +776,9 @@ function updateKlantNaam(blokId, value) {
           if (vCode !== code) return v;
 
           return {
-        return {
-  ...(v.handeling ? v : { handeling: v }),
-  klantNaam: value
-};
+            ...(v.handeling ? v : { handeling: v }),
+            klantNaam: value
+          };
         })
       };
     })
@@ -795,10 +794,17 @@ function updateKlantNaam(blokId, value) {
           return { ...h, nieuweHandeling: "" };
         }
 
-       return {
+    return {
   ...h,
-  vervolg: [...h.vervolg, nieuweHandeling],
+  vervolg: [
+    ...h.vervolg,
+    {
+      handeling: nieuweHandeling,
+      klantNaam: ""
+    }
+  ],
   nieuweHandeling: ""
+};
 };
       })
     );

@@ -1534,13 +1534,13 @@ return React.createElement(
                         "span",
                         { style: getNextTagStyle(index), key: "tag-" + i },
                         [
-                          formatHandeling(vervolgItem),
+                      `${formatHandeling(vervolgItem.handeling || vervolgItem)}${vervolgItem.klantNaam ? " - " + vervolgItem.klantNaam : ""}`,
                           React.createElement(
                             "button",
                             {
                               style: nextRemoveStyle,
                               onClick: () =>
-                                verwijderVervolgHandeling(item.id, vervolgItem.code),
+                              verwijderVervolgHandeling(item.id, (vervolgItem.handeling || vervolgItem).code),
                               key: "remove-tag-" + i
                             },
                             "✕"
@@ -1549,6 +1549,25 @@ return React.createElement(
                       )
                     )
                   ]
+                  ,
+React.createElement("input", {
+  type: "text",
+  placeholder: "Klantnaam vervolg",
+  value: vervolgItem.klantNaam || "",
+  onChange: (e) =>
+    updateVervolgKlantNaam(
+      item.id,
+      (vervolgItem.handeling || vervolgItem).code,
+      e.target.value
+    ),
+  style: {
+    ...searchInputStyle,
+    marginTop: "6px",
+    fontSize: "13px",
+    padding: "8px 10px"
+  },
+  key: "vervolg-klant-" + i
+})
                 ),
                 React.createElement(
                   "div",

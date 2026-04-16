@@ -787,25 +787,24 @@ function updateKlantNaam(blokId, value) {
   function voegVervolgHandelingToe(blokId, nieuweHandeling) {
     if (!nieuweHandeling) return;
 
-    setHandelingen((prev) =>
+       setHandelingen((prev) =>
       prev.map((h) => {
         if (h.id !== blokId) return h;
-       if (h.vervolg.some((v) => (v.handeling || v).code === nieuweHandeling.code)) {
+        if (h.vervolg.some((v) => (v.handeling || v).code === nieuweHandeling.code)) {
           return { ...h, nieuweHandeling: "" };
         }
 
-    return {
-  ...h,
-  vervolg: [
-    ...h.vervolg,
-    {
-      handeling: nieuweHandeling,
-      klantNaam: ""
-    }
-  ],
-  nieuweHandeling: ""
-};
-};
+        return {
+          ...h,
+          vervolg: [
+            ...h.vervolg,
+            {
+              handeling: nieuweHandeling,
+              klantNaam: ""
+            }
+          ],
+          nieuweHandeling: ""
+        };
       })
     );
   }

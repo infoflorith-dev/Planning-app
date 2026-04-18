@@ -1151,7 +1151,7 @@ const thStyle = {
   borderBottom: "2px solid #d1d5db",
   padding: "4px 4px",
   color: "#374151",
-  fontSize: "10px",
+  fontSize: "16px",
   lineHeight: "1.1"
 };
 
@@ -1160,7 +1160,7 @@ const tdStyle = {
   padding: "4px 4px",
   verticalAlign: "top",
   color: "#111827",
-  fontSize: "10px",
+  fontSize: "16px",
   lineHeight: "1.1",
   wordBreak: "break-word"
 };

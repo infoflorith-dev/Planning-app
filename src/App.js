@@ -1789,30 +1789,33 @@ React.createElement("th", { style: thStyle, key: "h4" }, "Aantal")
                       "tr",
                       { key: "row-" + index },
                       [
-                        React.createElement(
-                          "td",
-                          { style: tdStyle },
-                          `${formatHandeling(item.handeling)}${item.klantNaam ? " - " + item.klantNaam : ""}`
-                        ),
-                        React.createElement(
-                          "td",
-                          { style: tdStyle },
-                          item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)
-                        ),
-                        React.createElement(
-                          "td",
-                          { style: tdStyle },
-                          [...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ")
-                        ),
-                        React.createElement(
-                          "td",
-                          { style: tdStyle },
-                          item.vervolg.length
-                            ? item.vervolg
-                                .map((v) => `${formatHandeling(v.handeling || v)}${v.klantNaam ? " - " + v.klantNaam : ""}`)
-                                .join(", ")
-                            : "-"
-                        )
+                    React.createElement(
+  "td",
+  { style: tdStyle },
+  `${formatHandeling(item.handeling)}${item.klantNaam ? " - " + item.klantNaam : ""}`
+),
+
+React.createElement(
+  "td",
+  { style: tdStyle },
+  item.vervolg.length
+    ? item.vervolg
+        .map(v => `${formatHandeling(v.handeling || v)}${v.klantNaam ? " - " + v.klantNaam : ""}`)
+        .join(", ")
+    : "-"
+),
+
+React.createElement(
+  "td",
+  { style: tdStyle },
+  [...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"
+),
+
+React.createElement(
+  "td",
+  { style: tdStyle },
+  item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)
+)
                       ]
                     )
                   )

@@ -1818,7 +1818,7 @@ React.createElement(
 
 React.createElement(
   "td",
-{ style: { ...tdStyle, width: "5%" } },
+{ style: { ...tdStyle, width: "5%", textAlign: "right" } },
   item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)
 )
                       ]

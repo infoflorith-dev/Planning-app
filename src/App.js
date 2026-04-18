@@ -1145,7 +1145,12 @@ const printTableStyle = {
   fontSize: "10px",
   tableLayout: "fixed"
 };
-
+const colWidths = [
+  "22%", // Handeling
+  "28%", // Daarna
+  "38%", // Namen
+  "12%"  // Aantal
+];
 const thStyle = {
   textAlign: "left",
   borderBottom: "2px solid #d1d5db",

@@ -1335,10 +1335,10 @@ return React.createElement(
                           <table>
                             <thead>
                               <tr>
-                                <th>Handeling</th>
-                                <th>Aantal</th>
-                                <th>Namen</th>
-                                <th>Daarna</th>
+                              <th>Handeling</th>
+                              <th>Daarna</th>
+                              <th>Namen</th>
+                              <th>Aantal</th>
                               </tr>
                             </thead>
                             <tbody>

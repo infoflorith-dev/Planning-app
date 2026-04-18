@@ -1772,10 +1772,10 @@ th:nth-child(4), td:nth-child(4) { width: 5%; }  /* Aantal */
                   "tr",
                   {},
                   [
-                    React.createElement("th", { style: thStyle, key: "h1" }, "Handeling"),
-                    React.createElement("th", { style: thStyle, key: "h2" }, "Aantal"),
-                    React.createElement("th", { style: thStyle, key: "h3" }, "Namen"),
-                    React.createElement("th", { style: thStyle, key: "h4" }, "Daarna")
+                React.createElement("th", { style: thStyle, key: "h1" }, "Handeling"),
+React.createElement("th", { style: thStyle, key: "h2" }, "Daarna"),
+React.createElement("th", { style: thStyle, key: "h3" }, "Namen"),
+React.createElement("th", { style: thStyle, key: "h4" }, "Aantal")
                   ]
                 )
               ),

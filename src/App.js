@@ -1281,7 +1281,7 @@ return React.createElement(
                             item.vervolg.length > 0
                               ? item.vervolg
                                   .map((v) => `${formatHandeling(v.handeling || v)}${v.klantNaam ? ` - ${v.klantNaam}` : ""}`)
-                                  .join(", ")
+                                 .join("<br>")
                               : "-"
                           }</td>
                         </tr>

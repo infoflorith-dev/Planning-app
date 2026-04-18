@@ -1879,7 +1879,7 @@ React.createElement(
                     { key: index },
                     [
                       React.createElement("td", { style: tdStyle }, item.handeling),
-                      React.createElement("td", { style: tdStyle }, item.aantal)
+                      React.createElement("td", { style: { ...tdStyle, textAlign: "right" } }, item.aantal)
                     ]
                   )
                 )

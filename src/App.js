@@ -635,7 +635,7 @@ function getCardStyle(index) {
       color: "#334155",
       padding: "8px 12px",
       borderRadius: "999px",
-      fontSize: "14px",
+      fontSize: "16px",
       fontWeight: "600",
       marginRight: "8px",
       marginBottom: "8px",

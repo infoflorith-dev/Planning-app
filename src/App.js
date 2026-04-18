@@ -1288,7 +1288,9 @@ return React.createElement(
     : "-"
 }</td>
 <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
-<td>${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}</td>
+<td style="text-align:right;">
+  ${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}
+</td>
                         </tr>
                       `)
                       .join("");

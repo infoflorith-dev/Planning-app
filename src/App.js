@@ -1780,7 +1780,7 @@ th:nth-child(4), td:nth-child(4) { width: 5%; }  /* Aantal */
                 React.createElement("th", { style: thStyle, key: "h1" }, "Handeling"),
 React.createElement("th", { style: thStyle, key: "h2" }, "Daarna"),
 React.createElement("th", { style: thStyle, key: "h3" }, "Namen"),
-React.createElement("th", { style: { ...thStyle, width: "5%" }, key: "h4" }, "Aantal")
+React.createElement("th", { style: { ...thStyle, width: "5%", textAlign: "right" }, key: "h4" }, "Aantal")
                   ]
                 )
               ),

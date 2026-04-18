@@ -1317,10 +1317,10 @@ return React.createElement(
                               word-break: break-word;
                               line-height: 1.1;
                             }
-                            th:nth-child(1), td:nth-child(1) { width: 24%; }
-                            th:nth-child(2), td:nth-child(2) { width: 8%; }
-                            th:nth-child(3), td:nth-child(3) { width: 44%; }
-                            th:nth-child(4), td:nth-child(4) { width: 24%; }
+                           th:nth-child(1), td:nth-child(1) { width: 25%; }  /* Handeling */
+th:nth-child(2), td:nth-child(2) { width: 35%; }  /* Daarna */
+th:nth-child(3), td:nth-child(3) { width: 35%; }  /* Namen */
+th:nth-child(4), td:nth-child(4) { width: 5%; }  /* Aantal */
                             @page {
                               size: A4 landscape;
                               margin: 10mm;

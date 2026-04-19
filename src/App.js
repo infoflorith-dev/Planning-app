@@ -1372,7 +1372,7 @@ th:nth-child(4), td:nth-child(4) { width: 5%; }  /* Aantal */
                               </tr>
                             </thead>
                             <tbody>
-                              ${printInhoud}
+                           ${printInhoudMade1}
                             </tbody>
                           </table>
                           <h2 style="margin-top:20px;">Overig werk</h2>

@@ -711,30 +711,30 @@ function getCardStyle(index) {
     );
   }
 
-  function voegNaamToeDirect(blokId, naam) {
-    if (!naam) return;
+ function voegNaamToeDirect(blokId, naam) {
+  if (!naam) return;
 
-    setHandelingen((prev) =>
-      prev.map((h) => {
-        const zonderDubbel = h.mensen.filter((persoon) => persoon !== naam);
+  setHandelingen((prev) =>
+    prev.map((h) => {
+      // eerst overal verwijderen
+      const zonderDubbel = h.mensen.filter((persoon) => persoon !== naam);
 
-        if (h.id === blokId) {
-          return {
-            ...h,
-            mensen: zonderDubbel.includes(naam)
-              ? zonderDubbel
-              : [...zonderDubbel, naam],
-            nieuweNaam: ""
-          };
-        }
-
+      // daarna alleen toevoegen bij juiste blok
+      if (h.id === blokId) {
         return {
           ...h,
-          mensen: zonderDubbel
+          mensen: [...zonderDubbel, naam],
+          nieuweNaam: ""
         };
-      })
-    );
-  }
+      }
+
+      return {
+        ...h,
+        mensen: zonderDubbel
+      };
+    })
+  );
+}
 
   function verwijderNaam(blokId, naam) {
     setHandelingen((prev) =>

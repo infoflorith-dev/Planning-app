@@ -1202,7 +1202,7 @@ const tdStyle = {
   lineHeight: "1.1",
   wordBreak: "break-word"
 };
-
+const uitzendPerVestiging = maakUitzendLijstPerVestiging(handelingen);
 return React.createElement(
   "div",
   { style: pageStyle },

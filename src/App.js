@@ -497,6 +497,7 @@ const [overigWerk, setOverigWerk] = useState(() => {
     function maakLeegBlokInit() {
       return {
         id: crypto.randomUUID(),
+                vestiging: "Made 1",
         handeling: { code: "", naam: "" },
         vervolg: [],
         mensen: [],

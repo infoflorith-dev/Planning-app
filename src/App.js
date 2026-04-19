@@ -4,6 +4,7 @@ const supabaseUrl = "https://dgqdhencetroqjbzitfl.supabase.co";
 const supabaseKey = "sb_publishable_Su60RGRB8xf-i327v9DLuw_U7YNmvgb";
 const supabase = createClient(supabaseUrl, supabaseKey);
 export default function App() {
+  const isUitzendView = window.location.search.includes("view=uitzend");
   const [beschikbareNamen] = useState([
     "Su Tran",
     "Richard de Jong",

@@ -1317,7 +1317,13 @@ return React.createElement(
                         </tr>
                       `)
                       .join("");
-
+                    const totaalMensenPdf = handelingen.reduce(
+                      (totaal, item) =>
+                        totaal +
+                        item.mensen.filter((naam) => !vasteMensen.includes(naam)).length +
+                        (item.extraMensen || 0),
+                      0
+                    );
                     const win = window.open("", "_blank");
                     win.document.write(`
                       <html>

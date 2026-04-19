@@ -1203,6 +1203,65 @@ const tdStyle = {
   wordBreak: "break-word"
 };
 const uitzendPerVestiging = maakUitzendLijstPerVestiging(handelingen);
+  if (isUitzendView) {
+  return React.createElement(
+    "div",
+    {
+      style: {
+        padding: "30px",
+        fontFamily: "Arial, sans-serif",
+        maxWidth: "900px",
+        margin: "0 auto",
+        background: "#f3f4f6",
+        minHeight: "100vh"
+      }
+    },
+    [
+      React.createElement(
+        "div",
+        {
+          style: {
+            background: "#ffffff",
+            borderRadius: "20px",
+            padding: "24px",
+            boxShadow: "0 2px 10px rgba(0,0,0,0.06)"
+          }
+        },
+        [
+          React.createElement("h1", {}, `Uitzendlijst - ${getVandaag()}`),
+
+          React.createElement(
+            "div",
+            { style: { fontWeight: "700", marginBottom: "20px" } },
+            `Totaal: ${berekenTotaalUitzend(handelingen)}`
+          ),
+
+          React.createElement("h2", {}, "Made 1"),
+          ...uitzendPerVestiging.made1.namen.map((naam, i) =>
+            React.createElement("div", { key: i }, naam)
+          ),
+
+          React.createElement(
+            "div",
+            { style: { marginBottom: "20px", fontWeight: "700" } },
+            `Extra: ${uitzendPerVestiging.made1.extra}`
+          ),
+
+          React.createElement("h2", {}, "Made 2"),
+          ...uitzendPerVestiging.made2.namen.map((naam, i) =>
+            React.createElement("div", { key: "m2-" + i }, naam)
+          ),
+
+          React.createElement(
+            "div",
+            { style: { fontWeight: "700" } },
+            `Extra: ${uitzendPerVestiging.made2.extra}`
+          )
+        ]
+      )
+    ]
+  );
+}
 return React.createElement(
   "div",
   { style: pageStyle },

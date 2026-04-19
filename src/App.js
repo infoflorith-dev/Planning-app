@@ -1375,8 +1375,23 @@ th:nth-child(4), td:nth-child(4) { width: 5%; }  /* Aantal */
                            ${printInhoudMade1}
                             </tbody>
                           </table>
-                          <h2 style="margin-top:20px;">Overig werk</h2>
-                          <p style="font-size:12px; white-space:pre-line;">${overigWerk || "-"}</p>
+                       <h2 style="margin-top:20px;">Made 2</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Handeling</th>
+      <th>Daarna</th>
+      <th>Namen</th>
+      <th>Aantal</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${printInhoudMade2}
+  </tbody>
+</table>
+
+<h2 style="margin-top:20px;">Overig werk</h2>
+<p style="font-size:12px; white-space:pre-line;">${overigWerk || "-"}</p>
                         </body>
                       </html>
                     `);

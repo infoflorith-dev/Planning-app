@@ -520,7 +520,8 @@ klantNaam: ""
 
     function normaliseerBlokkenInit(blokken) {
   return blokken.map((blok) => ({
-    id: blok.id || crypto.randomUUID(),
+    id: blok.id || crypto.randomUUID(),    
+        vestiging: blok.vestiging || "Made 1",
     handeling: blok.handeling || { code: "", naam: "" },
     vervolg: Array.isArray(blok.vervolg) ? blok.vervolg : [],
     extraMensen: Number(blok.extraMensen || 0),

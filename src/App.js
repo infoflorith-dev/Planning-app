@@ -1391,7 +1391,7 @@ th:nth-child(4), td:nth-child(4) { width: 5%; }  /* Aantal */
                             <img src="https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3" style="width:90px;" />
                           </div>
                           <div style="font-size:16px; font-weight:700; margin-bottom:10px;">
-  Totaal mensen: ${totaalMensenPdf}
+  Totaal: ${totaalMensenPdf} | Made 1: ${totaalMade1} | Made 2: ${totaalMade2}
 </div>
                           <table>
                             <thead>

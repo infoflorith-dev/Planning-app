@@ -1278,22 +1278,42 @@ return React.createElement(
                 {
                   style: printButtonStyle,
                   onClick: () => {
-                    const printInhoud = handelingen
-                      .filter((item) => item.handeling && item.handeling.code)
+                                     const printInhoudMade1 = handelingen
+                      .filter((item) => item.handeling && item.handeling.code && (item.vestiging || "Made 1") === "Made 1")
                       .map((item) => `
                         <tr>
-                         <td>${formatHandeling(item.handeling)}${item.klantNaam ? ` - ${item.klantNaam}` : ""}</td>
-<td>${
-  item.vervolg.length > 0
-    ? item.vervolg
-        .map((v) => `${formatHandeling(v.handeling || v)}${v.klantNaam ? ` - ${v.klantNaam}` : ""}`)
-        .join("<br>")
-    : "-"
-}</td>
-<td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
-<td style="text-align:right;">
-  ${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}
-</td>
+                          <td>${formatHandeling(item.handeling)}${item.klantNaam ? ` - ${item.klantNaam}` : ""}</td>
+                          <td>${
+                            item.vervolg.length > 0
+                              ? item.vervolg
+                                  .map((v) => `${formatHandeling(v.handeling || v)}${v.klantNaam ? ` - ${v.klantNaam}` : ""}`)
+                                  .join("<br>")
+                              : "-"
+                          }</td>
+                          <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
+                          <td style="text-align:right;">
+                            ${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}
+                          </td>
+                        </tr>
+                      `)
+                      .join("");
+
+                    const printInhoudMade2 = handelingen
+                      .filter((item) => item.handeling && item.handeling.code && (item.vestiging || "Made 1") === "Made 2")
+                      .map((item) => `
+                        <tr>
+                          <td>${formatHandeling(item.handeling)}${item.klantNaam ? ` - ${item.klantNaam}` : ""}</td>
+                          <td>${
+                            item.vervolg.length > 0
+                              ? item.vervolg
+                                  .map((v) => `${formatHandeling(v.handeling || v)}${v.klantNaam ? ` - ${v.klantNaam}` : ""}`)
+                                  .join("<br>")
+                              : "-"
+                          }</td>
+                          <td>${[...item.mensen, ...(item.extraMensen > 0 ? [`+${item.extraMensen}`] : [])].join(", ") || "-"}</td>
+                          <td style="text-align:right;">
+                            ${item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)}
+                          </td>
                         </tr>
                       `)
                       .join("");

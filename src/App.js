@@ -1432,7 +1432,14 @@ th:nth-child(4), td:nth-child(4) { width: 5%; }  /* Aantal */
       React.createElement(
         "div",
         { style: gridStyle, key: "grid" },
-        ...handelingen.map((item, index) => {
+      ...[...handelingen]
+  .sort((a, b) => {
+    const vestigingA = a.vestiging || "Made 1";
+    const vestigingB = b.vestiging || "Made 1";
+    if (vestigingA === vestigingB) return 0;
+    return vestigingA === "Made 1" ? -1 : 1;
+  })
+  .map((item, index) => {
           const zoekNaam = item.nieuweNaam || "";
           const gefilterdeNamen = beschikbareNamen.filter((naam) =>
             naam.toLowerCase().includes(zoekNaam.toLowerCase())

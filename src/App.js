@@ -1368,6 +1368,9 @@ th:nth-child(4), td:nth-child(4) { width: 5%; }  /* Aantal */
                             <h1 style="margin:0;">Dagprogramma overzicht - ${getVandaag()}</h1>
                             <img src="https://tse4.mm.bing.net/th/id/OIP.EKovU0fgzY9XbSPlmmPCzQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3" style="width:90px;" />
                           </div>
+                          <div style="font-size:16px; font-weight:700; margin-bottom:10px;">
+  Totaal mensen: ${totaalMensenPdf}
+</div>
                           <table>
                             <thead>
                               <tr>

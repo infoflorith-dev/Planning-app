@@ -924,7 +924,36 @@ function maakUitzendLijst(handelingen) {
     extra: extraTotaal
   };
 }
+function maakUitzendLijstPerVestiging(handelingen) {
+  const result = {
+    made1: { namen: new Set(), extra: 0 },
+    made2: { namen: new Set(), extra: 0 }
+  };
 
+  handelingen.forEach((item) => {
+    const vestiging = item.vestiging || "Made 1";
+    const target = vestiging === "Made 2" ? result.made2 : result.made1;
+
+    const uitzend = item.mensen.filter(
+      (naam) => !vasteMensen.includes(naam)
+    );
+
+    uitzend.forEach((naam) => target.namen.add(naam));
+
+    target.extra += item.extraMensen || 0;
+  });
+
+  return {
+    made1: {
+      namen: Array.from(result.made1.namen).sort(),
+      extra: result.made1.extra
+    },
+    made2: {
+      namen: Array.from(result.made2.namen).sort(),
+      extra: result.made2.extra
+    }
+  };
+}
 function maakHandelingTelling(handelingen) {
   const tellingen = {};
 

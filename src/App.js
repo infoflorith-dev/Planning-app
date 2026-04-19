@@ -1450,7 +1450,7 @@ th:nth-child(4), td:nth-child(4) { width: 5%; }  /* Aantal */
                             </tbody>
                           </table>
                           <h2 style="margin-top:20px;">Overig werk</h2>
-                          <p style="font-size:12px; white-space:pre-line;">${overigWerk || "-"}</p>
+                          <p style="font-size:16px; white-space:pre-line;">${overigWerk || "-"}</p>
                         </body>
                       </html>
                     `);

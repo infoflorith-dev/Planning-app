@@ -1318,6 +1318,23 @@ return React.createElement(
                       `)
                       .join("");
                     const totaalMensenPdf = handelingen.reduce(
+                      const totaalMade1 = handelingen.reduce(
+  (totaal, item) =>
+    totaal +
+    ((item.vestiging || "Made 1") === "Made 1"
+      ? item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)
+      : 0),
+  0
+);
+
+const totaalMade2 = handelingen.reduce(
+  (totaal, item) =>
+    totaal +
+    ((item.vestiging || "Made 1") === "Made 2"
+      ? item.mensen.filter((naam) => !vasteMensen.includes(naam)).length + (item.extraMensen || 0)
+      : 0),
+  0
+);
                       (totaal, item) =>
                         totaal +
                         item.mensen.filter((naam) => !vasteMensen.includes(naam)).length +

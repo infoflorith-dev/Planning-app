@@ -1464,7 +1464,30 @@ th:nth-child(4), td:nth-child(4) { width: 5%; }  /* Aantal */
                 { style: smallLabelStyle, key: "label-" + index },
                 "Handeling"
               ),
-
+              React.createElement(
+                "select",
+                {
+                  value: item.vestiging || "Made 1",
+                  onChange: (e) =>
+                    setHandelingen((prev) =>
+                      prev.map((h) =>
+                        h.id === item.id
+                          ? { ...h, vestiging: e.target.value }
+                          : h
+                      )
+                    ),
+                  style: {
+                    ...searchInputStyle,
+                    marginBottom: "12px",
+                    cursor: "pointer"
+                  },
+                  key: "vestiging-" + index
+                },
+                [
+                  React.createElement("option", { value: "Made 1" }, "Made 1"),
+                  React.createElement("option", { value: "Made 2" }, "Made 2")
+                ]
+              ),
               React.createElement(
                 "div",
                 { style: hoofdHandelingWrapStyle, key: "hoofdhandeling-" + index },
